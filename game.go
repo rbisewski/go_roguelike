@@ -5,7 +5,9 @@
  */
 package main
 
-import "fmt"
+import (
+    "fmt"
+)
 
 // Attribute used to determine the game state.
 type GameState string
@@ -96,7 +98,7 @@ func (g *Game) Menu() GameState {
         // Attempt to load the previous game.
         g.LoadGame()
 
-        //
+        // Give the main game pad a height and width.
         SetPad(g.Area.Height, g.Area.Width)
 
         // Draw the recorded map.

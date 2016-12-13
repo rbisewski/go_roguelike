@@ -68,6 +68,85 @@ func InitPair(pair, fg, bg int) {
   C.init_pair(C.short(pair), C.short(fg), C.short(bg))
 }
 
+//! Determine the intensity of an 8bit terminal colour.
+/*
+ * @param      int    id of the new colour to generate
+ * @param      int    red value of the colour
+ * @param      int    green value of the colour
+ * @param      int    blue value of the colour
+ *
+ * @returns    int    If success: colour intensity (as int)
+ *                    If failure: -1
+ */
+func ColorContent(color_id, red, green, blue int) int {
+
+    // Input validation
+    if color_id < 0 || red < 0 || green < 0 || blue < 0 ||
+      color_id > 1000 || red > 1000 || green > 1000 || blue > 1000 {
+
+        // Return a nil value since something bad has happened.
+        return -1
+    }
+
+    // Convert the values in question to C-style shorts.
+    red_as_short   := C.short(red)
+    green_as_short := C.short(green)
+    blue_as_short  := C.short(blue)
+
+    // Sanity check, make sure that golang was able to convert them properly.
+    if red_as_short < 0 || green_as_short < 0 || blue_as_short < 0 {
+
+        // Return a nil value since something bad has happened.
+        return -1
+    }
+
+    // Otherwise call ncurses color_content() function and return that value.
+    return int(C.color_content(C.short(color_id),
+                               &red_as_short,
+                               &green_as_short,
+                               &blue_as_short))
+}
+
+//! Initialize a new 8bit terminal colour.
+/*
+ * @param      int    id of the new colour to generate
+ * @param      int    red value of the colour
+ * @param      int    green value of the colour
+ * @param      int    blue value of the colour
+ *
+ * @returns    int    If success: generated colour (as int)
+ *                    If failure: -1
+ */
+func InitColor(color_id, red, green, blue int) int {
+
+    // Input validation
+    if color_id < 0 || red < 0 || green < 0 || blue < 0 ||
+      color_id > 1000 || red > 1000 || green > 1000 || blue > 1000 {
+
+        // Return a nil value since something bad has happened.
+        return -1
+    }
+
+    // Convert the values in question to C-style shorts.
+    red_as_short   := C.short(red)
+    green_as_short := C.short(green)
+    blue_as_short  := C.short(blue)
+
+    // Sanity check, make sure that golang was able to convert them properly.
+    if red_as_short < 0 || green_as_short < 0 || blue_as_short < 0 {
+
+        // Return a nil value since something bad has happened.
+        return -1
+    }
+
+    // Otherwise call ncurses color_content() function and return that value.
+    return int(C.init_color(C.short(color_id),
+                               red_as_short,
+                               green_as_short,
+                               blue_as_short))
+}
+
+
 // Enable reading of function keys.
 func (window *Window) Keypad(on bool) {
     C.keypad(window.cwin, C.bool(on))
