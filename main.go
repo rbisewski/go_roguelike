@@ -21,6 +21,9 @@ func main() {
     // The default state shall be to set the menu.
     G.state = "menu"
 
+    // Set the debug mode flag.
+    G.DebugMode = false
+
     // As long as we're not quting, then do this...
     for !G.state.Quiting() {
 

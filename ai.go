@@ -39,13 +39,13 @@ func (g *Game) processAi() {
                 dy = Coord(Round(float64(int(ydist)/Round(distance))))
 
             // If debug mode, then display this...
-            DebugLog(fmt.Sprintf("dx, dy, dist = %d, %d, %g->%d | xdist: %d - ydist: %d    ",
-                         dx,
-                         dy,
-                         distance,
-                         Round(distance),
-                         xdist,
-                         ydist))
+            DebugLog(g, fmt.Sprintf("dx, dy, dist = %d, %d, %g->%d | xdist: %d - ydist: %d    ",
+                        dx,
+                        dy,
+                        distance,
+                        Round(distance),
+                        xdist,
+                        ydist))
 
             // Tell the monster to move to the determined location.
             m.Move(dy, dx)

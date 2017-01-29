@@ -9,14 +9,25 @@ import (
     "fmt"
 )
 
-// Attribute used to determine the game state.
+// Attributes for the `Game` structure.
 type GameState string
 
 // Structure used hold the game object.
 type Game struct {
+
+    // Determines whether or not to display debug messages.
+    DebugMode bool
+
+    // Current status of the game.
     state GameState
+
+    // Pointer to the current states of given creatures.
     //Creatures   []*Creature
+
+    // Pointer to the player-character object.
     Player *Creature
+
+    // Pointer to area array.
     Area   *Area
 }
 
@@ -31,6 +42,9 @@ func (g *Game) Init() {
     // Variable declaration
     var y Coord
     var x Coord
+
+    // The default setting is for debug messages to be hidden.
+    g.DebugMode = false
 
     // Set the game state.
     g.state = "menu"
@@ -205,7 +219,7 @@ func (g *Game) Input() {
     key := GetInput()
 
     // If debug enabled, show the key that was pressed.
-    DebugLog(fmt.Sprintf("Key pressed --> %x", key))
+    DebugLog(g, fmt.Sprintf("Key pressed --> %x", key))
 
     // Convert the key pressed to a hex string value.
     key_as_string := fmt.Sprintf("%x", key)

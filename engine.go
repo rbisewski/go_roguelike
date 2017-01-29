@@ -257,7 +257,12 @@ func Write(y int, x int, s string) {
  *
  * @return    none
  */
-func DebugLog(s string) {
+func DebugLog(g *Game, s string) {
+
+    // If debug mode is off (i.e. false) then do nothing here.
+    if g == nil || !g.DebugMode {
+        return
+    }
 
     // Add some " " buffers to the character pad.
     debugWindow.Mvaddstr(0, 0, "                         ")
