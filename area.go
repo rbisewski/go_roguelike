@@ -102,32 +102,46 @@ func NewArea(h, w int) (*Area, Coord, Coord) {
     return &Area{t[nIts-1], nil, nil, h, w}, ry, rx
 }
 
-//! Check if a given tile is a "blocking" tile.
+//! Grab info about a given tile, specific what it is, whether it blocks,
+//! and which creatures are present here.
 /*
  * @param    Coord    y-value
  * @param    Coord    x-value
  *
- * @returns  bool     whether or not the tile is "blocking"
- *           Creature*     pointer to a monster, if any is present
+ * @returns      rune     unicode rune value
+ *               bool     whether or not the tile is "blocking"
+ *           Creature*    pointer to a monster, if any is present
  */
-func (a *Area) IsBlocking(y, x Coord) (blocks bool, hasCreature *Creature) {
+func (a *Area) GetTileInfo(y, x Coord) (ch rune,
+                                         blocks bool,
+                                         hasCreature *Creature) {
+
+    // Input validation, make sure this actually got an address to an
+    // Area object.
+    if a == nil {
+        return
+    }
+
+    // Read from the tiles array at the requested point to get the
+    // specific Unicode rune value.
+    ch = a.Tiles[int(x)+int(y)*a.Width].Ch
 
     // Read from the tiles array at a given point to determine whether
     // or not a tile is blocking.
     blocks = a.Tiles[int(x)+int(y)*a.Width].BlockMove
 
-        // Cycle thru every monster in the array...
-        for _, m := range a.Creatures {
+    // Cycle thru every monster in the array...
+    for _, m := range a.Creatures {
 
-            // If the Monster is alive and at (x,y) point.
-            if m.Hp > 0 && m.X == x && m.Y == y {
+        // If the Monster is alive and at (x,y) point.
+        if m.Hp > 0 && m.X == x && m.Y == y {
 
-                // State that a monster has been found.
-                hasCreature = m
+            // State that a monster has been found.
+            hasCreature = m
 
-                // All done here.
-                return
-            }
+            // All done here.
+            return
+        }
     }
 
     // Go back.

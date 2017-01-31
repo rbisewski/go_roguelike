@@ -53,7 +53,16 @@ func (g *Game) Init() {
     g.Area, y, x = NewArea(240, 250)
 
     // The PC will be represented by an @ symbol.
-    g.Player = NewCreatureWithStats(y, x, '@', g.Area, 30, 30, 10, 5)
+    g.Player = NewCreatureWithStats("player",
+                                    "player",
+                                    y,
+                                    x,
+                                    '@',
+                                    g.Area,
+                                    30,
+                                    30,
+                                    10,
+                                    5)
 
     // Attach the player to the map.
     g.Area.Creatures = append(g.Area.Creatures,
@@ -61,14 +70,16 @@ func (g *Game) Init() {
 
     // Right now all this does is add a single monster.
     g.Area.Creatures = append(g.Area.Creatures,
-                         NewCreatureWithStats(y-10,
-                                         x-1,
-                                         'd',
-                                         g.Area,
-                                         20,
-                                         30,
-                                         15,
-                                         0))
+                              NewCreatureWithStats("dog",
+                                                   "canine",
+                                                   y-10,
+                                                   x-1,
+                                                   'd',
+                                                   g.Area,
+                                                   20,
+                                                   30,
+                                                   15,
+                                                   0))
 }
 
 //! Determines whether or not 
