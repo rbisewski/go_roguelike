@@ -226,20 +226,88 @@ func (m *Creature) Move(y, x Coord) {
  */
 func (attacker *Creature) attack(defender *Creature) {
 
+    // Input validation, make sure this was given a valid `attacker`
+    // and `defender` creature.
+    if attacker == nil || defender == nil {
+
+        // If debug, print the message to the log about what just occurred.
+        DebugLog(&G,"attack() --> invalid creature input.");
+
+        // Leave the function.
+        return
+    }
+
+    // Variable declaration.
+    var damage_dealt int
+
+    // Determine how much damage was done to the defender.
+    damage_dealt = attacker.Att - defender.Def
+
     // Adjust the defender's HP based on the damage dealt.
-    defender.Hp -= attacker.Att - defender.Def
+    defender.Hp -= damage_dealt
 
     // If the HP of the defender falls below zero, then he/she/it dies.
     if defender.Hp <= 0 {
         defender.die()
     }
 
-    // Give the end-user a clue what is going on.
-    //if m.ch == '@' {
-        MessageLog.log(fmt.Sprintf("The %s has %d HP left.",
+    // If the player character is being attacked.
+    if defender.species == "player" {
+
+        // Print a message telling the end-user they have been injured
+        // during the attack.
+        MessageLog.log(fmt.Sprintf("The %s injures you for %d hit points.",
                                    attacker.name,
-                                   attacker.Hp))
-    //}
+                                   damage_dealt))
+
+        // Leave the function since this has informed the player that they
+        // were injured during the attack via the other creature.
+        return
+    }
+
+    // Otherwise the player is doing the attack, so explain how much damage
+    // was done to the creature being attacked.
+    MessageLog.log(fmt.Sprintf("You strike the %s for %d hit points " +
+                               "of damage.",
+                               defender.name,
+                               damage_dealt))
+
+    // If creature being attacked has reached zero hit points, go ahead and
+    // print a message stating that the creature has died.
+    if defender.Hp < 1 {
+        MessageLog.log(fmt.Sprintf("The %s has died.", defender.name))
+        return
+    }
+
+    // Otherwise if the creature has not yet died, go ahead and give a
+    // description of the current state of the attacked creature in the
+    // lower-left message screen.
+    //
+    // The adjectives to be used are as follows:
+    //
+    // 100% --> unscathed
+    //  75% --> slightly injured
+    //  50% --> injured
+    //  25% --> severely injured
+    //
+    if defender.Hp == defender.MaxHp {
+        MessageLog.log(fmt.Sprintf("The %s still looks unscathed.",
+                                   defender.name))
+
+    } else if defender.Hp > int(float64(defender.MaxHp) * 0.50) {
+        MessageLog.log(fmt.Sprintf("The %s looks slightly injured.",
+                                   defender.name))
+
+    } else if defender.Hp > int(float64(defender.MaxHp) * 0.25) {
+        MessageLog.log(fmt.Sprintf("The %s looks injured.",
+                                   defender.name))
+    } else {
+        MessageLog.log(fmt.Sprintf("The %s looks severely injured.",
+                                   defender.name))
+    }
+
+    // The current attack round is now complete, so leave the function.
+    return
 }
 
 //! Function to handle what occurs when a monster dies.
