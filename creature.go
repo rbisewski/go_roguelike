@@ -10,9 +10,6 @@ package main
 
 import "fmt"
 
-// Coord is just an integer
-type Coord int
-
 // Structure to hold characters / monsters
 type Creature struct {
 

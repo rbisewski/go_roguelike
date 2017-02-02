@@ -15,7 +15,7 @@ import "fmt"
  *
  * @returns    none
  */
-func (g *Game) processAi() {
+func (g *Game) process_ai() {
 
     // Variable declaration
     var dy, dx Coord

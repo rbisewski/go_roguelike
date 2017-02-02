@@ -300,5 +300,5 @@ func (g *Game) Input() {
     }
 
     // Handle what all of the other actors (e.g. monsters) are current doing.
-    g.processAi()
+    g.process_ai()
 }

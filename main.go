@@ -6,6 +6,9 @@
 
 package main
 
+// Global type declaration.
+type Coord int
+
 // Global variable declaration.
 var G Game
 
