@@ -29,6 +29,9 @@ type Creature struct {
     // Pointer to the level the creature is on.
     area *Area
 
+    // Pointer to the inventory, which consists of objects of class Item.
+    inventory *Item
+
     // Pointer to the stats attributes.
     *stats
 }
@@ -49,6 +52,7 @@ type stats struct {
  * @param     Coord    x-value
  * @param     rune     ASCII character graphic for the Creature
  * @param     Area*    object storing the level area 
+ * @param     Item*    array storing the items the creature possesses
  *
  * @return    Creature*    pointer to a new mob.
  */
@@ -57,10 +61,11 @@ func NewCreature(name string,
                  y Coord,
                  x Coord,
                  ch rune,
-                 area *Area) *Creature {
+                 area *Area,
+                 inventory *Item) *Creature {
 
     // Return an address to a newly allocated Creature object.
-    return &Creature{name, species, y, x, ch, area, nil}
+    return &Creature{name, species, y, x, ch, area, inventory, nil}
 }
 
 //! Monster Stats Constructor
@@ -97,14 +102,21 @@ func NewCreatureWithStats(name string,
                           x Coord,
                           ch rune,
                           area *Area,
+                          inventory *Item,
                           hp int,
                           max int,
                           att int,
                           def int) *Creature {
 
     // Assign memory for a creature object and return the address.
-    return &Creature{name, species, y, x, ch, area,
-      newStats(hp, max, att, def)}
+    return &Creature{name,
+                     species,
+		     y,
+		     x,
+		     ch,
+		     area,
+		     inventory,
+                     newStats(hp, max, att, def)}
 }
 
 //! Function to move the mob to a new (x,y) location.

@@ -27,6 +27,9 @@ type Game struct {
     // Pointer to the player-character object.
     Player *Creature
 
+    // Pointer to the inventory of the player-character.
+    PlayerInventory *Item
+
     // Pointer to area array.
     Area   *Area
 }
@@ -59,6 +62,7 @@ func (g *Game) Init() {
                                     x,
                                     '@',
                                     g.Area,
+                                    g.PlayerInventory,
                                     30,
                                     30,
                                     10,
@@ -76,6 +80,7 @@ func (g *Game) Init() {
                                                    x-1,
                                                    'd',
                                                    g.Area,
+                                                   nil,
                                                    20,
                                                    30,
                                                    15,
