@@ -7,7 +7,6 @@
 package main
 
 import "math/rand"
-import "fmt"
 
 // Structure to hold the points of the form (x,y)
 type Coords struct {
@@ -69,43 +68,40 @@ func NewArea(h, w int) (*Area, Coord, Coord) {
     // Cycle thru all the elements of an iterator
     for it := 0; it < nIts; it++ {
 
-            // Assign a tile to that given location
-            t[it] = make([]Tile, w*h)
+        // Assign a tile to that given location
+        t[it] = make([]Tile, w*h)
 
-            // For all of the y-coords (height)...
-            for y := 0; y < h; y++ {
+         // For all of the y-coords (height)...
+         for y := 0; y < h; y++ {
 
-                // For all of the x-coords (width)...
-                for x := 0; x < w; x++ {
+             // For all of the x-coords (width)...
+             for x := 0; x < w; x++ {
 
-                    // On first iteration, place random tiles.
-                    if it == 0 {
-                        t[it][x+y*w] = placeRandomTile()
-                        continue
-                    }
+                 // On first iteration, place random tiles.
+                 if it == 0 {
+                     t[it][x+y*w] = placeRandomTile()
+                     continue
+                 }
 
-                    // Otherwise check for wall placement.
-                    if mapBorders(y, x) || adjacentWalls(y, x, w, t[it-1]) >= 4 {
-                        t[it][x+y*w] = Tile{'#', true, true}
-                        continue
-                    }
+                 // Otherwise check for wall placement.
+                 if mapBorders(y, x) || adjacentWalls(y, x, w, t[it-1]) >= 4 {
+                     t[it][x+y*w] = Tile{'#', true, true}
+                     continue
+                 }
 
-                    // Or draw ground.
-                    t[it][x+y*w] = Tile{'.', false, false}
+                 // Or draw ground.
+                 t[it][x+y*w] = Tile{'.', false, false}
 
-                    // If we are at last Iteration
-                    if it == nIts-1 {
+                 // If we are at last Iteration
+                 if it == nIts-1 {
 
-                        //set the spawn coords
-                        ry = Coord(y)
-                        rx = Coord(x)
-                    }
-                }
-            }
-
-            // Iteration complete
-            Write(51, 2, fmt.Sprint("Done"))
-        }
+                     //set the spawn coords
+                     ry = Coord(y)
+                     rx = Coord(x)
+                 }
+             }
+         }
+    }
 
     // Return the completed area-object plus start coords.
     return &Area{t[nIts-1], creatures, items, h, w}, ry, rx
