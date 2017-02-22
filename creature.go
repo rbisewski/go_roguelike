@@ -327,7 +327,29 @@ func (attacker *Creature) attack(defender *Creature) {
  */
 func (m *Creature) die() {
 
-    // Change the character to a '%', eventually items will be added.
+    // Input validation, make sure this was given a valid creature.
+    if m == nil {
+
+        // If debug, print the message to the log about what just occurred.
+        DebugLog(&G,"die() --> invalid creature input.");
+
+        // Leave the function.
+        return
+    }
+
+    // If the "monster" who died is the player, then call that routine.
+    if m == G.Player {
+
+        // Call the player death functionality, which should end the current
+        // instance of the game.
+        G.Death()
+
+        // Leave the function.
+        return
+    }
+
+    // Since player is presumably still alive, then instead change the
+    // character of the given dying creature to a '%'.
     m.ch = '%'
 
     // Adjust the array of monsters to account for the newly dead monster.
@@ -340,12 +362,7 @@ func (m *Creature) die() {
             m.area.Creatures = append(m.area.Creatures[:i], m.area.Creatures[i+1:]...)
 
             // As well as all of the monster's items.
-            m.area.Items = append(m.area.Items, m)
+            m.area.Items = append(m.area.Items, m.inventory)
         }
-    }
-
-    // If the "monster" who died is the player, then call that routine.
-    if m == G.Player {
-        G.Death()
     }
 }

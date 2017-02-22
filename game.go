@@ -199,15 +199,18 @@ func (g *Game) Output() {
     // Draw the given area map.
     DrawMap(g.Area)
 
-    // Cycle thru a given list of items in an area.
+    // Cycle thru all of the item present in the current area. If an item is
+    // at the given (x,y) coords, then go ahead and draw it on the map.
+    //
+    // TODO: fix this
+    //
+    /*
     for _, i := range g.Area.Items {
 
         // Assign colours for a given item.
-        if i.Hp <= 0 {
-            DrawColours(i.Y, i.X, i.ch, 1)
-            continue
-        }
+        DrawColours(i.Y, i.X, i.ch, 1)
     }
+    */
 
     // For every monster present in this area.
     for _, m := range g.Area.Creatures {

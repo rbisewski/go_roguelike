@@ -24,10 +24,17 @@ type Tile struct {
 
 // Structure to hold the entire location of a given area.
 type Area struct {
-    Tiles []Tile
-    Creatures  []*Creature
-    Items []*Creature
 
+    // Holds the current rune appearance.
+    Tiles []Tile
+
+    // Stores all of the creatures present in this level.
+    Creatures  []*Creature
+
+    // Contains all of the items in a level not held by creatures.
+    Items []*Item
+
+    // The length and width of the level.
     Height int
     Width  int
 }
@@ -44,6 +51,8 @@ func NewArea(h, w int) (*Area, Coord, Coord) {
 
     // Variable declaration
     var ry, rx Coord
+    var creatures []*Creature
+    var items []*Item
 
     // Number of iterations to use
     nIts := 4
@@ -99,7 +108,7 @@ func NewArea(h, w int) (*Area, Coord, Coord) {
         }
 
     // Return the completed area-object plus start coords.
-    return &Area{t[nIts-1], nil, nil, h, w}, ry, rx
+    return &Area{t[nIts-1], creatures, items, h, w}, ry, rx
 }
 
 //! Grab info about a given tile, specific what it is, whether it blocks,
