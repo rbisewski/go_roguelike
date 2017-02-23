@@ -53,11 +53,15 @@ func NewArea(h, w int) (*Area, Coord, Coord) {
     var creatures []*Creature
     var items []*Item
 
-    // Number of iterations to use
-    nIts := 4
-
     // Real x,y
     ry, rx = 0, 0
+
+    // Assign memory for the creature and item arrays.
+    creatures = make([]*Creature,0)
+    items     = make([]*Item,0)
+
+    // Number of iterations to use
+    nIts := 4
 
     // Setup an iterator
     t := make([][]Tile, nIts)

@@ -21,9 +21,6 @@ type Game struct {
     // Current status of the game.
     state GameState
 
-    // Pointer to the current states of given creatures.
-    //Creatures   []*Creature
-
     // Pointer to the player-character object.
     Player *Creature
 
@@ -201,19 +198,36 @@ func (g *Game) Output() {
 
     // Cycle thru all of the item present in the current area. If an item is
     // at the given (x,y) coords, then go ahead and draw it on the map.
-    //
-    // TODO: fix this
-    //
-    /*
-    for _, i := range g.Area.Items {
+    for index, item := range g.Area.Items {
+
+        // Sanity check, make sure this actually got a valid item.
+        if (item == nil) {
+
+            // Otherwise tell the developer something odd was appended here.
+            DebugLog(g, fmt.Sprintf("Output() --> invalid item at index [%i]",
+              index))
+
+            // Move on to the next item.
+            continue
+        }
 
         // Assign colours for a given item.
-        DrawColours(i.Y, i.X, i.ch, 1)
+        DrawColours(item.Y, item.X, item.ch, 1)
     }
-    */
 
-    // For every monster present in this area.
-    for _, m := range g.Area.Creatures {
+    // Cycle thru every monster present in the given area.
+    for index, m := range g.Area.Creatures {
+
+        // Sanity check, make sure this actually got a valid monster.
+        if (m == nil) {
+
+            // Otherwise tell the developer something odd was appended here.
+            DebugLog(g, fmt.Sprintf("Output() --> null monster at index [%i]",
+              index))
+
+            // Move on to the next monster.
+            continue
+        }
 
         // Draw a monster at its current coords.
         Draw(m.Y, m.X, m.ch)
