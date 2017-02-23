@@ -30,7 +30,7 @@ type Creature struct {
     area *Area
 
     // Pointer to the inventory, which consists of objects of class Item.
-    inventory *Item
+    inventory []*Item
 
     // Pointer to the stats attributes.
     *stats
@@ -62,7 +62,7 @@ func NewCreature(name string,
                  x Coord,
                  ch rune,
                  area *Area,
-                 inventory *Item) *Creature {
+                 inventory []*Item) *Creature {
 
     // Return an address to a newly allocated Creature object.
     return &Creature{name, species, y, x, ch, area, inventory, nil}
@@ -102,7 +102,7 @@ func NewCreatureWithStats(name string,
                           x Coord,
                           ch rune,
                           area *Area,
-                          inventory *Item,
+                          inventory []*Item,
                           hp int,
                           max int,
                           att int,
@@ -348,21 +348,61 @@ func (m *Creature) die() {
         return
     }
 
-    // Since player is presumably still alive, then instead change the
-    // character of the given dying creature to a '%'.
-    m.ch = '%'
-
     // Adjust the array of monsters to account for the newly dead monster.
-    for i, mm := range m.area.Creatures {
+    for i, monster := range m.area.Creatures {
 
-        // Uponing finding the monster who died...
-        if m == mm {
+        // Sanity check, make sure this actually got a valid monster.
+        if (monster == nil) {
 
-            // Account for all of the monsters.
-            m.area.Creatures = append(m.area.Creatures[:i], m.area.Creatures[i+1:]...)
+            // Otherwise tell the developer something odd was appended here.
+            DebugLog(&G, fmt.Sprintf("die() --> nil mob at index [%i]", i))
 
-            // As well as all of the monster's items.
-            m.area.Items = append(m.area.Items, m.inventory)
+            // Move on to the next monster.
+            continue
         }
+
+        // Ignore other monsters since they are still alive.
+        if m != monster {
+            continue
+        }
+
+        // If the monster who died is still in this level, then it needs
+        // to be deleted from the array.
+        m.area.Creatures = append(m.area.Creatures[:i], m.area.Creatures[i+1:]...)
+    }
+
+    // Check if the monster in question has no inventory, or an empty
+    // inventory, then this is done.
+    if m.inventory == nil || len(m.inventory) < 1 {
+
+        // Leave a creature corpse item in the shape of a % at the given
+        // vertex (x,y) location of the formerly alive monster.
+        //m.ch = '%'
+
+        // All is now done.
+        return
+    }
+
+    // Otherwise, attempt to add all of the items to the ground.
+    for i, item := range m.inventory {
+
+        // Sanity check, make sure this actually got a valid item.
+        if (item == nil) {
+
+            // Otherwise tell the developer something odd was appended here.
+            DebugLog(&G, fmt.Sprintf("die() --> nil item at index [%i]", i))
+
+            // Move on to the next item.
+            continue
+        }
+
+        // Give the item a % rune shape, and set it to the (x,y) coord of
+        // dead monster.
+        item.ch = '%'
+        item.X = m.X
+        item.Y = m.Y
+
+        // Otherwise append that item to the ground.
+        m.area.Items = append(m.area.Items, item)
     }
 }

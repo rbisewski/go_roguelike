@@ -25,7 +25,7 @@ type Game struct {
     Player *Creature
 
     // Pointer to the inventory of the player-character.
-    PlayerInventory *Item
+    PlayerInventory []*Item
 
     // Pointer to area array.
     Area   *Area

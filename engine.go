@@ -198,12 +198,12 @@ func DrawMap(a *Area) {
             // Draw the walls in a brownish / yellow colour.
             if (a.Tiles[x+y*a.Width].Ch == '#') {
                 DrawColours(Coord(y), Coord(x), a.Tiles[x+y*a.Width].Ch, 2)
+                continue
+            }
 
             // Else just take the character given and draw it onto the
             // gamepad viewscreen.
-            } else {
-                Draw(Coord(y), Coord(x), a.Tiles[x+y*a.Width].Ch)
-            }
+            Draw(Coord(y), Coord(x), a.Tiles[x+y*a.Width].Ch)
         }
     }
 }
