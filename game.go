@@ -211,8 +211,19 @@ func (g *Game) Output() {
             continue
         }
 
-        // Assign colours for a given item.
-        DrawColours(item.Y, item.X, item.ch, 1)
+        // If the item is in fact a dead creature, colour it red.
+        if item.category == "corpse" {
+
+            // Draw the item char rune with the red colour.
+            DrawColours(item.Y, item.X, item.ch, 1)
+
+            // Move on to the next item.
+            continue
+        }
+
+        // Otherwise this is just a plain ol' item, so assign colours for a
+        // striking magenta-black colour.
+        DrawColours(item.Y, item.X, item.ch, 3)
     }
 
     // Cycle thru every monster present in the given area.

@@ -80,6 +80,9 @@ func Init() {
     // Since we otherwise have colours, go ahead and just run it.
     gocurses.StartColor()
 
+    // Initialize the colours from the ncurses definitions.
+    InitColours()
+
     // Figure out the limits of the provided console.
     ConsoleHeight, ConsoleWidth = gocurses.Getmaxyx()
 
@@ -105,12 +108,23 @@ func Init() {
 
     // When the game starts, generate a seed from the nanosecond time.
     rand.Seed(time.Now().UnixNano())
+}
 
-    // Initialize a red / black colour pair (for items, etc)
+
+//! Function to initialize the colours needed by gocurses.
+/*
+ * @return   none
+ */
+func InitColours() {
+
+    // Initialize a red-black colour pair (for corpses, etc)
     gocurses.InitPair(1, gocurses.COLOR_RED, gocurses.COLOR_BLACK)
 
-    // Initialize a grey / black colour pair (for walls, etc)
+    // Initialize a yellow-black colour pair (for walls, etc)
     gocurses.InitPair(2, gocurses.COLOR_YELLOW, gocurses.COLOR_BLACK)
+
+    // Initialize a magenta-black colour pair (for items, etc)
+    gocurses.InitPair(3, gocurses.COLOR_MAGENTA, gocurses.COLOR_BLACK)
 }
 
 //Sets the GamePad and WH-WW info to the current area in the game object.

@@ -375,15 +375,22 @@ func (m *Creature) die() {
     // inventory, then this is done.
     if m.inventory == nil || len(m.inventory) < 1 {
 
+        // Variable declaration.
+        var corpse *Item
+
+        // Create an item that consists of the monster corpse.
+        corpse = NewItem(fmt.Sprintf("corpse of %s", m.name), "corpse",
+          m.Y, m.X, '%', m.area, false, false, 0, 0, 0, 0, 10, 0, 0)
+
         // Leave a creature corpse item in the shape of a % at the given
         // vertex (x,y) location of the formerly alive monster.
-        //m.ch = '%'
+        m.area.Items = append(m.area.Items, corpse)
 
         // All is now done.
         return
     }
 
-    // Otherwise, attempt to add all of the items to the ground.
+    // Otherwise, attempt to add all of the inventory items to the ground.
     for i, item := range m.inventory {
 
         // Sanity check, make sure this actually got a valid item.
@@ -399,10 +406,10 @@ func (m *Creature) die() {
         // Give the item a % rune shape, and set it to the (x,y) coord of
         // dead monster.
         item.ch = '%'
-        item.X = m.X
-        item.Y = m.Y
+        item.X  = m.X
+        item.Y  = m.Y
 
-        // Otherwise append that item to the ground.
+        // Then go ahead append that item to the ground.
         m.area.Items = append(m.area.Items, item)
     }
 }
