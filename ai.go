@@ -6,8 +6,8 @@
 
 package main
 
-import "math"
 import "fmt"
+import "math"
 
 //! Routine to handle the monster AI actions.
 /*

@@ -6,6 +6,7 @@
 
 package main
 
+import "fmt"
 import "math/rand"
 
 // Structure to hold the points of the form (x,y)
@@ -47,6 +48,12 @@ type Area struct {
  *                             points. 
  */
 func NewArea(h, w int) (*Area, Coord, Coord) {
+
+    // Input validation.
+    if (h < 1 || w < 1) {
+        DebugLog(&G, fmt.Sprintf("NewArea() --> invalid input"))
+        return nil, 0, 0
+    }
 
     // Variable declaration
     var ry, rx Coord
@@ -128,7 +135,7 @@ func (a *Area) GetTileInfo(y, x Coord) (ch rune,
     // Input validation, make sure this actually got an address to an
     // Area object.
     if a == nil {
-        return
+        return ' ', false, nil
     }
 
     // Read from the tiles array at the requested point to get the
@@ -145,16 +152,14 @@ func (a *Area) GetTileInfo(y, x Coord) (ch rune,
         // If the Monster is alive and at (x,y) point.
         if m.Hp > 0 && m.X == x && m.Y == y {
 
-            // State that a monster has been found.
-            hasCreature = m
-
             // All done here.
-            return
+            return ch, blocks, m
         }
     }
 
-    // Go back.
-    return
+    // Return the rune, whether this is a blocking tile, and a `nil` since
+    // no creature was actually found.
+    return ch, blocks, nil
 }
 
 //! Randomly return a tile (e.g. # == wall and . == ground)
@@ -181,6 +186,12 @@ func placeRandomTile() Tile {
  */
 func selectRandomTile(h, w int) (int, int) {
 
+    // Input validation.
+    if (h < 1 || w < 1) {
+        DebugLog(&G, fmt.Sprintf("selectRandomTile() --> invalid input"))
+        return 0, 0
+    }
+
     // Randomly generate a y-value.
     y := rand.Intn(h)
 
@@ -193,12 +204,20 @@ func selectRandomTile(h, w int) (int, int) {
 
 //! With the tile given as argument make some more of those randomly around it.
 /*
- * @param    int        y-coord
- * @param    int        x-coord
- * @param    int        w-coord
- * @param    *Tile[]    pointer to an array of tiles
+ * @param     int        y-coord
+ * @param     int        x-coord
+ * @param     int        w-coord
+ * @param     *Tile[]    pointer to an array of tiles
+ *
+ * @return    none
  */
 func explodeTile(y, x, w int, t *[]Tile) {
+
+    // Input validation.
+    if (t == nil) {
+        DebugLog(&G, fmt.Sprintf("explodeTile() --> invalid input"))
+        return
+    }
 
     // Grab the tile currently in that location.
     originalTile := (*t)[x+y*w]
@@ -224,7 +243,8 @@ func explodeTile(y, x, w int, t *[]Tile) {
         // decrement the real x,y values.
         defer func() {
             if r := recover(); r != nil {
-                ry, rx = ry*-1, rx*-1
+                ry = ry*-1
+                rx = rx*-1
             }
         }()
 
@@ -234,12 +254,24 @@ func explodeTile(y, x, w int, t *[]Tile) {
         }
 
         // Adjust the coords accordingly.
-        y, x = y+ry, x+rx
+        y = y+ry
+        x = x+rx
     }
 }
 
-// Searches for the first walkable tile on the map.
+//! Searches for the first walkable tile on the map.
+/*
+ * @param     *Tile[]    pointer to an array of Tile objects
+ *
+ * @return    int        y-coord
+ *            int        x-coord
+ */
 func firstGroundTile(t *[]Tile) (int, int) {
+
+    // If no pointer to a tile array is given, default to (0,0)
+    if (t == nil) {
+        return 0, 0
+    }
 
     // For every unit of height...
     for y := 0; y < WorldHeight; y++ {
@@ -267,6 +299,12 @@ func firstGroundTile(t *[]Tile) (int, int) {
  * @returns    none
  */
 func floodFill(y, x int, t *[]Tile) {
+
+    // Input validation, if no pointer to the tile array is given, do nothing.
+    if (t == nil) {
+        DebugLog(&G, fmt.Sprintf("floodFill() --> invalid input"))
+        return
+    }
 
     // Assign memory of size WorldHeight by WorldWidth.
     c := make([]Coords, WorldHeight*WorldWidth)
@@ -314,6 +352,9 @@ func floodFill(y, x int, t *[]Tile) {
             c = append(c[:i], c[i+1:]...)
         }
     }
+
+    // Having completed filling the given tile array, go back.
+    return
 }
 
 //! Function to append (x,y) to a set of coords / tiles
@@ -326,6 +367,12 @@ func floodFill(y, x int, t *[]Tile) {
  * @return    none
  */
 func appendCoords(y, x int, c *[]Coords, t *[]Tile) {
+
+    // Input validation, was this given an array of coords and tiles?
+    if (c == nil || t == nil) {
+        DebugLog(&G, fmt.Sprintf("appendCoords() --> invalid input"))
+        return
+    }
 
     // Define the width
     w := WorldWidth
@@ -354,6 +401,9 @@ func appendCoords(y, x int, c *[]Coords, t *[]Tile) {
         // Append the values to the adjusted Coord array.
         *c = append(*c, Coords{dx, dy})
     }
+
+    // Having appended the coords to the given array, go back.
+    return
 }
 
 //! Determine whether or not the coords are not out of range.
@@ -369,6 +419,12 @@ func withinBounds(y, x int) bool {
 
 // Returns true if any of the adjacent tiles block move
 func anyAdjacentWalls(y, x, w int, t []Tile) bool {
+
+    // Input validation, make sure this was given a tile array.
+    if t == nil {
+        DebugLog(&G, fmt.Sprintf("anyAdjacentWalls() --> invalid input"))
+        return false
+    }
 
     // If "blocking" then this is, for all purposes, a "wall" tile, so
     // go ahead and return true here.
@@ -395,9 +451,15 @@ func anyAdjacentWalls(y, x, w int, t []Tile) bool {
  * @param    int       width
  * @param    Tile[]    array of tiles 
  *
- * @return 
+ * @return   int       count of nearby blocking tiles
  */
 func adjacentWalls(y, x, w int, t []Tile) int {
+
+    // Input validation, make sure this was given a tile array.
+    if t == nil {
+        DebugLog(&G, fmt.Sprintf("adjacentWalls() --> invalid input"))
+        return 0
+    }
 
     // Variable declaration
     counter := 0
