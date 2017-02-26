@@ -1,3 +1,11 @@
+/*
+ * File: curses.go
+ *
+ * Description: Contains a number of useful golang wrappers for the ncurses
+ *              library. Ergo, this file relies on Cgo to properly access the
+ *              char drawing and colouring functionality.
+ */
+
 package gocurses
 
 // #cgo LDFLAGS: -lncurses
@@ -174,23 +182,23 @@ func Attroff(attr int) {
 
 // Set attribute
 func Attrset(attr int) {
-	C.attrset(C.int(attr))
+    C.attrset(C.int(attr))
 }
 
 func (window *Window) Attron(attr int) {
-	C.wattron(window.cwin, C.int(attr))
+    C.wattron(window.cwin, C.int(attr))
 }
 
 func (window *Window) Attroff(attr int) {
-	C.wattroff(window.cwin, C.int(attr))
+    C.wattroff(window.cwin, C.int(attr))
 }
 
 func (window *Window) Attrset(attr int) {
-	C.wrapper_wattrset(window.cwin, C.int(attr))
+    C.wrapper_wattrset(window.cwin, C.int(attr))
 }
 
 func ColorPair(pair int) int {
-  return int(C.wrapper_color_pair(C.int(pair)))
+    return int(C.wrapper_color_pair(C.int(pair)))
 }
 
 // Refresh screen.
@@ -205,24 +213,32 @@ func (window *Window) Refresh() {
 
 // Refresh given window, for pads.
 func (window *Window) PRefresh(pminrow,pmincol,sminrow,smincol, smaxrow, smaxcol int) {
-  C.prefresh(window.cwin,C.int(pminrow),C.int(pmincol),C.int(sminrow),C.int(smincol),C.int(smaxrow),C.int(smaxcol))
+    C.prefresh(window.cwin,C.int(pminrow),C.int(pmincol),C.int(sminrow),C.int(smincol),C.int(smaxrow),C.int(smaxcol))
 }
 
-/* This function allows for multiple updates with more efficiency than refresh alone. Where you'd have to call refresh multiple times.
-Noutrefresh only updates the virtual screen and then the actual screen can be updated by calling Doupdate, which checks all pending changes.
-*/
+//! Allows for multiple updates with more efficiency than refresh alone.
+//!
+//! Normally drawing functionality might have to call refresh multiple times.
+//! In the case of Noutrefresh, only updates to the virtual screen and then
+//! the actual screen can be updated by calling Doupdate, which checks all
+//! pending changes.
+/*
+ * @param     Window*    pointer to a Cwindow
+ *
+ * @return    none
+ */
 func (window *Window) NoutRefresh() {
-  C.wnoutrefresh(window.cwin)
+    C.wnoutrefresh(window.cwin)
 }
 
 // Same as NoutRefresh, but for pads.
 func (window *Window) PnoutRefresh(pminrow,pmincol,sminrow,smincol,smaxrow,smaxcol int) {
-  C.pnoutrefresh(window.cwin,C.int(pminrow),C.int(pmincol),C.int(sminrow),C.int(smincol),C.int(smaxrow),C.int(smaxcol))
+    C.pnoutrefresh(window.cwin,C.int(pminrow),C.int(pmincol),C.int(sminrow),C.int(smincol),C.int(smaxrow),C.int(smaxcol))
 }
 
 // Compares the virtual screen to the physical screen and does the actual update.
 func Doupdate() {
-  C.doupdate()
+    C.doupdate()
 }
 
 // Finalizes curses.
@@ -240,9 +256,9 @@ func NewWindow(height, width, starty, startx int) *Window {
 
 // Create new pad.
 func NewPad(nlines int, ncols int) *Window {
-  w := new(Window)
-  w.cwin = C.newpad(C.int(nlines), C.int(ncols))
-  return w
+    w := new(Window)
+    w.cwin = C.newpad(C.int(nlines), C.int(ncols))
+    return w
 }
 
 // Set box lines.
@@ -250,17 +266,31 @@ func (window *Window) Box(v, h int) {
     C.box(window.cwin, C.chtype(v), C.chtype(h))
 }
 
-// Set border characters.
-// 1. ls: character to be used for the left side of the window 
-// 2. rs: character to be used for the right side of the window 
-// 3. ts: character to be used for the top side of the window 
-// 4. bs: character to be used for the bottom side of the window 
-// 5. tl: character to be used for the top left corner of the window 
-// 6. tr: character to be used for the top right corner of the window 
-// 7. bl: character to be used for the bottom left corner of the window 
-// 8. br: character to be used for the bottom right corner of the window
+//! Function to set the border characters of a given window.
+/*
+ * @param    int    character for the left side of the window
+ * @param    int    right side of the window
+ * @param    int    top side of the window
+ * @param    int    bottom side of the window
+ * @param    int    top left corner of the window
+ * @param    int    top right corner of the window
+ * @param    int    bottom left corner of the window
+ * @param    int    bottom right corner of the window
+ *
+ * @return   none
+ */
 func (window *Window) Border(ls, rs, ts, bs, tl, tr, bl, br int) {
-    C.wborder(window.cwin, C.chtype(ls), C.chtype(rs), C.chtype(ts), C.chtype(bs), C.chtype(tl), C.chtype(tr), C.chtype(bl), C.chtype(br))
+
+    // Define the window borders using the given characters.
+    C.wborder(window.cwin,
+              C.chtype(ls),
+              C.chtype(rs),
+              C.chtype(ts),
+              C.chtype(bs),
+              C.chtype(tl),
+              C.chtype(tr),
+              C.chtype(bl),
+              C.chtype(br))
 }
 
 // Delete current window.

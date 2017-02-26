@@ -1,4 +1,11 @@
-package gocurses
+/*
+ * File: curses_def.go
+ *
+ * Description: Contains a number of useful golang wrappers for the
+ *              ncurses header definitions.
+ */
+
+ package gocurses
 
 // #include <ncurses.h>
 import "C"

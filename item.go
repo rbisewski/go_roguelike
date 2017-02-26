@@ -127,6 +127,13 @@ func NewItem(name string,
  */
 func (itm *Item) adjust_durability(amount int) {
 
+    // If the durability was zero, then nothing to do.
+    if (amount == 0) {
+        DebugLog(&G, fmt.Sprintf("adjust_durability() --> was given amount " +
+                                 "of value zero, so nothing to be done..."))
+        return
+    }
+
     // If debug, state how much the item durability currently is.
     DebugLog(&G, fmt.Sprintf("adjust_durability() --> Item [%s] durability" +
                              "before adjustment is: %d / %d",
