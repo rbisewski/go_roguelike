@@ -146,10 +146,18 @@ func SetPad(h, w int) bool {
     // Initialize a new game pad based on the provided height / width.
     GamePad = gocurses.NewPad(h, w)
 
-    // Define the world height / width.
-    WorldHeight, WorldWidth = h, w
+    // Sanity check, make sure this actually contains a pointer to a
+    // valid Pad object.
+    if (GamePad == nil) {
+        DebugLog(&G, fmt.Sprintf("SetPad() --> invalid input"))
+        return false
+    }
 
-    // If this succeeded, return true.
+    // Define the global world height / width.
+    WorldHeight = h
+    WorldWidth  = w
+
+    // Return true here since the game pad has been properly defined.
     return true
 }
 
@@ -208,9 +216,15 @@ func DrawColours(y, x Coord, ch rune, col int) {
 /*
  * @param     Area*    pointer to an Area object
  *
- * @return    none
+ * @return    bool     whether or not the map draw action succeeded.
  */
-func DrawMap(a *Area) {
+func DrawMap(a *Area) bool {
+
+    // Input validation, make sure this actually got an area object.
+    if a == nil {
+        DebugLog(&G, fmt.Sprintf("DrawMap() --> invalid input"))
+        return false
+    }
 
     // Cycle thru all of the elements via height...
     for y := 0; y < a.Height; y++ {
@@ -229,6 +243,9 @@ func DrawMap(a *Area) {
             Draw(Coord(y), Coord(x), a.Tiles[x+y*a.Width].Ch)
         }
     }
+
+    // With all of the characters drawn, this worked as intended.
+    return true
 }
 
 //! Function to redraw a given gamepad.
