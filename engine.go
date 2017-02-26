@@ -133,15 +133,24 @@ func InitColours() {
  * @param     int     height
  * @param     int     width
  *
- * @return    none
+ * @return    bool    whether or not the pad could be set
  */
-func SetPad(h, w int) {
+func SetPad(h, w int) bool {
+
+    // Input validation, make sure this is greater than 0.
+    if h < 1 || w < 1 {
+        DebugLog(&G, fmt.Sprintf("SetPad() --> invalid input"))
+        return false
+    }
 
     // Initialize a new game pad based on the provided height / width.
     GamePad = gocurses.NewPad(h, w)
 
     // Define the world height / width.
     WorldHeight, WorldWidth = h, w
+
+    // If this succeeded, return true.
+    return true
 }
 
 //! Send the end() ncurse to this game.
