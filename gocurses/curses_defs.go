@@ -33,8 +33,10 @@ const (
     A_VERTICAL   = C.A_VERTICAL
 )
 
-// Colors
+// Colours
 const (
+
+    // Standard colours for a 8-colour terminal.
     COLOR_BLACK   = C.COLOR_BLACK
     COLOR_RED     = C.COLOR_RED
     COLOR_GREEN   = C.COLOR_GREEN
@@ -43,6 +45,20 @@ const (
     COLOR_MAGENTA = C.COLOR_MAGENTA
     COLOR_CYAN    = C.COLOR_CYAN
     COLOR_WHITE   = C.COLOR_WHITE
+
+    // Extended colours.
+    COLOR_DARKER_GREY  = 8
+    COLOR_ORANGE       = 9
+    COLOR_LIGHT_GREY   = 10
+    COLOR_LIGHTER_GREY = 11
+    COLOR_LIGHT_BLUE   = 110
+    COLOR_LIGHT_GREEN  = 118
+    COLOR_PURPLE       = 127
+    COLOR_BROWN        = 130
+    COLOR_LIGHT_PURPLE = 140
+    COLOR_LIGHT_BROWN  = 143
+    COLOR_PINK         = 212
+    COLOR_DARK_GREY    = 242
 )
 
 // Keys
