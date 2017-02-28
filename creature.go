@@ -151,7 +151,7 @@ func (m *Creature) Move(y, x Coord) {
     // Since this has a creature and it appears to have valid coords, then
     // go ahead and test it again the tile the creature in question wishes
     // to move to.
-    tile_rune, blocks, hasCreature := m.area.GetTileInfo(m.Y+y, m.X+x)
+    tile_rune, blocks, hasCreature, hasItems := m.area.GetTileInfo(m.Y+y, m.X+x)
 
     // Sanity check, make sure this actually got a tile rune.
     if tile_rune == 0 {
@@ -222,6 +222,18 @@ func (m *Creature) Move(y, x Coord) {
     // go ahead and move there.
     m.Y += y
     m.X += x
+
+    // If there are items laying on the ground, give the player some
+    // indicator of what is there.
+    if m.species == "player" && len(hasItems) == 1 {
+        MessageLog.log(fmt.Sprintf("On the ground lies a %s.",
+                       hasItems[0].category))
+
+    // Else if the player has moved to a tile that contains more than 1 item,
+    // print the following message.
+    } else if m.species == "player" && len(hasItems) > 1 {
+        MessageLog.log("There are items here on the ground.")
+    }
 
     // Finally, leave the function since the move is finished.
     return

@@ -129,14 +129,22 @@ func NewArea(h, w int) (*Area, Coord, Coord) {
  *           Creature*    pointer to a monster, if any is present
  */
 func (a *Area) GetTileInfo(y, x Coord) (ch rune,
-                                         blocks bool,
-                                         hasCreature *Creature) {
+                                        blocks bool,
+                                        hasCreature *Creature,
+                                        hasItems []*Item) {
 
     // Input validation, make sure this actually got an address to an
     // Area object.
     if a == nil {
-        return ' ', false, nil
+        return ' ', false, nil, nil
     }
+
+    // Variable declaration.
+    var c *Creature = nil
+    var items []*Item
+
+    // Assign a chunk of memory for the array of Item objects.
+    items = make([]*Item,0)
 
     // Read from the tiles array at the requested point to get the
     // specific Unicode rune value.
@@ -152,14 +160,28 @@ func (a *Area) GetTileInfo(y, x Coord) (ch rune,
         // If the Monster is alive and at (x,y) point.
         if m.Hp > 0 && m.X == x && m.Y == y {
 
-            // All done here.
-            return ch, blocks, m
+            // Grab a reference to that creature and break.
+            c = m
+            break
         }
     }
 
-    // Return the rune, whether this is a blocking tile, and a `nil` since
-    // no creature was actually found.
-    return ch, blocks, nil
+    // Cycle thru every monster in the array...
+    for _, itm := range a.Items {
+
+        // If the Monster is alive and at (x,y) point.
+        if itm.X == x && itm.Y == y {
+
+            // Grab a reference to that creature and break.
+            items = append(items, itm)
+            break
+        }
+    }
+
+    // Return the rune, whether this is a blocking tile, and reference to
+    // the creature (if any) and a reference to items laying on the ground
+    // at the particular spot (if any).
+    return ch, blocks, c, items
 }
 
 //! Randomly return a tile (e.g. # == wall and . == ground)
