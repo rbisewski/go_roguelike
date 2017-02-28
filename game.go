@@ -69,19 +69,8 @@ func (g *Game) Init() {
     g.Area.Creatures = append(g.Area.Creatures,
                              g.Player)
 
-    // Right now all this does is add a single monster.
-    g.Area.Creatures = append(g.Area.Creatures,
-                              NewCreatureWithStats("dog",
-                                                   "canine",
-                                                   y-10,
-                                                   x-1,
-                                                   'd',
-                                                   g.Area,
-                                                   nil,
-                                                   20,
-                                                   30,
-                                                   15,
-                                                   0))
+    // Pass along the area, and populate the world with a number of monsters.
+    g.Area.populateAreaWithCreatures()
 }
 
 //! Determines whether or not 

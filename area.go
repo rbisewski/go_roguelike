@@ -37,6 +37,9 @@ type Area struct {
     // The length and width of the level.
     Height int
     Width  int
+
+    // Whether or not the current area has been populated already.
+    IsPopulatedWithCreatures bool
 }
 
 //! Generates an area and assigns a start location to the PC
@@ -115,7 +118,7 @@ func NewArea(h, w int) (*Area, Coord, Coord) {
     }
 
     // Return the completed area-object plus start coords.
-    return &Area{t[nIts-1], creatures, items, h, w}, ry, rx
+    return &Area{t[nIts-1], creatures, items, h, w, false}, ry, rx
 }
 
 //! Grab info about a given tile, specific what it is, whether it blocks,
@@ -538,4 +541,61 @@ func adjacentWalls(y, x, w int, t []Tile) int {
  */
 func mapBorders(y, x int) bool {
     return y == 0 || y == WorldHeight-1 || x == 0 || x == WorldWidth-1
+}
+
+//! Populate an area with creatures / critters / monsters; this only works
+//! if the level has yet to be populated.
+/*
+ * @returns    bool    whether or not the tile is "blocking"
+ */
+func (a *Area) populateAreaWithCreatures() bool {
+
+    // Sanity check, make sure this isn't a null pointer.
+    if a == nil {
+        DebugLog(&G, fmt.Sprintf("populateAreaWithCreatures() --> " +
+                                 "invalid input"))
+        return false
+    }
+
+    // Further check, make sure this area has not been previously populated.
+    if a.IsPopulatedWithCreatures {
+        DebugLog(&G, fmt.Sprintf("populateAreaWithCreatures() --> " +
+                                 "area already previously populated..."))
+        return false
+    }
+
+    // For all of the y-coords (height)...
+    for y := 0; y < a.Height; y++ {
+
+        // For all of the x-coords (width)...
+        for x := 0; x < a.Width; x++ {
+
+            // insert code here
+        }
+    }
+
+    // Right now all this does is add a single monster.
+    a.Creatures = append(a.Creatures,
+                         NewCreatureWithStats("dog",
+                                              "canine",
+                                              10,
+                                              10,
+                                              'd',
+                                              a,
+                                              nil,
+                                              20,
+                                              30,
+                                              15,
+                                              0))
+
+    // Set the "IsPopulatedWithCreatures" flag to true since it now
+    // contains various creatures / critters / monsters.
+    a.IsPopulatedWithCreatures = true
+
+    // Tell the developer this population function was successful.
+    DebugLog(&G, fmt.Sprintf("populateAreaWithCreatures() --> " +
+                             "creatures populated into area successfully"))
+
+    // Since the monsters were added successfully, go ahead and return true.
+    return true
 }
