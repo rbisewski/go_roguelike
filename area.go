@@ -166,15 +166,14 @@ func (a *Area) GetTileInfo(y, x Coord) (ch rune,
         }
     }
 
-    // Cycle thru every monster in the array...
+    // Cycle thru every item in the array...
     for _, itm := range a.Items {
 
-        // If the Monster is alive and at (x,y) point.
+        // If an item is located at (x,y) point...
         if itm.X == x && itm.Y == y {
 
-            // Grab a reference to that creature and break.
+            // Append it to the list of items.
             items = append(items, itm)
-            break
         }
     }
 
