@@ -441,7 +441,15 @@ func withinBounds(y, x int) bool {
     return y > 0 && y < WorldHeight && x > 0 && x < WorldWidth
 }
 
-// Returns true if any of the adjacent tiles block move
+//! Returns true if any of the adjacent tiles block move
+/*
+ * @param     int       y-value
+ * @param     int       x-value
+ * @param     int       width
+ * @param     Tile[]    array of tiles
+ *
+ * @return    bool      whether or not a given tile has nearby walls
+ */
 func anyAdjacentWalls(y, x, w int, t []Tile) bool {
 
     // Input validation, make sure this was given a tile array.
@@ -583,18 +591,7 @@ func (a *Area) populateAreaWithCreatures() bool {
     }
 
     // Right now all this does is add a single monster.
-    a.Creatures = append(a.Creatures,
-                         NewCreatureWithStats("dog",
-                                              "canine",
-                                              10,
-                                              10,
-                                              'd',
-                                              a,
-                                              nil,
-                                              20,
-                                              30,
-                                              15,
-                                              0))
+    spawnCreatureToArray("dog", 100, 100, a)
 
     // Set the "IsPopulatedWithCreatures" flag to true since it now
     // contains various creatures / critters / monsters.
