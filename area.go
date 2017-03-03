@@ -564,14 +564,22 @@ func (a *Area) populateAreaWithCreatures() bool {
         return false
     }
 
-    // For all of the y-coords (height)...
-    for y := 0; y < a.Height; y++ {
+    // Determine the number monsters to add to the area.
+    //
+    // Currently the formula is:
+    //
+    // Divide height and width each by 10, then multiply them both.
+    //
+    MaxNumberOfMonsters := int(a.Height / 10) * int(a.Width / 10)
 
-        // For all of the x-coords (width)...
-        for x := 0; x < a.Width; x++ {
+    // Safety check, if less than zero, cap it at zero.
+    if MaxNumberOfMonsters < 0 {
+        MaxNumberOfMonsters = 0
+    }
 
-            // insert code here
-        }
+    // Continue to add monsters until the max has been reached.
+    for i := 0; i < MaxNumberOfMonsters; i++ {
+        // insert code here
     }
 
     // Right now all this does is add a single monster.
