@@ -585,12 +585,46 @@ func (a *Area) populateAreaWithCreatures() bool {
         MaxNumberOfMonsters = 0
     }
 
+    // Define an array to hold all the (x,y) points being used.
+
     // Continue to add monsters until the max has been reached.
     for i := 0; i < MaxNumberOfMonsters; i++ {
-        // insert code here
+
+        // Grab a random x coord value.
+
+        // Grab a random y coord value.
+
+        // Safety check, make sure the tile isn't a wall tile.
+
+            // If it is a wall tile, decrement the value of i
+
+            // Move on to the next instance
+
+        // Check if it already exists in the array holding the already
+        // utilized points.
+
+            // If it already has, decrement the value of i
+
+            // Move on to the next instance
+
+        // Since this is a new point, go ahead and determine the number of
+        // blocking tiles.
+
+        // If the number of blocking tiles is greater than 1...
+
+            // If it is greater than 1, decrement the value of i
+
+            // Move on to the next instance
+
+        // As there are 1 or fewer blocking tiles nearby, it ought to be safe
+        // to spawn a monster since this is a wide open area (which is to say,
+        // very few walls or blockers).
     }
 
     // Right now all this does is add a single monster.
+    //
+    // TODO: move this to the above loop once it has been coded.
+    //
     spawnCreatureToArray("dog", 100, 100, a)
 
     // Set the "IsPopulatedWithCreatures" flag to true since it now
