@@ -17,6 +17,23 @@ func TossCoin() bool {
     return rand.Intn(100) > 50;
 }
 
+//! Randomly returns "true" or "false"
+/*
+ * @returns    bool    whether the coin was heads (true) or tails (false)
+ */
+func getRandomNumBetweenZeroAndMax(maximum int) int {
+
+    // Input validation, make sure this is at least zero.
+    if maximum < 1 {
+
+        // As a default, give back a zero.
+        return 0
+    }
+
+    // Otherwise return a number between 0 and the maximum.
+    return rand.Intn(maximum);
+}
+
 //! Get the minimum of a list of int values (i.e. the lowest value)
 /*
  * @param    int    a given integer value
