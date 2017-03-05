@@ -585,47 +585,96 @@ func (a *Area) populateAreaWithCreatures() bool {
         MaxNumberOfMonsters = 0
     }
 
-    // Define an array to hold all the (x,y) points being used.
+    // Define arrays to hold all the (x,y) points being used.
+    //
+    // TODO: re-enable the xs and ys arrays once monster spawning is fixed
+    //
+    //var ys = make([]Coord,0)
+    //var xs = make([]Coord,0)
+    var coord_num int = 0
+    var CoordIsAlreadyUtilized bool = false
 
     // Continue to add monsters until the max has been reached.
     for i := 0; i < MaxNumberOfMonsters; i++ {
 
         // Grab a random x coord value.
+        x_coord := getRandomNumBetweenZeroAndMax(a.Width)
 
         // Grab a random y coord value.
+        y_coord := getRandomNumBetweenZeroAndMax(a.Height)
 
-        // Safety check, make sure the tile isn't a wall tile.
-
-            // If it is a wall tile, decrement the value of i
-
-            // Move on to the next instance
+        // Cast them both to Coords.
+        dy := Coord(y_coord)
+        dx := Coord(x_coord)
 
         // Check if it already exists in the array holding the already
         // utilized points.
+        //
+        // TODO: fix this to prevent monster double spawn
+        //
+/*
+        for j := 0; j < coord_num; j++ {
 
-            // If it already has, decrement the value of i
+            // Safety check, if the array is empty, skip this part.
+            if coord_num == 0 {
+                break
+            }
 
-            // Move on to the next instance
+            // Set the flag to true if the (x,y) coord pair is already used.
+            if xs[j] == dx && ys[j] == dy {
+                CoordIsAlreadyUtilized = true
+                break
+            }
+        }
+*/
+
+        // If the (x,y) pair has already been used...
+        if CoordIsAlreadyUtilized {
+
+            // Decrement the value of i
+            i--
+
+            // Move on to the next instance to avoid spawning spawning
+            // multiple monsters at the (x,y) pair.
+            continue
+        }
+
+        // Since the (x,y) pair has yet to be used, attempt to grab details
+        // about the tile at this (x,y) location.
+        tile_rune, blocking, _, _ := a.GetTileInfo(dy, dx)
+
+        // Safety check, make sure the tile isn't a wall or blocking tile.
+        if tile_rune == '#' || blocking {
+
+            // If it is a wall tile, decrement the value of i
+            i--
+
+            // Move on to the next instance.
+            continue
+        }
 
         // Since this is a new point, go ahead and determine the number of
         // blocking tiles.
+        nearby_wall_count := adjacentWalls(y_coord, x_coord, a.Width, a.Tiles)
 
         // If the number of blocking tiles is greater than 1...
+        if nearby_wall_count > 1 {
 
             // If it is greater than 1, decrement the value of i
+            i--
 
             // Move on to the next instance
+            continue
+        }
 
         // As there are 1 or fewer blocking tiles nearby, it ought to be safe
         // to spawn a monster since this is a wide open area (which is to say,
         // very few walls or blockers).
-    }
+        spawnCreatureToArray("dog", dx, dy, a)
 
-    // Right now all this does is add a single monster.
-    //
-    // TODO: move this to the above loop once it has been coded.
-    //
-    spawnCreatureToArray("dog", 100, 100, a)
+        // Increment the coord_num counter.
+        coord_num++
+    }
 
     // Set the "IsPopulatedWithCreatures" flag to true since it now
     // contains various creatures / critters / monsters.
