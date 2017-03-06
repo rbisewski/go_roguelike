@@ -572,30 +572,35 @@ func (a *Area) populateAreaWithCreatures() bool {
         return false
     }
 
+    // Define arrays to hold all the (x,y) points being used.
+    var ys = make([]Coord,0)
+    var xs = make([]Coord,0)
+
+    // Variable to keep track of the current number.
+    var coord_num uint = 0
+
+    // Counters.
+    var i uint = 0
+    var j uint = 0
+
+    // Flag to check if a coord (x,y) pair has already been used.
+    var CoordIsAlreadyUtilized bool = false
+
     // Determine the number monsters to add to the area.
     //
     // Currently the formula is:
     //
     // Divide height and width each by 10, then multiply them both.
     //
-    MaxNumberOfMonsters := int(a.Height / 10) * int(a.Width / 10)
+    MaxNumberOfMonsters := uint(a.Height / 10) * uint(a.Width / 10)
 
     // Safety check, if less than zero, cap it at zero.
     if MaxNumberOfMonsters < 0 {
         MaxNumberOfMonsters = 0
     }
 
-    // Define arrays to hold all the (x,y) points being used.
-    //
-    // TODO: re-enable the xs and ys arrays once monster spawning is fixed
-    //
-    //var ys = make([]Coord,0)
-    //var xs = make([]Coord,0)
-    var coord_num int = 0
-    var CoordIsAlreadyUtilized bool = false
-
     // Continue to add monsters until the max has been reached.
-    for i := 0; i < MaxNumberOfMonsters; i++ {
+    for i = 0; i < MaxNumberOfMonsters; i++ {
 
         // Grab a random x coord value.
         x_coord := getRandomNumBetweenZeroAndMax(a.Width)
@@ -609,16 +614,15 @@ func (a *Area) populateAreaWithCreatures() bool {
 
         // Check if it already exists in the array holding the already
         // utilized points.
-        //
-        // TODO: fix this to prevent monster double spawn
-        //
-/*
-        for j := 0; j < coord_num; j++ {
+        for j = 0; j < coord_num; j++ {
 
             // Safety check, if the array is empty, skip this part.
-            if coord_num == 0 {
+            if len(xs) == 0 || len(ys) == 0 {
                 break
             }
+
+            // TODO: delete this once the loop works
+            break
 
             // Set the flag to true if the (x,y) coord pair is already used.
             if xs[j] == dx && ys[j] == dy {
@@ -626,13 +630,14 @@ func (a *Area) populateAreaWithCreatures() bool {
                 break
             }
         }
-*/
 
         // If the (x,y) pair has already been used...
         if CoordIsAlreadyUtilized {
 
-            // Decrement the value of i
-            i--
+            // Decrement the value of i to a min of zero.
+            if (i > 0) {
+                i--
+            }
 
             // Move on to the next instance to avoid spawning spawning
             // multiple monsters at the (x,y) pair.
@@ -647,7 +652,9 @@ func (a *Area) populateAreaWithCreatures() bool {
         if tile_rune == '#' || blocking {
 
             // If it is a wall tile, decrement the value of i
-            i--
+            if (i > 0) {
+                i--
+            }
 
             // Move on to the next instance.
             continue
@@ -661,7 +668,9 @@ func (a *Area) populateAreaWithCreatures() bool {
         if nearby_wall_count > 1 {
 
             // If it is greater than 1, decrement the value of i
-            i--
+            if (i > 0) {
+                i--
+            }
 
             // Move on to the next instance
             continue
@@ -671,6 +680,10 @@ func (a *Area) populateAreaWithCreatures() bool {
         // to spawn a monster since this is a wide open area (which is to say,
         // very few walls or blockers).
         spawnCreatureToArray("dog", dx, dy, a)
+
+        // Append the points to the relevant arrays.
+        xs = append(xs, dx)
+        ys = append(ys, dy)
 
         // Increment the coord_num counter.
         coord_num++

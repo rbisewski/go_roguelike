@@ -272,6 +272,12 @@ func (attacker *Creature) attack(defender *Creature) {
         defender.die()
     }
 
+    // If neither the defender nor the attacker is involved, there is no
+    // need to print battle messages, ergo this function is complete.
+    if defender.species != "player" && attacker.species != "player" {
+        return
+    }
+
     // If the player character is being attacked.
     if defender.species == "player" {
 
