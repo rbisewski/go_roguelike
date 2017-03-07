@@ -138,6 +138,13 @@ func Round(x float64) int {
         rounder = math.Floor(intermed)
     }
 
+    // Safety check, if pow is 0 then simply return zero. This probably
+    // won't happen, but it's usually a good idea to prevent divide by
+    // zero errors.
+    if pow == 0 {
+        return 0
+    }
+
     // Finally dump to an int, as per the precision.
     return int(rounder / pow)
 }

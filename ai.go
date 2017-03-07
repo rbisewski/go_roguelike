@@ -46,6 +46,13 @@ func (g *Game) process_ai() {
             continue
         }
 
+        // If the distance is too big between the player and the creature,
+        // do nothing. This will stop the creature from attempting to move
+        // needlessly.
+        if (distance > 6) {
+            continue
+        }
+
         // Determine the derived distances.
         dx = Coord(Round(float64(int(xdist)/Round(distance))))
         dy = Coord(Round(float64(int(ydist)/Round(distance))))
