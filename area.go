@@ -8,9 +8,15 @@ package main
 
 import "fmt"
 import "math/rand"
+import "strconv"
 
 // Structure to hold the points of the form (x,y)
 type Coords struct {
+
+    // Quick comparison value in the form "x:y"
+    id string
+
+    // Coord (x,y) pair
     y int
     x int
 }
@@ -334,7 +340,9 @@ func floodFill(y, x int, t *[]Tile) {
     c := make([]Coords, WorldHeight*WorldWidth)
 
     // First element is the given coords.
-    c[0] = Coords{y, x}
+    c[0] = Coords{strconv.Itoa(x) + ":" + strconv.Itoa(y),
+                  y,
+                  x}
 
     // If all else fails... end here.
     defer func() {
@@ -423,7 +431,9 @@ func appendCoords(y, x int, c *[]Coords, t *[]Tile) {
         }
 
         // Append the values to the adjusted Coord array.
-        *c = append(*c, Coords{dx, dy})
+        *c = append(*c, Coords{strconv.Itoa(dx) + ":" + strconv.Itoa(dy),
+                               dx,
+                               dy})
     }
 
     // Having appended the coords to the given array, go back.
@@ -573,15 +583,13 @@ func (a *Area) populateAreaWithCreatures() bool {
     }
 
     // Define arrays to hold all the (x,y) points being used.
-    var ys = make([]int,0)
-    var xs = make([]int,0)
+    var CoordsArray = make([]Coords,0)
 
     // Variable to keep track of the current number.
     var coord_num uint = 0
 
-    // Counters.
+    // Counter.
     var i uint = 0
-    var j uint = 0
 
     // Flag to check if a coord (x,y) pair has already been used.
     var CoordIsAlreadyUtilized bool = false
@@ -603,21 +611,22 @@ func (a *Area) populateAreaWithCreatures() bool {
     for i = 0; i < MaxNumberOfMonsters; i++ {
 
         // Grab a random x coord value.
-        x_coord := getRandomNumBetweenZeroAndMax(a.Width)
+        dx := getRandomNumBetweenZeroAndMax(a.Width)
 
         // Grab a random y coord value.
-        y_coord := getRandomNumBetweenZeroAndMax(a.Height)
+        dy := getRandomNumBetweenZeroAndMax(a.Height)
 
-        // Cast them both to the derived coord pair.
-        dy := y_coord
-        dx := x_coord
+        // Assemble a Coords object from the above info.
+        CurrentCoordPair := Coords{strconv.Itoa(dx) + ":" + strconv.Itoa(dy),
+                                   dy,
+                                   dx}
 
         // Check if it already exists in the array holding the already
         // utilized points.
-        for j = 0; j < coord_num; j++ {
+        for _, coord := range CoordsArray {
 
-            // Safety check, if the array is empty, skip this part.
-            if len(xs) == 0 || len(ys) == 0 {
+            // Safety check, if the id is empty, then skip this part.
+            if len(coord.id) == 0 {
                 break
             }
 
@@ -625,7 +634,7 @@ func (a *Area) populateAreaWithCreatures() bool {
             break
 
             // Set the flag to true if the (x,y) coord pair is already used.
-            if xs[j] == dx && ys[j] == dy {
+            if CurrentCoordPair.id == coord.id {
                 CoordIsAlreadyUtilized = true
                 break
             }
@@ -662,7 +671,7 @@ func (a *Area) populateAreaWithCreatures() bool {
 
         // Since this is a new point, go ahead and determine the number of
         // blocking tiles.
-        nearby_wall_count := adjacentWalls(y_coord, x_coord, a.Width, a.Tiles)
+        nearby_wall_count := adjacentWalls(dy, dx, a.Width, a.Tiles)
 
         // If the number of blocking tiles is greater than 1...
         if nearby_wall_count > 1 {
@@ -681,9 +690,8 @@ func (a *Area) populateAreaWithCreatures() bool {
         // very few walls or blockers).
         spawnCreatureToArray("dog", dx, dy, a)
 
-        // Append the points to the relevant arrays.
-        xs = append(xs, dx)
-        ys = append(ys, dy)
+        // Append the points to the Coord array.
+        CoordsArray = append(CoordsArray, CurrentCoordPair)
 
         // Increment the coord_num counter.
         coord_num++
