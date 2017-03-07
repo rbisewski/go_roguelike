@@ -40,8 +40,8 @@ type Game struct {
 func (g *Game) Init() {
 
     // Variable declaration
-    var y Coord
-    var x Coord
+    var y int
+    var x int
 
     // The default setting is for debug messages to be hidden.
     g.DebugMode = false
@@ -66,8 +66,7 @@ func (g *Game) Init() {
                                     5)
 
     // Attach the player to the map.
-    g.Area.Creatures = append(g.Area.Creatures,
-                             g.Player)
+    g.Area.Creatures = append(g.Area.Creatures, g.Player)
 
     // Pass along the area, and populate the world with a number of monsters.
     g.Area.populateAreaWithCreatures()
@@ -103,7 +102,6 @@ func (g *Game) Menu() GameState {
 
     // Grab the current keyboard input.
     key := GetInput()
-
 
     // Pressed the "L" key? Then attempt to load a game...
     if key == "L" {

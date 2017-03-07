@@ -20,8 +20,8 @@ type Creature struct {
     species string
 
     // Store the current (x,y) coord of the creature.
-    Y  Coord
-    X  Coord
+    Y int
+    X int
 
     // Appearance of the creature.
     ch rune
@@ -48,8 +48,8 @@ type stats struct {
 /*
  * @param     string   creature name
  * @param     string   creature species (i.e type)
- * @param     Coord    y-value
- * @param     Coord    x-value
+ * @param     int      y-value
+ * @param     int      x-value
  * @param     rune     ASCII character graphic for the Creature
  * @param     Area*    object storing the level area 
  * @param     Item*    array storing the items the creature possesses
@@ -58,8 +58,8 @@ type stats struct {
  */
 func NewCreature(name string,
                  species string,
-                 y Coord,
-                 x Coord,
+                 y int,
+                 x int,
                  ch rune,
                  area *Area,
                  inventory []*Item) *Creature {
@@ -85,8 +85,8 @@ func newStats(hp, max, att, def int) *stats {
 /*
  * @param     string    creature name
  * @param     string    creature species (i.e type)
- * @param     Coord     y-value
- * @param     Coord     x-value
+ * @param     int       y-value
+ * @param     int       x-value
  * @param     rune      ASCII character graphic
  * @param     Area*     pointer to an Area object
  * @param     int       current hit points
@@ -98,8 +98,8 @@ func newStats(hp, max, att, def int) *stats {
  */
 func NewCreatureWithStats(name string,
                           species string,
-                          y Coord,
-                          x Coord,
+                          y int,
+                          x int,
                           ch rune,
                           area *Area,
                           inventory []*Item,
@@ -121,12 +121,12 @@ func NewCreatureWithStats(name string,
 
 //! Function to move the mob to a new (x,y) location.
 /*
- * @param     Coord    y-value
- * @param     Coord    x-value
+ * @param     int    y-value
+ * @param     int    x-value
  *
  * @return    none
  */
-func (m *Creature) Move(y, x Coord) {
+func (m *Creature) Move(y, x int) {
 
     // Input validation, make sure the (x,y) coords are reasonable.
     if x > 32767 || y > 32767 || x < -32767 || y < -32767 {
@@ -194,7 +194,7 @@ func (m *Creature) Move(y, x Coord) {
 
     // If the tile is non-blocking, but a creature is here, go ahead and
     // switch to combat mode via the attack() function.
-    if hasCreature != nil && m != hasCreature  {
+    if hasCreature != nil && m != hasCreature {
 
         // If debug mode, tell the developer which creature is being attacked.
         DebugLog(&G, fmt.Sprintf(

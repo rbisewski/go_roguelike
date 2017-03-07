@@ -10,14 +10,14 @@ import "fmt"
 
 //! Function to spawn a creature in a given area.
 /*
- * @param     string         name of the creature to add
- * @param     Coord          x-coord as int
- * @param     Coord          y-coord as int
- * @param     Area*          pointer to the intended area 
+ * @param     string    name of the creature to add
+ * @param     int       x-coord as int
+ * @param     int       y-coord as int
+ * @param     Area*     pointer to the intended area
  *
- * @return    bool           whether or not the creature was added
+ * @return    bool      whether or not the creature was added
  */
-func spawnCreatureToArray(name string, x Coord, y Coord, a *Area) bool {
+func spawnCreatureToArray(name string, x int, y int, a *Area) bool {
 
     // Input validation, make sure this got a valid string, coords, and area.
     if len(name) < 1 || x < 0 || y < 0 || a == nil {

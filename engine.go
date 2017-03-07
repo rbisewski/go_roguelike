@@ -185,7 +185,7 @@ func Clear() {
  *
  * @return    none
  */
-func Draw(y, x Coord, ch rune) {
+func Draw(y, x int, ch rune) {
 
     // Draw the aforementioned character.
     GamePad.Mvaddch(int(y), int(x), ch)
@@ -193,14 +193,14 @@ func Draw(y, x Coord, ch rune) {
 
 //! Draw a given ASCII character, with the defined colour.
 /*
- * @param     Coord    y-value
- * @param     Coord    x-value
- * @param     rune     ASCII character graphic 
- * @param     int      colour value
+ * @param     int     y-value
+ * @param     int     x-value
+ * @param     rune    ASCII character graphic
+ * @param     int     colour value
  *
  * @return    none
  */
-func DrawColours(y, x Coord, ch rune, col int) {
+func DrawColours(y, x int, ch rune, col int) {
 
     // Apply a colour filter to the character drawing.
     GamePad.Attron(gocurses.ColorPair(col))
@@ -234,13 +234,13 @@ func DrawMap(a *Area) bool {
 
             // Draw the walls in a brownish / yellow colour.
             if (a.Tiles[x+y*a.Width].Ch == '#') {
-                DrawColours(Coord(y), Coord(x), a.Tiles[x+y*a.Width].Ch, 2)
+                DrawColours(y, x, a.Tiles[x+y*a.Width].Ch, 2)
                 continue
             }
 
             // Else just take the character given and draw it onto the
             // gamepad viewscreen.
-            Draw(Coord(y), Coord(x), a.Tiles[x+y*a.Width].Ch)
+            Draw(y, x, a.Tiles[x+y*a.Width].Ch)
         }
     }
 

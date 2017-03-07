@@ -19,8 +19,8 @@ type Item struct {
     category string
 
     // Store the current (x,y) coord of the item.
-    Y  Coord
-    X  Coord
+    Y int
+    X int
 
     // Appearance of the item.
     ch rune
@@ -56,8 +56,8 @@ type Item struct {
 /*
  * @param     string    item name
  * @param     string    category
- * @param     Coord     Y
- * @param     Coord     X
+ * @param     int       Y
+ * @param     int       X
  * @param     rune      item appearance as Unicode rune
  * @param     *Area     pointer to area object that the item is located,
  *                      if this is `nil` then the item is held by a creature
@@ -75,8 +75,8 @@ type Item struct {
  */
 func NewItem(name string,
              category string,
-             Y Coord,
-             X Coord,
+             Y int,
+             X int,
              ch rune,
              area *Area,
              can_equip bool,

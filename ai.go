@@ -18,7 +18,7 @@ import "math"
 func (g *Game) process_ai() {
 
     // Variable declaration
-    var dy, dx Coord
+    var dy, dx int
 
     // Cycle thru all of the creatures present in the area level.
     for _, m := range g.Area.Creatures {
@@ -54,8 +54,8 @@ func (g *Game) process_ai() {
         }
 
         // Determine the derived distances.
-        dx = Coord(Round(float64(int(xdist)/Round(distance))))
-        dy = Coord(Round(float64(int(ydist)/Round(distance))))
+        dx = Round(float64(int(xdist)/Round(distance)))
+        dy = Round(float64(int(ydist)/Round(distance)))
 
         // If debug mode, then display this...
         DebugLog(g, fmt.Sprintf("dx, dy, dist = %d, %d, %g->%d | xdist: %d - ydist: %d    ",

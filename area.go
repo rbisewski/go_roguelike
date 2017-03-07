@@ -50,7 +50,7 @@ type Area struct {
  * @returns  Area* and (x,y)   A generated area array and (x,y) starting
  *                             points. 
  */
-func NewArea(h, w int) (*Area, Coord, Coord) {
+func NewArea(h, w int) (*Area, int, int) {
 
     // Input validation.
     if (h < 1 || w < 1) {
@@ -59,7 +59,7 @@ func NewArea(h, w int) (*Area, Coord, Coord) {
     }
 
     // Variable declaration
-    var ry, rx Coord
+    var ry, rx int
     var creatures []*Creature
     var items []*Item
 
@@ -110,8 +110,8 @@ func NewArea(h, w int) (*Area, Coord, Coord) {
                  if it == nIts-1 {
 
                      //set the spawn coords
-                     ry = Coord(y)
-                     rx = Coord(x)
+                     ry = y
+                     rx = x
                  }
              }
          }
@@ -124,17 +124,17 @@ func NewArea(h, w int) (*Area, Coord, Coord) {
 //! Grab info about a given tile, specific what it is, whether it blocks,
 //! and which creatures are present here.
 /*
- * @param    Coord    y-value
- * @param    Coord    x-value
+ * @param         int    y-value
+ * @param         int    x-value
  *
- * @returns      rune     unicode rune value
- *               bool     whether or not the tile is "blocking"
- *           Creature*    pointer to a monster, if any is present
+ * @returns      rune    unicode rune value
+ *               bool    whether or not the tile is "blocking"
+ *           Creature*   pointer to a monster, if any is present
  */
-func (a *Area) GetTileInfo(y, x Coord) (ch rune,
-                                        blocks bool,
-                                        hasCreature *Creature,
-                                        hasItems []*Item) {
+func (a *Area) GetTileInfo(y, x int) (ch rune,
+                                      blocks bool,
+                                      hasCreature *Creature,
+                                      hasItems []*Item) {
 
     // Input validation, make sure this actually got an address to an
     // Area object.
@@ -573,8 +573,8 @@ func (a *Area) populateAreaWithCreatures() bool {
     }
 
     // Define arrays to hold all the (x,y) points being used.
-    var ys = make([]Coord,0)
-    var xs = make([]Coord,0)
+    var ys = make([]int,0)
+    var xs = make([]int,0)
 
     // Variable to keep track of the current number.
     var coord_num uint = 0
@@ -608,9 +608,9 @@ func (a *Area) populateAreaWithCreatures() bool {
         // Grab a random y coord value.
         y_coord := getRandomNumBetweenZeroAndMax(a.Height)
 
-        // Cast them both to Coords.
-        dy := Coord(y_coord)
-        dx := Coord(x_coord)
+        // Cast them both to the derived coord pair.
+        dy := y_coord
+        dx := x_coord
 
         // Check if it already exists in the array holding the already
         // utilized points.
