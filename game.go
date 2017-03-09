@@ -95,16 +95,31 @@ func (g *Game) Menu() GameState {
           ConsoleWidth/2,
           "GoRogue - A Rogue-like written in golang.")
 
-    // Print out the options.
-    Write(Percent(25, ConsoleHeight)+1,
-          ConsoleWidth/2,
-          "Press any key to continue, press 'L' to load")
+    // Print out the options, which currently are as follows:
+    //
+    // * Start a new game.
+    // * Load the last game.
+    // * Quit the current game.
+    //
+    Write(Percent(25, ConsoleHeight)+2, ConsoleWidth/2,
+      "Press any key to start.")
+    Write(Percent(25, ConsoleHeight)+3, ConsoleWidth/2,
+      "Press 'L' to load a previous game.")
+    Write(Percent(25, ConsoleHeight)+4, ConsoleWidth/2,
+      "Press 'Q' to quit.")
+
+    //press 'L' to load or press 'Q' to quit.")
 
     // Grab the current keyboard input.
     key := GetInput()
 
+    // If the end user pressed the Q key, attempt to exit the game.
+    if key == "Q" || key == "q" {
+        return "quit"
+    }
+
     // Pressed the "L" key? Then attempt to load a game...
-    if key == "L" {
+    if key == "L" || key == "l" {
 
         // Setup the game environment
         g.Init()
