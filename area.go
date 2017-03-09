@@ -151,17 +151,23 @@ func (a *Area) GetTileInfo(y, x int) (ch rune,
     // Variable declaration.
     var c *Creature = nil
     var items []*Item
+    var RequestedTile = x + y * a.Width
+
+    // Safety check, make sure the requested tile is a sane value.
+    if RequestedTile < 0 || RequestedTile > len(a.Tiles) {
+        return ' ', false, nil, nil
+    }
 
     // Assign a chunk of memory for the array of Item objects.
     items = make([]*Item,0)
 
     // Read from the tiles array at the requested point to get the
     // specific Unicode rune value.
-    ch = a.Tiles[int(x)+int(y)*a.Width].Ch
+    ch = a.Tiles[RequestedTile].Ch
 
     // Read from the tiles array at a given point to determine whether
     // or not a tile is blocking.
-    blocks = a.Tiles[int(x)+int(y)*a.Width].BlockMove
+    blocks = a.Tiles[RequestedTile].BlockMove
 
     // Cycle thru every monster in the array...
     for _, m := range a.Creatures {
@@ -610,6 +616,9 @@ func (a *Area) populateAreaWithCreatures() bool {
     // Continue to add monsters until the max has been reached.
     for i = 0; i < MaxNumberOfMonsters; i++ {
 
+        // Set the already utilized flag back to false.
+        CoordIsAlreadyUtilized = false
+
         // Grab a random x coord value.
         dx := getRandomNumBetweenZeroAndMax(a.Width)
 
@@ -630,9 +639,6 @@ func (a *Area) populateAreaWithCreatures() bool {
                 break
             }
 
-            // TODO: delete this once the loop works
-            break
-
             // Set the flag to true if the (x,y) coord pair is already used.
             if CurrentCoordPair.id == coord.id {
                 CoordIsAlreadyUtilized = true
@@ -648,8 +654,8 @@ func (a *Area) populateAreaWithCreatures() bool {
                 i--
             }
 
-            // Move on to the next instance to avoid spawning spawning
-            // multiple monsters at the (x,y) pair.
+            // Move on to the next instance to avoid spawning multiple
+            // monsters at the (x,y) pair.
             continue
         }
 
