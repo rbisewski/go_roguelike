@@ -64,16 +64,16 @@ func CursSet(i int) {
 
 // Starts color capabilities, check with HasColors if terminal has the capability.
 func StartColor() {
-  C.start_color()
+    C.start_color()
 }
 
 // Checks if the terminal supports colors.
 func HasColors() bool {
-  return bool(C.has_colors())
+    return bool(C.has_colors())
 }
 
 func InitPair(pair, fg, bg int) {
-  C.init_pair(C.short(pair), C.short(fg), C.short(bg))
+    C.init_pair(C.short(pair), C.short(fg), C.short(bg))
 }
 
 //! Determine the intensity of an 8bit terminal colour.
@@ -342,11 +342,11 @@ func (window *Window) Mvaddstr(y, x int, str ...interface{}) {
 }
 
 func (window *Window) Addch(ch int) {
-	C.waddch(window.cwin, C.chtype(ch))
+    C.waddch(window.cwin, C.chtype(ch))
 }
 
 func (window *Window) Mvaddch(y, x int, ch rune) {
-	C.mvwaddch(window.cwin, C.int(y), C.int(x), C.chtype(ch))
+    C.mvwaddch(window.cwin, C.int(y), C.int(x), C.chtype(ch))
 }
 
 // Hardware insert/delete feature.

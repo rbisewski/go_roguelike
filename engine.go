@@ -322,10 +322,45 @@ func DebugLog(g *Game, s string) {
  */
 func (l *log) log(s string) {
 
+    // Input validation.
+    if len(s) < 1 {
+        return
+    }
+
+    // If the string is less than 60 characters, add space buffers. This
+    // is done for certain terminals that "refresh" by writing over existing
+    // character buffers, thus preventing a mish-mash of message data.
+    for i := len(s); i < 60; i++ {
+
+        // Append a whitespace character to the end of the string.
+        s += " "
+    }
+
+    // If the string is greater than 60 characters, go ahead and trim it
+    // down to a maximum of 57 with an ellipse.
+    if len(s) > 60 {
+
+        // Define a temp string variable.
+        tmp := ""
+
+        // Grab the first 57 characters of the string, and append them to
+        // the temp variable.
+        for i := 0; i < 57; i++ {
+
+            // Golang reads string addresses as bytes, so it needs to be
+            // recast back to a string type after grabbing the [] address.
+            tmp += string(s[i])
+        }
+
+        // Dump the concat'd string with ellipse from the tmp into the
+        // original string variable.
+        s = tmp + "..."
+    }
+
     // Format and write the string.
     l.pad.Mvaddstr(l.line,
                    0,
-                   fmt.Sprintf("%v", s))
+                   fmt.Sprintf("%s", s))
 
     // Refresh the screen to account for the newly added log message.
     l.pad.PnoutRefresh(l.dline,
