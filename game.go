@@ -108,8 +108,6 @@ func (g *Game) Menu() GameState {
     Write(Percent(25, ConsoleHeight)+4, ConsoleWidth/2,
       "Press 'Q' to quit.")
 
-    //press 'L' to load or press 'Q' to quit.")
-
     // Grab the current keyboard input.
     key := GetInput()
 
@@ -125,7 +123,18 @@ func (g *Game) Menu() GameState {
         g.Init()
 
         // Attempt to load the previous game.
-        g.LoadGame()
+        if !g.LoadGame("player.save") {
+
+            // Wipe away the menu screen.
+            Clear()
+
+            // Tell the end user that the load was unsuccessful.
+            Write(Percent(25, ConsoleHeight), ConsoleWidth/2,
+              "Unable to load the previous saved game. Starting new game...")
+
+            // Tell the developer that the load function has failed.
+            DebugLog(g, fmt.Sprintf("Menu() --> unable to load previous game"))
+        }
 
         // Give the main game pad a height and width.
         SetPad(g.Area.Height, g.Area.Width)

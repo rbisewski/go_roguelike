@@ -480,26 +480,40 @@ func (g *Game) SaveGame() {
 /*
  * @param     Game*    pointer to the current game instance.
  *
- * @return    none
+ * @return    bool     whether or not the load was successful
  */
-func (g *Game) LoadGame() {
+func (g *Game) LoadGame(filename string) bool {
+
+    // Input validation, make sure the filename is valid.
+    if len(filename) < 1 {
+        return false
+    }
+
+    // Safety check, attempt to stat() the given filename.
+    _, err := os.Stat(filename)
+
+    // If an error occurred here, either the filename does not exist or
+    // is inaccessible, simply return false to allow the game to continue
+    // without terminating.
+    if err != nil {
+        return false
+    }
 
     // Loading requires that this open an existing save game, so do that.
     // Probably only a read lock is needed here, so that's all that is used.
-    file, err := os.OpenFile("player.sav", os.O_RDONLY, 0600)
+    file, err := os.OpenFile(filename, os.O_RDONLY, 0600)
 
-    // Error? Throw a fit and panic()
+    // If an error occurs at this point, terminate the program since
+    // probably a memory or library error has occurred.
     if err != nil {
         panic(err)
     }
 
     // If closing the file causes unforeseen consequences, go ahead and
     // terminate the program.
-    defer func() {
-        if err := file.Close(); err != nil {
-            panic(err)
-        }
-    }()
+    if file.Close() != nil {
+        panic(err)
+    }
 
     // Prepare to decode the file in question.
     decoder := gob.NewDecoder(file)
@@ -511,4 +525,7 @@ func (g *Game) LoadGame() {
     if err != nil {
         panic(err)
     }
+
+    // Otherwise everything loads as intended, so return true.
+    return true
 }
