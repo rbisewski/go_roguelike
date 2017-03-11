@@ -90,10 +90,12 @@ func (s GameState) Menuing() bool {
  */
 func (g *Game) Menu() GameState {
 
+    // Variable declaration.
+    var PlayerName string = ""
+
     // Print out the title.
-    Write(Percent(25, ConsoleHeight),
-          ConsoleWidth/2,
-          "GoRogue - A Rogue-like written in golang.")
+    Write(Percent(25, ConsoleHeight), ConsoleWidth/2,
+      "GoRogue - A Rogue-like written in golang.")
 
     // Print out the options, which currently are as follows:
     //
@@ -150,8 +152,41 @@ func (g *Game) Menu() GameState {
     }
 
     // Wipe away the current menu screen once the player has elected to start
-    // a new game or load a game.
+    // a new game.
     Clear()
+
+    // Endless loop that is designed to allow the player character to enter
+    // the name of their character by typing via the keyboard.
+    //
+    // TODO: this is set to false to disable it until it is finished.
+    //
+    for false {
+
+        // Tell the end user to enter the name of their character.
+        Write(Percent(25, ConsoleHeight), ConsoleWidth/2,
+          "Enter the name of your character:")
+
+        // Grab the current keyboard input.
+        key = GetInput()
+
+        // If it was a valid a-zA-Z key then...
+
+            // ... append it to the name string.
+
+        // Else if it was a backspace or delete key && length of PlayerName
+        // is greater than 0 then...
+
+            // ... remove the last string from PlayerName.
+
+        // Write the current PlayerName to the below console, which is
+        // in location 'ConsoleHeight+2' so that it appears two lines below.
+        Write(Percent(25, ConsoleHeight+2), ConsoleWidth/2,
+          PlayerName)
+
+        // Wipe away the old screen, so that it can be reprinted during
+        // the next cycle.
+        Clear()
+    }
 
     // Initialize the game.
     g.Init()
