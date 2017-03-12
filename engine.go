@@ -392,14 +392,25 @@ func (l *log) log(s string) {
 
 //! Adjust the stats viewscreen of the player.
 /*
- * @param    Creature*   pointer to a monster object (for the player)
+ * @param    Creature*   pointer to creature object that defines the player
  *
  * @return   none
  */
 func (p *Creature) UpdateStats() {
 
+    // Safety check, make sure this is actually the player and that it
+    // has a name.
+    if len(p.name) < 1 || p.species != "player" {
+
+        // Since this failed due to not being the player, end this function.
+        return
+    }
+
+    // Print out the name of the player character.
+    StatsWindow.Mvaddstr(1, 0, fmt.Sprintf("%s", p.name))
+
     // Format and write the HP row in the Stats viewscreen.
-    StatsWindow.Mvaddstr(1, 0, fmt.Sprintf("HP: %d/%d", p.Hp, p.MaxHp))
+    StatsWindow.Mvaddstr(3, 0, fmt.Sprintf("HP: %d/%d", p.Hp, p.MaxHp))
 
     // Refresh the screen.
     StatsWindow.NoutRefresh()
