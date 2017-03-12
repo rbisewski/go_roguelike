@@ -7,7 +7,10 @@
 package main
 
 // Global variable declaration.
-var G Game
+var G              Game
+var DeveloperMode  bool   = false
+var PlayerName     string = ""
+var MenuErrorMsg   string = ""
 
 //
 // Main

@@ -43,8 +43,13 @@ func (g *Game) Init() {
     var y int
     var x int
 
-    // The default setting is for debug messages to be hidden.
-    g.DebugMode = false
+    // Grab the global setting and assign it to the current instance of
+    // this game, specifically this will enable / disable debugging
+    // functionality and messages.
+    //
+    // This setting can be adjusted in the main.go included in this project.
+    //
+    g.DebugMode = DeveloperMode
 
     // Set the game state.
     g.state = "menu"
@@ -52,8 +57,13 @@ func (g *Game) Init() {
     // Generate an area map
     g.Area, y, x = NewArea(240, 250)
 
-    // The PC will be represented by an @ symbol.
-    g.Player = NewCreatureWithStats("player",
+    // Safety check, if the player name is blank, default to anonymous.
+    if len(PlayerName) == 0 {
+        PlayerName = "Anonymous"
+    }
+
+    // The player-character will be represented by an @ symbol.
+    g.Player = NewCreatureWithStats(PlayerName,
                                     "player",
                                     y,
                                     x,
@@ -65,7 +75,7 @@ func (g *Game) Init() {
                                     10,
                                     5)
 
-    // Attach the player to the map.
+    // Attach the player-character creature to the map.
     g.Area.Creatures = append(g.Area.Creatures, g.Player)
 
     // Pass along the area, and populate the world with a number of monsters.
@@ -90,9 +100,6 @@ func (s GameState) Menuing() bool {
  */
 func (g *Game) Menu() GameState {
 
-    // Variable declaration.
-    var PlayerName string = ""
-
     // Print out the title.
     Write(Percent(25, ConsoleHeight), ConsoleWidth/2,
       "GoRogue - A Rogue-like written in golang.")
@@ -104,18 +111,78 @@ func (g *Game) Menu() GameState {
     // * Quit the current game.
     //
     Write(Percent(25, ConsoleHeight)+2, ConsoleWidth/2,
-      "Press any key to start.")
+      "Press 'N' to start a new game.")
     Write(Percent(25, ConsoleHeight)+3, ConsoleWidth/2,
       "Press 'L' to load a previous game.")
     Write(Percent(25, ConsoleHeight)+4, ConsoleWidth/2,
       "Press 'Q' to quit.")
 
+    // Print out the most recent menu error message, if any.
+    Write(Percent(25, ConsoleHeight)+6, ConsoleWidth/2,
+      MenuErrorMsg)
+
     // Grab the current keyboard input.
     key := GetInput()
 
-    // If the end user pressed the Q key, attempt to exit the game.
-    if key == "Q" || key == "q" {
-        return "quit"
+    // If the N key was pressed, then this needs to start a new game.
+    if key == "N" || key == "n" {
+
+        // Wipe away the current menu screen once the player has elected to start
+        // a new game.
+        Clear()
+
+        // If any partly loaded data is present, clear it away.
+        PlayerName = ""
+
+        // Endless loop that is designed to allow the player character to enter
+        // the name of their character by typing via the keyboard.
+        for true {
+
+            // Tell the end user to enter the name of their character.
+            Write(Percent(25, ConsoleHeight), ConsoleWidth/2,
+              "Enter the name of your character:")
+
+            // Write the current PlayerName to the below console, which is
+            // in location 'ConsoleHeight+2' so that it appears two lines below.
+            Write(Percent(25, ConsoleHeight)+2, ConsoleWidth/2,
+              PlayerName)
+
+            // Grab the current keyboard input.
+            key = GetInput()
+
+            // If the enter key was pressed and the character name has at least
+            // one or more characters.
+            if WasEnterPressed(key) && len(PlayerName) > 0 {
+                break
+
+            // Else if it was a valid a-zA-Z key then...
+            } else if IsAlphaCharacter(key) && len(PlayerName) < 13 {
+
+                // ... append it to the name string.
+                PlayerName += key
+
+            // Else if it was a backspace or delete key && length of PlayerName
+            // is greater than 0 then...
+            } else if IsDeleteOrBackspace(key) && len(PlayerName) > 0 {
+
+                // ... remove the last string from PlayerName.
+                PlayerName = string(PlayerName[:len(PlayerName)-1])
+            }
+
+            // Wipe away the old screen, so that it can be reprinted during
+            // the next cycle.
+            Clear()
+        }
+
+        // Wipe away the old screen, in the event that some part of the previous
+        // enter your character name interface happens to remain.
+        Clear()
+
+        // Initialize the game.
+        g.Init()
+
+        // Set the current GameState to "playing".
+        return "playing"
     }
 
     // Pressed the "L" key? Then attempt to load a game...
@@ -127,15 +194,15 @@ func (g *Game) Menu() GameState {
         // Attempt to load the previous game.
         if !g.LoadGame("player.save") {
 
-            // Wipe away the menu screen.
-            Clear()
-
             // Tell the end user that the load was unsuccessful.
-            Write(Percent(25, ConsoleHeight), ConsoleWidth/2,
-              "Unable to load the previous saved game. Starting new game...")
+            MenuErrorMsg = "No recent save game was detected. Please start " +
+              "a new game."
 
             // Tell the developer that the load function has failed.
             DebugLog(g, fmt.Sprintf("Menu() --> unable to load previous game"))
+
+            // Return back to the global game menu.
+            return "menu"
         }
 
         // Give the main game pad a height and width.
@@ -151,59 +218,14 @@ func (g *Game) Menu() GameState {
         return "playing"
     }
 
-    // Wipe away the current menu screen once the player has elected to start
-    // a new game.
-    Clear()
-
-    // Endless loop that is designed to allow the player character to enter
-    // the name of their character by typing via the keyboard.
-    for true {
-
-        // Tell the end user to enter the name of their character.
-        Write(Percent(25, ConsoleHeight), ConsoleWidth/2,
-          "Enter the name of your character:")
-
-        // Write the current PlayerName to the below console, which is
-        // in location 'ConsoleHeight+2' so that it appears two lines below.
-        Write(Percent(25, ConsoleHeight)+2, ConsoleWidth/2,
-          PlayerName)
-
-        // Grab the current keyboard input.
-        key = GetInput()
-
-        // If the enter key was pressed and the character name has at least
-        // one or more characters.
-        if WasEnterPressed(key) && len(PlayerName) > 0 {
-            break
-
-        // Else if it was a valid a-zA-Z key then...
-        } else if IsAlphaCharacter(key) && len(PlayerName) < 13 {
-
-            // ... append it to the name string.
-            PlayerName += key
-
-        // Else if it was a backspace or delete key && length of PlayerName
-        // is greater than 0 then...
-        } else if IsDeleteOrBackspace(key) && len(PlayerName) > 0 {
-
-            // ... remove the last string from PlayerName.
-            PlayerName = string(PlayerName[:len(PlayerName)-1])
-        }
-
-        // Wipe away the old screen, so that it can be reprinted during
-        // the next cycle.
-        Clear()
+    // If the end user pressed the Q key, attempt to exit the game.
+    if key == "Q" || key == "q" {
+        return "quit"
     }
 
-    // Wipe away the old screen, in the event that some part of the previous
-    // enter your character name interface happens to remain.
-    Clear()
-
-    // Initialize the game.
-    g.Init()
-
-    // Set the current GameState to "playing".
-    return "playing"
+    // Otherwise if none of the above keys were pressed, then default to
+    // remaining in the initial game menu.
+    return "menu"
 }
 
 //! Handle the event of a PC death (by monsters or the like).
