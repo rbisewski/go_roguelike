@@ -157,36 +157,47 @@ func (g *Game) Menu() GameState {
 
     // Endless loop that is designed to allow the player character to enter
     // the name of their character by typing via the keyboard.
-    //
-    // TODO: this is set to false to disable it until it is finished.
-    //
-    for false {
+    for true {
 
         // Tell the end user to enter the name of their character.
         Write(Percent(25, ConsoleHeight), ConsoleWidth/2,
           "Enter the name of your character:")
 
+        // Write the current PlayerName to the below console, which is
+        // in location 'ConsoleHeight+2' so that it appears two lines below.
+        Write(Percent(25, ConsoleHeight)+2, ConsoleWidth/2,
+          PlayerName)
+
         // Grab the current keyboard input.
         key = GetInput()
 
-        // If it was a valid a-zA-Z key then...
+        // If the enter key was pressed and the character name has at least
+        // one or more characters.
+        if WasEnterPressed(key) && len(PlayerName) > 0 {
+            break
+
+        // Else if it was a valid a-zA-Z key then...
+        } else if IsAlphaCharacter(key) && len(PlayerName) < 13 {
 
             // ... append it to the name string.
+            PlayerName += key
 
         // Else if it was a backspace or delete key && length of PlayerName
         // is greater than 0 then...
+        } else if IsDeleteOrBackspace(key) && len(PlayerName) > 0 {
 
             // ... remove the last string from PlayerName.
-
-        // Write the current PlayerName to the below console, which is
-        // in location 'ConsoleHeight+2' so that it appears two lines below.
-        Write(Percent(25, ConsoleHeight+2), ConsoleWidth/2,
-          PlayerName)
+            PlayerName = string(PlayerName[:len(PlayerName)-1])
+        }
 
         // Wipe away the old screen, so that it can be reprinted during
         // the next cycle.
         Clear()
     }
+
+    // Wipe away the old screen, in the event that some part of the previous
+    // enter your character name interface happens to remain.
+    Clear()
 
     // Initialize the game.
     g.Init()

@@ -6,8 +6,12 @@
 
 package main
 
-import "math"
-import "math/rand"
+import (
+    "fmt"
+    "math"
+    "math/rand"
+    "strconv"
+)
 
 //! Randomly returns "true" or "false"
 /*
@@ -147,4 +151,115 @@ func Round(x float64) int {
 
     // Finally dump to an int, as per the precision.
     return int(rounder / pow)
+}
+
+//! Evaluates if a given ASCII character is alphabetical (a-zA-Z).
+/*
+ * @param    string    Keyboard ASCII character input.
+ *
+ * @return   bool      whether or not the character is an alphabetical letter
+ */
+func IsAlphaCharacter(character string) bool {
+
+    // Input validation, make sure this actually was given a valid string
+    // ASCII character of length 1.
+    if len(character) != 1 {
+        return false
+    }
+
+    // Convert the key pressed to a hex string value.
+    char_as_hex := fmt.Sprintf("%x", character)
+
+    // Sanity check, make sure this actually was able to return non-blank.
+    if len(char_as_hex) < 1 {
+        return false
+    }
+
+    // Attempt to convert the hexadecimal value to an uint16 decimal.
+    char_as_int, err := strconv.ParseUint(char_as_hex, 16, 16)
+
+    // Safety check, if an error occurred, this probably isn't alphabetical,
+    // so go ahead and return false.
+    if err != nil {
+        return false
+    }
+
+    // Determine if the character given is a-zA-Z
+    //
+    // A -> 0x41 -> 65
+    // Z -> 0x5a -> 90
+    // a -> 0x61 -> 97
+    // z -> 0x7a -> 122
+    //
+    if (char_as_int > 64 && char_as_int < 91) || (char_as_int > 96 && char_as_int < 123) {
+        return true
+    }
+
+    // Otherwise some other sort of character was present here, so then
+    // return false here as a default.
+    return false
+}
+
+//! Evaluates if a given ASCII character is equivalent to delete or backspace
+/*
+ * @param    string    Keyboard ASCII character input.
+ *
+ * @return   bool      whether or not the character is backspace or delete
+ */
+func IsDeleteOrBackspace(character string) bool {
+
+    // Input validation, make sure this actually was given a valid string
+    // ASCII character of length 1.
+    if len(character) != 1 {
+        return false
+    }
+
+    // Convert the key pressed to a hex string value.
+    char_as_hex := fmt.Sprintf("%x", character)
+
+    // Sanity check, make sure this actually was able to return non-blank.
+    if len(char_as_hex) < 1 {
+        return false
+    }
+
+    // Determine if the character given is the "Backspace" or "Delete" key.
+    if char_as_hex == "7f" || char_as_hex == "c58a" {
+        return true
+    }
+
+    // Otherwise some other sort of character was present here, so then
+    // return false here as a default.
+    return false
+}
+
+//! Evaluates if a given ASCII character is equivalent to the enter key.
+/*
+ * @param    string    Keyboard ASCII character input.
+ *
+ * @return   bool      whether or not the character is the enter key.
+ */
+func WasEnterPressed(character string) bool {
+
+    // Input validation, make sure this actually was given a valid string
+    // ASCII character of length 1.
+    if len(character) != 1 {
+        return false
+    }
+
+    // Convert the key pressed to a hex string value.
+    char_as_hex := fmt.Sprintf("%x", character)
+
+    // Sanity check, make sure this actually was able to return non-blank.
+    if len(char_as_hex) < 1 {
+        return false
+    }
+
+    // Determine if the character given is the "Enter" key.
+    if char_as_hex == "0a" {
+        return true
+    }
+
+    // Otherwise some other sort of character was present here, so then
+    // return false here as a default.
+    return false
 }
