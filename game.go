@@ -353,50 +353,62 @@ func (g *Game) Input() {
     // Numpad 8 --> Move player north
     case "38":
         g.Player.Move(-1, 0)
+        g.process_ai()
 
     // Numpad 9 --> Move player north-east
     case "39":
         g.Player.Move(-1, 1)
+        g.process_ai()
 
     // Numpad 6 --> Move player east
     case "36":
         g.Player.Move(0, 1)
+        g.process_ai()
 
     // Numpad 3 --> Move player south-west
     case "33":
         g.Player.Move(1, 1)
+        g.process_ai()
 
     // Numpad 2 --> Move player south
     case "32":
         g.Player.Move(1, 0)
+        g.process_ai()
 
     // Numpad 1 --> Move player south-east
     case "31":
         g.Player.Move(1, -1)
+        g.process_ai()
 
     // Numpad 4 --> Move player west
     case "34":
         g.Player.Move(0, -1)
+        g.process_ai()
 
     // Numpad 7 --> Move player north-west
     case "37":
         g.Player.Move(-1, -1)
+        g.process_ai()
 
     // Down Arrow --> Move player south
     case "c482":
         g.Player.Move(1, 0)
+        g.process_ai()
 
     // Up Arrow --> Move player north
     case "c483":
         g.Player.Move(-1, 0)
+        g.process_ai()
 
     // Left Arrow --> Move player west
     case "c484":
         g.Player.Move(0, -1)
+        g.process_ai()
 
     // Right Arrow --> Move player east
     case "c485":
         g.Player.Move(0, 1)
+        g.process_ai()
 
     // S --> Save game
     case "53":
@@ -410,7 +422,4 @@ func (g *Game) Input() {
     case "51":
         g.state = "quit"
     }
-
-    // Handle what all of the other actors (e.g. monsters) are current doing.
-    g.process_ai()
 }
