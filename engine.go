@@ -435,16 +435,38 @@ func GetInput() string {
  *
  * @return    bool      whether confirmed or denied
  */
-func Confirm(q string) bool {
+func Confirm(msg string) bool {
+
+    // Input validation, make sure the string is between 1 to 30 characters.
+    if len(msg) < 1 || len(msg) > 30 {
+        return false
+    }
+
+    // Variable declaration.
+    var GuiSize      = len(msg) + 2
+    var GuiTopBottom = "+"
+    var GuiLeftRight = "|"
+
+    // Assemble the various parts of the GUI.
+    for i := 0; i < GuiSize; i++ {
+        GuiTopBottom += "-"
+        GuiLeftRight += " "
+    }
+    GuiTopBottom += "+"
+    GuiLeftRight += "|"
 
     // Write the confirmation message to the screen.
-    Write(ScreenHeight/2, ScreenWidth/2, q)
+    Write((ScreenHeight/2)-2, ScreenWidth/2, GuiTopBottom)
+    Write((ScreenHeight/2)-1, ScreenWidth/2, GuiLeftRight)
+    Write(ScreenHeight/2, ScreenWidth/2, "| " + msg + " |")
+    Write((ScreenHeight/2)+1, ScreenWidth/2, GuiLeftRight)
+    Write((ScreenHeight/2)+2, ScreenWidth/2, GuiTopBottom)
 
     // Take a look at the keyboard input...
     key := GetInput()
 
     // End-user pressed Y/y? Go ahead and consider that as confirmation!
-    if key == "Y" {
+    if key == "Y" || key == "y" {
         return true
     }
 

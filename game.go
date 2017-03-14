@@ -420,6 +420,8 @@ func (g *Game) Input() {
 
     // Q --> Quit game
     case "51":
-        g.state = "quit"
+        if Confirm("Quit Without Saving? Y/N") {
+            g.state = "quit"
+        }
     }
 }
