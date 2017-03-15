@@ -29,8 +29,8 @@ func spawnCreatureToArray(name string, x int, y int, a *Area) bool {
     if name == "dog" {
 
         // Append it to the array.
-        a.Creatures = append(a.Creatures, NewCreatureWithStats("dog",
-          "canine", y, x, 'd', a, nil, 20, 30, 5, 0))
+        a.Creatures = append(a.Creatures, NewCreature("dog", "canine", y,
+          x, 'd', a, nil, 20, 30, 5, 0))
 
         // With the monster successfully added, consider this complete.
         return true

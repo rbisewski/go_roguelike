@@ -34,6 +34,9 @@ type Creature struct {
 
     // Pointer to the stats attributes.
     *stats
+
+    // Pointer to the creature equipment locations.
+    *equipment
 }
 
 // Structure to hold character attributes
@@ -44,28 +47,14 @@ type stats struct {
     Def   int
 }
 
-//! Creature Constructor function.
-/*
- * @param     string   creature name
- * @param     string   creature species (i.e type)
- * @param     int      y-value
- * @param     int      x-value
- * @param     rune     ASCII character graphic for the Creature
- * @param     Area*    object storing the level area 
- * @param     Item*    array storing the items the creature possesses
- *
- * @return    Creature*    pointer to a new mob.
- */
-func NewCreature(name string,
-                 species string,
-                 y int,
-                 x int,
-                 ch rune,
-                 area *Area,
-                 inventory []*Item) *Creature {
-
-    // Return an address to a newly allocated Creature object.
-    return &Creature{name, species, y, x, ch, area, inventory, nil}
+// Structure to hold the equipment being utilized by certain creatures.
+type equipment struct {
+    Head      *Item
+    Neck      *Item
+    Torso     *Item
+    RightHand *Item
+    LeftHand  *Item
+    Pants     *Item
 }
 
 //! Monster Stats Constructor
@@ -81,7 +70,7 @@ func newStats(hp, max, att, def int) *stats {
     return &stats{hp, max, att, def}
 }
 
-//! Creature w/ Stats Constructor
+//! Creature w/o Equipment Constructor
 /*
  * @param     string    creature name
  * @param     string    creature species (i.e type)
@@ -96,27 +85,28 @@ func newStats(hp, max, att, def int) *stats {
  *
  * @return    Creature*    pointer to a Creature w/ Stats
  */
-func NewCreatureWithStats(name string,
-                          species string,
-                          y int,
-                          x int,
-                          ch rune,
-                          area *Area,
-                          inventory []*Item,
-                          hp int,
-                          max int,
-                          att int,
-                          def int) *Creature {
+func NewCreature(name string,
+                 species string,
+                 y int,
+                 x int,
+                 ch rune,
+                 area *Area,
+                 inventory []*Item,
+                 hp int,
+                 max int,
+                 att int,
+                 def int) *Creature {
 
     // Assign memory for a creature object and return the address.
     return &Creature{name,
                      species,
-		     y,
-		     x,
-		     ch,
-		     area,
-		     inventory,
-                     newStats(hp, max, att, def)}
+                     y,
+                     x,
+                     ch,
+                     area,
+                     inventory,
+                     newStats(hp, max, att, def),
+                     nil}
 }
 
 //! Function to move the mob to a new (x,y) location.
