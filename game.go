@@ -410,6 +410,11 @@ func (g *Game) Input() {
         g.Player.Move(0, 1)
         g.process_ai()
 
+    // I || i --> Open inventory
+    case "49":
+    case "69":
+        //g.OpenInventory()
+
     // S --> Save game
     case "53":
         if Confirm("Save and Quit? Y/N") {
