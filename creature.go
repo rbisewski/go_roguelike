@@ -57,17 +57,35 @@ type equipment struct {
     Pants     *Item
 }
 
-//! Monster Stats Constructor
+//! Creature Stats Constructor
 /*
  * @param    int       current hit points
  * @param    int       maximum hit points
  * @param    int       attack
  * @param    int       defence
  *
- * @return   Stats*    pointer to a newly allocated Stats object.
+ * @return   stats*    pointer to a newly allocated Stats object.
  */
 func newStats(hp, max, att, def int) *stats {
     return &stats{hp, max, att, def}
+}
+
+//! Creature Equipment Constructor
+/*
+ * @param    *Item         item equipped in the head location
+ * @param    *Item         item equipped in the neck location
+ * @param    *Item         item equipped in the torso location
+ * @param    *Item         item equipped in the right hand location
+ * @param    *Item         item equipped in the left hand location
+ * @param    *Item         item equipped in the pants location
+ *
+ * @return   equipment*    pointer to a newly allocated equipment object
+ */
+func newEquipment(head, neck, torso, righthand, lefthand,
+  pants *Item) *equipment {
+
+    // Return the address of the new equipment object.
+    return &equipment{head, neck, torso, righthand, lefthand, pants}
 }
 
 //! Creature w/o Equipment Constructor
