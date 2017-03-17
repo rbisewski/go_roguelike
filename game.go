@@ -60,17 +60,8 @@ func (g *Game) Init() {
     }
 
     // The player-character will be represented by an @ symbol.
-    g.Player = NewCreature(PlayerName,
-                           "player",
-                           y,
-                           x,
-                           '@',
-                           g.Area,
-                           make([]*Item,0),
-                           30,
-                           30,
-                           10,
-                           5)
+    g.Player = NewCreatureWithEquipment(PlayerName, "player", y, x, '@',
+      g.Area, make([]*Item,0), 30, 30, 10, 5)
 
     // Attach the player-character creature to the map.
     g.Area.Creatures = append(g.Area.Creatures, g.Player)

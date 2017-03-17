@@ -127,6 +127,45 @@ func NewCreature(name string,
                      nil}
 }
 
+//! Creature w/ Equipment Constructor
+/*
+ * @param     string    creature name
+ * @param     string    creature species (i.e type)
+ * @param     int       y-value
+ * @param     int       x-value
+ * @param     rune      ASCII character graphic
+ * @param     Area*     pointer to an Area object
+ * @param     int       current hit points
+ * @param     int       maximum hit points
+ * @param     int       attack
+ * @param     int       defence
+ *
+ * @return    Creature*    pointer to a Creature w/ Stats
+ */
+func NewCreatureWithEquipment(name string,
+                 species string,
+                 y int,
+                 x int,
+                 ch rune,
+                 area *Area,
+                 inventory []*Item,
+                 hp int,
+                 max int,
+                 att int,
+                 def int) *Creature {
+
+    // Assign memory for a creature object and return the address.
+    return &Creature{name,
+                     species,
+                     y,
+                     x,
+                     ch,
+                     area,
+                     inventory,
+                     newStats(hp, max, att, def),
+                     newEquipment(nil, nil, nil, nil, nil, nil)}
+}
+
 //! Function to move the mob to a new (x,y) location.
 /*
  * @param     int    y-value
