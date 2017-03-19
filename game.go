@@ -398,10 +398,10 @@ func (g *Game) Input() {
         g.Player.Move(0, 1)
         g.process_ai()
 
-    // I || i --> Open inventory
+    // I || i --> Open the inventory of the player character.
     case "49":
     case "69":
-        //g.OpenInventory()
+        ToggleInventoryUI()
 
     // S --> Save game
     case "53":

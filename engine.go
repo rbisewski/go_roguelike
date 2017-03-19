@@ -470,8 +470,99 @@ func Confirm(msg string) bool {
         return true
     }
 
-    // Otherwise the end-user wants
+    // Otherwise the end-user pressed some other key, so close the
+    // ncurses confirmation UI.
     return false
+}
+
+//! Display the equipment the character currently is wearing and what items
+//! they are holding.
+/*
+ * @return    none
+ */
+func ToggleInventoryUI() {
+
+    // TODO: until this function is complete, do nothing...
+    return
+
+    // Take a look at the keyboard input...
+    key := GetInput()
+
+    // End-user pressed 'I' again? Go ahead and close the inventory screen.
+    //
+    // TODO: fix this so that when the player presses the "i" key twice, then
+    //       there is no need to redraw the inventory. Maybe an "inventory"
+    //       game state could be defined?
+    //
+    if key == "I" || key == "i" {
+        return
+    }
+
+    // Variable declaration.
+    var GuiHeight    = 0
+    var GuiWidth     = 40
+    var GuiTopBottom = "+"
+    var GuiLeftRight = "|"
+    var GuiLines     = make([]string,0)
+    var offset       = 0
+
+    // Assemble the various parts of the GUI.
+    for i := 0; i < GuiWidth; i++ {
+        GuiTopBottom += "-"
+        GuiLeftRight += " "
+    }
+    GuiTopBottom += "+"
+    GuiLeftRight += "|"
+
+    // Dump them into an array, where each element represents a line.
+    //
+    // TODO: fix this so that each of the lines grabs the item name and
+    //       adjusts the width of the UI to a maximum size of "GuiWidth".
+    //
+    GuiLines = append(GuiLines, GuiTopBottom)
+    GuiLines = append(GuiLines, GuiLeftRight)
+    GuiLines = append(GuiLines, "|  Equipped Items  |")
+    GuiLines = append(GuiLines, "| |")
+    GuiLines = append(GuiLines, "| Head --> N/A |")
+    GuiLines = append(GuiLines, "| |")
+    GuiLines = append(GuiLines, "| Neck --> |")
+    GuiLines = append(GuiLines, "| |")
+    GuiLines = append(GuiLines, "| Torso --> |")
+    GuiLines = append(GuiLines, "| |")
+    GuiLines = append(GuiLines, "| Right Hand --> |")
+    GuiLines = append(GuiLines, "| |")
+    GuiLines = append(GuiLines, "| Left Hand --> |")
+    GuiLines = append(GuiLines, "| |")
+    GuiLines = append(GuiLines, "| Pants --> |")
+    GuiLines = append(GuiLines, GuiLeftRight)
+    GuiLines = append(GuiLines, GuiTopBottom)
+
+    // Get the current number of lines and store it as the height of the UI.
+    GuiHeight = len(GuiLines)
+
+    // Using the calculated height, go ahead and determine the upper bounds
+    // of the inventory interface, as it relates to the currently drawn
+    // ncurses window.
+    offset = int(GuiHeight / 2)
+
+    // Safety check, this shouldn't happen but to safe-guard console offsets,
+    // if the calculated height is less than one or the offset is zero, tell
+    // the developer what happened and leave this function.
+    if GuiHeight < 1 || offset == 0 {
+        DebugLog(&G,"ToggleInventoryUI() --> improper height and offset, " +
+                    "terminating function")
+        return
+    }
+
+    // Write the character equipment/inventory screen.
+    for _, line := range GuiLines {
+
+        // Write the given line to the console output.
+        Write((ScreenHeight/2)-offset, ScreenWidth/2, line)
+    }
+
+    // All done here, so then this can return.
+    return
 }
 
 //! Handles a "save game to disk" event.
