@@ -263,3 +263,39 @@ func WasEnterPressed(character string) bool {
     // return false here as a default.
     return false
 }
+
+//! Take a given string, align it, and add spaces.
+/*
+ * @return    none
+ */
+func AlignAndSpaceString(phrase string, alignment string, length int) string {
+
+    // Ensure that the phrase has length of at least 1
+    if len(phrase) < 1 {
+        return ""
+    }
+
+    // Ensure that the alignment is "right" or "middle" or "left"
+    if alignment != "right" && alignment != "middle" && alignment != "left" {
+        return ""
+    }
+
+    // Ensure that the length is greater that zero
+    if length < 1 {
+        return ""
+    }
+
+    // Safety check, ensure the length does not exceed the current size of
+    // the phrase string that is being aligned and spaced.
+    //
+    // As a default, simply return the string phrase.
+    //
+    if length >= len(phrase) {
+        return phrase
+    }
+
+    //
+    // TODO: make this align the string, right now all it does it pass it back
+    //
+    return phrase
+}

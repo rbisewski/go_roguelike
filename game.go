@@ -26,6 +26,9 @@ type Game struct {
 
     // Pointer to area array.
     Area   *Area
+
+    // Whether or not the player inventory is open.
+    InventoryState bool
 }
 
 //! Function to initialize the game.
@@ -50,6 +53,9 @@ func (g *Game) Init() {
 
     // Set the game state.
     g.state = "menu"
+
+    // Initially the player does not have the inventory open
+    g.InventoryState = false
 
     // Generate an area map
     g.Area, y, x = NewArea(240, 250)
@@ -335,6 +341,13 @@ func (g *Game) Input() {
     // Convert the key pressed to a hex string value.
     key_as_string := fmt.Sprintf("%x", key)
 
+    // If the player character inventory is open, and the key being pressed
+    // is not "i" then do nothing.
+    if g.InventoryState && key_as_string != "69" {
+        DrawInventoryUI()
+        return
+    }
+
     // For a given key...
     switch key_as_string {
 
@@ -398,10 +411,20 @@ func (g *Game) Input() {
         g.Player.Move(0, 1)
         g.process_ai()
 
-    // I || i --> Open the inventory of the player character.
-    case "49":
+    // i --> Open / close the inventory of the player character.
     case "69":
-        ToggleInventoryUI()
+
+        // If the inventory is not yet open.
+        if !g.InventoryState {
+
+            // Enable the inventory state and draw the UI
+            g.InventoryState = true
+            DrawInventoryUI()
+            return
+        }
+
+        // Otherwise the inventory is open, so flip the state.
+        g.InventoryState = false
 
     // S --> Save game
     case "53":

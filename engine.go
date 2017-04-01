@@ -480,27 +480,11 @@ func Confirm(msg string) bool {
 /*
  * @return    none
  */
-func ToggleInventoryUI() {
-
-    // TODO: until this function is complete, do nothing...
-    return
-
-    // Take a look at the keyboard input...
-    key := GetInput()
-
-    // End-user pressed 'I' again? Go ahead and close the inventory screen.
-    //
-    // TODO: fix this so that when the player presses the "i" key twice, then
-    //       there is no need to redraw the inventory. Maybe an "inventory"
-    //       game state could be defined?
-    //
-    if key == "I" || key == "i" {
-        return
-    }
+func DrawInventoryUI() {
 
     // Variable declaration.
     var GuiHeight    = 0
-    var GuiWidth     = 40
+    var GuiWidth     = 30
     var GuiTopBottom = "+"
     var GuiLeftRight = "|"
     var GuiLines     = make([]string,0)
@@ -514,26 +498,56 @@ func ToggleInventoryUI() {
     GuiTopBottom += "+"
     GuiLeftRight += "|"
 
-    // Dump them into an array, where each element represents a line.
-    //
-    // TODO: fix this so that each of the lines grabs the item name and
-    //       adjusts the width of the UI to a maximum size of "GuiWidth".
-    //
+    // Assemble the top element of the inventory screen that displays the
+    // words "Equipped Items" surrounded by '-' characters.
     GuiLines = append(GuiLines, GuiTopBottom)
     GuiLines = append(GuiLines, GuiLeftRight)
-    GuiLines = append(GuiLines, "|  Equipped Items  |")
-    GuiLines = append(GuiLines, "| |")
-    GuiLines = append(GuiLines, "| Head --> N/A |")
-    GuiLines = append(GuiLines, "| |")
-    GuiLines = append(GuiLines, "| Neck --> |")
-    GuiLines = append(GuiLines, "| |")
-    GuiLines = append(GuiLines, "| Torso --> |")
-    GuiLines = append(GuiLines, "| |")
-    GuiLines = append(GuiLines, "| Right Hand --> |")
-    GuiLines = append(GuiLines, "| |")
-    GuiLines = append(GuiLines, "| Left Hand --> |")
-    GuiLines = append(GuiLines, "| |")
-    GuiLines = append(GuiLines, "| Pants --> |")
+    GuiLines = append(GuiLines,
+      "| " + AlignAndSpaceString("Equipped Items", "middle", 26) + " |")
+    GuiLines = append(GuiLines, GuiLeftRight)
+    GuiLines = append(GuiLines, GuiTopBottom)
+    GuiLines = append(GuiLines, GuiLeftRight)
+
+    // Assemble the portion of the inventory screen for the head item.
+    GuiLines = append(GuiLines,
+      "| " + AlignAndSpaceString("Head       --> ", "right", 26) + " |")
+
+    // Add a spacer.
+    GuiLines = append(GuiLines, GuiLeftRight)
+
+    // Assemble the portion of the inventory screen for the neck item.
+    GuiLines = append(GuiLines,
+      "| Neck       --> " + AlignAndSpaceString("-", "right", 11) + " |")
+
+    // Add a spacer.
+    GuiLines = append(GuiLines, GuiLeftRight)
+
+    // Assemble the portion of the inventory screen for the torso item.
+    GuiLines = append(GuiLines,
+      "| Torso      --> " + AlignAndSpaceString("-", "right", 11) + " |")
+
+    // Add a spacer.
+    GuiLines = append(GuiLines, GuiLeftRight)
+
+    // Assemble the portion of the inventory screen for the right hand item.
+    GuiLines = append(GuiLines,
+      "| Right Hand --> " + AlignAndSpaceString("-", "right", 26) + " |")
+
+    // Add a spacer.
+    GuiLines = append(GuiLines, GuiLeftRight)
+
+    // Assemble the portion of the inventory screen for the left hand item.
+    GuiLines = append(GuiLines,
+      "| Left Hand  --> " + AlignAndSpaceString("-", "right", 26) + " |")
+
+    // Add a spacer.
+    GuiLines = append(GuiLines, GuiLeftRight)
+
+    // Assemble the portion of the inventory screen for the pants item.
+    GuiLines = append(GuiLines,
+      "| Pants      --> " + AlignAndSpaceString("-", "right", 26) + " |")
+
+    // Assemble the bottom portion of the inventory.
     GuiLines = append(GuiLines, GuiLeftRight)
     GuiLines = append(GuiLines, GuiTopBottom)
 
@@ -559,6 +573,9 @@ func ToggleInventoryUI() {
 
         // Write the given line to the console output.
         Write((ScreenHeight/2)-offset, ScreenWidth/2, line)
+
+        // Decrement the offset.
+        offset--
     }
 
     // All done here, so then this can return.
