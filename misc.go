@@ -275,8 +275,8 @@ func AlignAndSpaceString(phrase string, alignment string, length int) string {
         return ""
     }
 
-    // Ensure that the alignment is "right" or "middle" or "left"
-    if alignment != "right" && alignment != "middle" && alignment != "left" {
+    // Ensure that the 
+    if len(alignment) < 1 {
         return ""
     }
 
@@ -285,17 +285,48 @@ func AlignAndSpaceString(phrase string, alignment string, length int) string {
         return ""
     }
 
-    // Safety check, ensure the length does not exceed the current size of
-    // the phrase string that is being aligned and spaced.
-    //
-    // As a default, simply return the string phrase.
-    //
-    if length >= len(phrase) {
-        return phrase
+    // Handle each of the different cases.
+    switch alignment {
+
+        //
+        // Right alignment
+        //
+        case "right":
+            for i := len(phrase); i < length; i++ {
+                phrase += " "
+            }
+
+        //
+        // Centre alignment
+        //
+        case "middle":
+            fallthrough
+        case "center":
+            fallthrough
+        case "centre":
+            for i := 0; i < length; i++ {
+                if (i % 2) == 1  {
+                    phrase += " "
+                } else {
+                    phrase = " " + phrase
+                }
+            }
+
+        //
+        // Left alignment
+        //
+        case "left":
+            for i := len(phrase); i < length; i++ {
+                phrase = " " + phrase
+            }
+
+        //
+        // By default, do nothing...
+        //
+        default:
+            break
     }
 
-    //
-    // TODO: make this align the string, right now all it does it pass it back
-    //
+    // Return the aligned and spaced string.
     return phrase
 }

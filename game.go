@@ -344,7 +344,7 @@ func (g *Game) Input() {
     // If the player character inventory is open, and the key being pressed
     // is not "i" then do nothing.
     if g.InventoryState && key_as_string != "69" {
-        DrawInventoryUI()
+        DrawInventoryUI(g)
         return
     }
 
@@ -419,7 +419,7 @@ func (g *Game) Input() {
 
             // Enable the inventory state and draw the UI
             g.InventoryState = true
-            DrawInventoryUI()
+            DrawInventoryUI(g)
             return
         }
 

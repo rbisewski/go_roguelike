@@ -480,7 +480,12 @@ func Confirm(msg string) bool {
 /*
  * @return    none
  */
-func DrawInventoryUI() {
+func DrawInventoryUI(g *Game) {
+
+    // Input validation
+    if g == nil || g.Player == nil {
+        return
+    }
 
     // Variable declaration.
     var GuiHeight    = 0
@@ -489,6 +494,32 @@ func DrawInventoryUI() {
     var GuiLeftRight = "|"
     var GuiLines     = make([]string,0)
     var offset       = 0
+    var HeadItem     = "nothing"
+    var NeckItem     = "nothing"
+    var TorsoItem    = "nothing"
+    var RHandItem    = "nothing"
+    var LHandItem    = "nothing"
+    var PantsItem    = "nothing"
+
+    // If the player has equipment, go ahead a grab the name of the item.
+    if g.Player.Head != nil {
+        HeadItem  = g.Player.Head.name
+    }
+    if g.Player.Neck != nil {
+        NeckItem  = g.Player.Neck.name
+    }
+    if g.Player.Torso != nil {
+        TorsoItem  = g.Player.Torso.name
+    }
+    if g.Player.RightHand != nil {
+        RHandItem  = g.Player.RightHand.name
+    }
+    if g.Player.LeftHand != nil {
+        LHandItem  = g.Player.LeftHand.name
+    }
+    if g.Player.Pants != nil {
+        PantsItem  = g.Player.Pants.name
+    }
 
     // Assemble the various parts of the GUI.
     for i := 0; i < GuiWidth; i++ {
@@ -503,49 +534,49 @@ func DrawInventoryUI() {
     GuiLines = append(GuiLines, GuiTopBottom)
     GuiLines = append(GuiLines, GuiLeftRight)
     GuiLines = append(GuiLines,
-      "| " + AlignAndSpaceString("Equipped Items", "middle", 26) + " |")
+      "| " + AlignAndSpaceString("Equipped Items", "centre", 14) + " |")
     GuiLines = append(GuiLines, GuiLeftRight)
     GuiLines = append(GuiLines, GuiTopBottom)
     GuiLines = append(GuiLines, GuiLeftRight)
 
     // Assemble the portion of the inventory screen for the head item.
     GuiLines = append(GuiLines,
-      "| " + AlignAndSpaceString("Head       --> ", "right", 26) + " |")
+      "| Head       --> " + AlignAndSpaceString(HeadItem, "right", 13) + " |")
 
     // Add a spacer.
     GuiLines = append(GuiLines, GuiLeftRight)
 
     // Assemble the portion of the inventory screen for the neck item.
     GuiLines = append(GuiLines,
-      "| Neck       --> " + AlignAndSpaceString("-", "right", 11) + " |")
+      "| Neck       --> " + AlignAndSpaceString(NeckItem, "right", 13) + " |")
 
     // Add a spacer.
     GuiLines = append(GuiLines, GuiLeftRight)
 
     // Assemble the portion of the inventory screen for the torso item.
     GuiLines = append(GuiLines,
-      "| Torso      --> " + AlignAndSpaceString("-", "right", 11) + " |")
+      "| Torso      --> " + AlignAndSpaceString(TorsoItem, "right", 13) + " |")
 
     // Add a spacer.
     GuiLines = append(GuiLines, GuiLeftRight)
 
     // Assemble the portion of the inventory screen for the right hand item.
     GuiLines = append(GuiLines,
-      "| Right Hand --> " + AlignAndSpaceString("-", "right", 26) + " |")
+      "| Right Hand --> " + AlignAndSpaceString(RHandItem, "right", 13) + " |")
 
     // Add a spacer.
     GuiLines = append(GuiLines, GuiLeftRight)
 
     // Assemble the portion of the inventory screen for the left hand item.
     GuiLines = append(GuiLines,
-      "| Left Hand  --> " + AlignAndSpaceString("-", "right", 26) + " |")
+      "| Left Hand  --> " + AlignAndSpaceString(LHandItem, "right", 13) + " |")
 
     // Add a spacer.
     GuiLines = append(GuiLines, GuiLeftRight)
 
     // Assemble the portion of the inventory screen for the pants item.
     GuiLines = append(GuiLines,
-      "| Pants      --> " + AlignAndSpaceString("-", "right", 26) + " |")
+      "| Pants      --> " + AlignAndSpaceString(PantsItem, "right", 13) + " |")
 
     // Assemble the bottom portion of the inventory.
     GuiLines = append(GuiLines, GuiLeftRight)
