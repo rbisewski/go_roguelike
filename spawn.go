@@ -8,6 +8,11 @@ package main
 
 import "fmt"
 
+//
+// TODO: once types/creature_types.go is completed, re-enable this
+//
+//import "./types"
+
 //! Function to spawn a creature in a given area.
 /*
  * @param     string    name of the creature to add
