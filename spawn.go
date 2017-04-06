@@ -8,11 +8,6 @@ package main
 
 import "fmt"
 
-//
-// TODO: once types/creature_types.go is completed, re-enable this
-//
-//import "./types"
-
 //! Function to spawn a creature in a given area.
 /*
  * @param     string    name of the creature to add
@@ -30,21 +25,46 @@ func spawnCreatureToArray(name string, x int, y int, a *Area) bool {
         return false
     }
 
-    // If a "dog" creature was requested...
-    if name == "dog" {
-
-        // Append it to the array.
-        a.Creatures = append(a.Creatures, NewCreature("dog", "canine", y,
-          x, 'd', a, nil, 20, 30, 5, 0))
-
-        // With the monster successfully added, consider this complete.
-        return true
+    // Safety check, if the creature type info has not yet been populated,
+    // then leave this function.
+    if !GlobalCreatureTypeInfoMapIsPopulated {
+        return false
     }
 
-    // Otherwise an invalid string was given, so tell the dev this failed...
-    DebugLog(&G, fmt.Sprintf("spawnCreatureToArray() --> improper monster " +
-                             "string given: %s", name))
+    // Further safety check, make sure that creature actually exists as a
+    // valid type in the global creature type array.
+    _, IsCreatureTypeDefined := GlobalCreatureTypeInfoMap[name]
 
-    // Finally give back a false here since this attempt failed.
-    return false
+    // If the given creature name is not present, leave and return false.
+    if !IsCreatureTypeDefined {
+
+        // When debug mode is enabled, also log a message about the improper
+        // creature name string given.
+        DebugLog(&G, fmt.Sprintf("spawnCreatureToArray() --> improper " +
+          "monster string given: %s", name))
+
+        // Send back a false since the creature was *not* spawned.
+        return false
+    }
+
+    // Grab the creature's name, species, rune-graphic, health, max-health,
+    // attack, and defence attributes from the global creature type map.
+    /*
+     * TODO: implement this
+     *
+    SpawnedCreatureName    := GlobalCreatureTypeInfoMap[name].name
+    SpawnedCreatureSpecies := GlobalCreatureTypeInfoMap[name].species
+    SpawnedCreatureGfx     := GlobalCreatureTypeInfoMap[name].ch
+    SpawnedCreatureHp      := GlobalCreatureTypeInfoMap[name].Hp
+    SpawnedCreatureMaxHp   := GlobalCreatureTypeInfoMap[name].MaxHp
+    SpawnedCreatureAttack  := GlobalCreatureTypeInfoMap[name].Att
+    SpawnedCreatureDefence := GlobalCreatureTypeInfoMap[name].Def
+    */
+
+    // Append it to the array.
+    a.Creatures = append(a.Creatures, NewCreature("dog", "canine", y,
+      x, 'd', a, nil, 20, 30, 5, 0))
+
+    // With the monster successfully added, consider this complete.
+    return true
 }
