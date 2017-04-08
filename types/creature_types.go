@@ -10,13 +10,13 @@ package types
 type CreatureTypeInfo struct {
 
     // Holds the name of the given creature.
-    name string
+    Name string
 
     // Holds the type of the given creature.
-    species string
+    Species string
 
     // Appearance of the creature.
-    ch rune
+    Ch rune
 
     // Health, max health, attack, and defence
     Hp    int

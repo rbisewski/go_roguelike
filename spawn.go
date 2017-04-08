@@ -49,22 +49,19 @@ func spawnCreatureToArray(name string, x int, y int, a *Area) bool {
 
     // Grab the creature's name, species, rune-graphic, health, max-health,
     // attack, and defence attributes from the global creature type map.
-    /*
-     * TODO: finish implementing this
-     *
-    SpawnedCreatureName    := GlobalCreatureTypeInfoMap[name].name
-    SpawnedCreatureSpecies := GlobalCreatureTypeInfoMap[name].species
-    SpawnedCreatureGfx     := GlobalCreatureTypeInfoMap[name].ch
-    */
+    SpawnedCreatureName    := GlobalCreatureTypeInfoMap[name].Name
+    SpawnedCreatureSpecies := GlobalCreatureTypeInfoMap[name].Species
+    SpawnedCreatureGfx     := GlobalCreatureTypeInfoMap[name].Ch
     SpawnedCreatureHp      := GlobalCreatureTypeInfoMap[name].Hp
     SpawnedCreatureMaxHp   := GlobalCreatureTypeInfoMap[name].MaxHp
     SpawnedCreatureAttack  := GlobalCreatureTypeInfoMap[name].Att
     SpawnedCreatureDefence := GlobalCreatureTypeInfoMap[name].Def
 
     // Append it to the array.
-    a.Creatures = append(a.Creatures, NewCreature("dog", "canine", y,
-      x, 'd', a, nil, SpawnedCreatureHp, SpawnedCreatureMaxHp,
-      SpawnedCreatureAttack, SpawnedCreatureDefence))
+    a.Creatures = append(a.Creatures, NewCreature(SpawnedCreatureName,
+      SpawnedCreatureSpecies, y, x, SpawnedCreatureGfx, a, nil,
+      SpawnedCreatureHp, SpawnedCreatureMaxHp, SpawnedCreatureAttack,
+      SpawnedCreatureDefence))
 
     // With the monster successfully added, consider this complete.
     return true
