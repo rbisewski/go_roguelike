@@ -39,12 +39,32 @@ func GenCreatureTypes(ct map[string]CreatureTypeInfo) bool {
     //
     // Dog
     //
-    ct["dog"] = CreatureTypeInfo{"dog", "canine", 'd', 20, 30, 5, 0}
+    ct["dog"] = CreatureTypeInfo{"dog", "canine", 'd', 20, 20, 5, 0}
 
     //
     // Wolf
     //
-    ct["wolf"] = CreatureTypeInfo{"wolf", "canine", 'w', 25, 35, 7, 0}
+    ct["wolf"] = CreatureTypeInfo{"wolf", "canine", 'w', 25, 25, 7, 0}
+
+    //
+    // Snake
+    //
+    ct["snake"] = CreatureTypeInfo{"snake", "reptile", 's', 18, 18, 10, 1}
+
+    //
+    // Snake
+    //
+    ct["spider"] = CreatureTypeInfo{"spider", "arthropod", 'x', 8, 8, 2, 2}
+
+    //
+    // Goblin
+    //
+    ct["goblin"] = CreatureTypeInfo{"goblin", "humanoid", 'g', 22, 22, 4, 2}
+
+    //
+    // Orc
+    //
+    ct["orc"] = CreatureTypeInfo{"orc", "humanoid", 'o', 40, 40, 12, 5}
 
     // Set the populated flag to true.
     return true

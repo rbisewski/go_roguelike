@@ -694,6 +694,9 @@ func (a *Area) populateAreaWithCreatures() bool {
         // As there are 1 or fewer blocking tiles nearby, it ought to be safe
         // to spawn a monster since this is a wide open area (which is to say,
         // very few walls or blockers).
+        //
+        // TODO: adjust this so it spawns all sorts of creatures
+        //
         spawnCreatureToArray("dog", dx, dy, a)
 
         // Append the points to the Coord array.
