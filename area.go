@@ -694,10 +694,42 @@ func (a *Area) populateAreaWithCreatures() bool {
         // As there are 1 or fewer blocking tiles nearby, it ought to be safe
         // to spawn a monster since this is a wide open area (which is to say,
         // very few walls or blockers).
-        //
-        // TODO: adjust this so it spawns all sorts of creatures
-        //
         spawnCreatureToArray("dog", dx, dy, a)
+
+        // Pseudo-code for the new monster spawning mechanism
+        //
+        // TODO: implement this; note this will eventually replace the above
+        //
+        /*
+
+        // Do a quick safety check to ensure the creature types are actually
+        // populated correctly.
+        if GlobalCreatureTypeInfoMapIsPopulated {
+
+            // Determine the current number of types
+            num_of_types := sizeof(GlobalCreatureTypeInfoMap)
+
+            // Attempt to grab a number between 0 and num_of_types
+            chosen_type_num := getRandomNumBetweenZeroAndMax(num_of_types-1)
+
+            // Grab a creature type stored at the address specified by
+            // chosen_type_num.
+            chosen_creature_type := GlobalCreatureTypeInfoMap[chosen_type_num]
+
+            // Attempt to spawn a creature of that type
+            wasSuccessful := spawnCreatureToArray(chosen_creature_type.Name,
+              dx, dy, a)
+
+            // If some error occurred, print debug info and attempt to
+            // leave the function.
+            if !wasSuccessful {
+                DebugLog(&G, fmt.Sprintf("populateAreaWithCreatures() --> " +
+                  "Unable to spawn chosen creature into the area!")
+                break
+            }
+        }
+
+        */
 
         // Append the points to the Coord array.
         CoordsArray = append(CoordsArray, CurrentCoordPair)
