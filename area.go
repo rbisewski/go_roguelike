@@ -691,45 +691,59 @@ func (a *Area) populateAreaWithCreatures() bool {
             continue
         }
 
+        //
         // As there are 1 or fewer blocking tiles nearby, it ought to be safe
         // to spawn a monster since this is a wide open area (which is to say,
         // very few walls or blockers).
-        spawnCreatureToArray("dog", dx, dy, a)
-
-        // Pseudo-code for the new monster spawning mechanism
         //
-        // TODO: implement this; note this will eventually replace the above
+        // The code in this below block will randomly spawn creatures into
+        // a given area. Perhaps in the future consider making it area type
+        // dependant; e.g. spawn goblins and bats in cave areas
         //
-        /*
-
-        // Do a quick safety check to ensure the creature types are actually
-        // populated correctly.
+        // Firstly, do a quick safety check to ensure the creature types are
+        // actually populated correctly into the global array.
+        //
         if GlobalCreatureTypeInfoMapIsPopulated {
 
             // Determine the current number of types
-            num_of_types := sizeof(GlobalCreatureTypeInfoMap)
+            num_of_types := len(GlobalCreatureTypeInfoMap)
 
             // Attempt to grab a number between 0 and num_of_types
             chosen_type_num := getRandomNumBetweenZeroAndMax(num_of_types-1)
 
             // Grab a creature type stored at the address specified by
             // chosen_type_num.
-            chosen_creature_type := GlobalCreatureTypeInfoMap[chosen_type_num]
+            var chosen_creature_type string = ""
+            var i int = 0
+            for k, _ := range GlobalCreatureTypeInfoMap {
+
+                // If the counter matches the requested element, break
+                if i == chosen_type_num {
+                    chosen_creature_type = k
+                    break
+                }
+
+                // Else increment the counter
+                i++
+            }
+
+            // Safety check, ensure that the chosen_creature_type isn't empty.
+            if chosen_creature_type == "" {
+                break
+            }
 
             // Attempt to spawn a creature of that type
-            wasSuccessful := spawnCreatureToArray(chosen_creature_type.Name,
+            wasSuccessful := spawnCreatureToArray(chosen_creature_type,
               dx, dy, a)
 
             // If some error occurred, print debug info and attempt to
             // leave the function.
             if !wasSuccessful {
                 DebugLog(&G, fmt.Sprintf("populateAreaWithCreatures() --> " +
-                  "Unable to spawn chosen creature into the area!")
+                  "Unable to spawn chosen creature into the area!"))
                 break
             }
         }
-
-        */
 
         // Append the points to the Coord array.
         CoordsArray = append(CoordsArray, CurrentCoordPair)
