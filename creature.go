@@ -311,6 +311,12 @@ func (attacker *Creature) attack(defender *Creature) {
     // Determine how much damage was done to the defender.
     damage_dealt = attacker.Att - defender.Def
 
+    // Cap the damage dealt at zero, this is to prevent the enemies from
+    // accidently healing other creatures when they attack.
+    if damage_dealt < 0 {
+        damage_dealt = 0
+    }
+
     // Adjust the defender's HP based on the damage dealt.
     defender.Hp -= damage_dealt
 

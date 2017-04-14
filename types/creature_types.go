@@ -37,13 +37,6 @@ func GenCreatureTypes(ct map[string]CreatureTypeInfo) bool {
     }
 
     //
-    // TODO: several of these monster attributes are accidently healing
-    //       the protagonist; also consider properly balancing the
-    //       attributes of some of these monster to make combat more
-    //       challenging
-    //
-
-    //
     // Dog
     //
     ct["dog"] = CreatureTypeInfo{"dog", "canine", 'd', 20, 20, 5, 0}
