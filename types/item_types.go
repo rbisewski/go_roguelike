@@ -42,6 +42,22 @@ type ItemTypeInfo struct {
     Defence_increase int
 }
 
-//
-// TODO: add item functions here
-//
+//! Function to populate details about various items types
+/*
+ * @return    none
+ */
+func GenItemTypes(itype map[string]ItemTypeInfo) bool {
+
+    // Input validation
+    if itype == nil {
+        return false
+    }
+
+    //
+    // TODO: add item types
+    //
+    //itype["sword"] = ItemTypeInfo{}
+
+    // All of the items have been populates successfully, so return true.
+    return true
+}
