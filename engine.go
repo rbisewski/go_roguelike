@@ -410,7 +410,11 @@ func (p *Creature) UpdateStats() {
     StatsWindow.Mvaddstr(1, 0, fmt.Sprintf("%s", p.name))
 
     // Format and write the HP row in the Stats viewscreen.
-    StatsWindow.Mvaddstr(3, 0, fmt.Sprintf("HP: %d/%d", p.Hp, p.MaxHp))
+    //
+    // NOTE: several whitespaces were added here to ensure ncurses properly
+    //       wipes away and remaining ASCII data from long hitpoints, etc
+    //
+    StatsWindow.Mvaddstr(3, 0, fmt.Sprintf("HP: %d / %d    ", p.Hp, p.MaxHp))
 
     // Refresh the screen.
     StatsWindow.NoutRefresh()

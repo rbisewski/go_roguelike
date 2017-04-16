@@ -19,8 +19,14 @@ var MenuErrorMsg   string = ""
 // Global variable to hold all of the creature types.
 var GlobalCreatureTypeInfoMap = make(map[string]types.CreatureTypeInfo)
 
-// Global variable to check if the map has already been populated.
+// Global variable to check if the creature types has already been populated.
 var GlobalCreatureTypeInfoMapIsPopulated = false
+
+// Global variable to hold all of the item types.
+var GlobalItemTypeInfoMap = make(map[string]types.ItemTypeInfo)
+
+// Global variable to check if the item types has already been populated.
+var GlobalItemTypeInfoMapIsPopulated = false
 
 //
 // Main
@@ -33,6 +39,9 @@ func main() {
 
     // Populate the various creature types into the game.
     GlobalCreatureTypeInfoMapIsPopulated = types.GenCreatureTypes(GlobalCreatureTypeInfoMap)
+
+    // Populate the various item types into the game.
+    GlobalItemTypeInfoMapIsPopulated = types.GenItemTypes(GlobalItemTypeInfoMap)
 
     // The default state shall be to set the menu.
     G.state = "menu"
