@@ -32,19 +32,14 @@ type Creature struct {
     // Pointer to the inventory, which consists of objects of class Item.
     inventory []*Item
 
-    // Pointer to the stats attributes.
-    *stats
-
-    // Pointer to the creature equipment locations.
-    *equipment
-}
-
-// Structure to hold character attributes
-type stats struct {
+    // Stats attributes.
     Hp    int
     MaxHp int
     Att   int
     Def   int
+
+    // Pointer to the creature equipment locations.
+    *equipment
 }
 
 // Structure to hold the equipment being utilized by certain creatures.
@@ -55,19 +50,6 @@ type equipment struct {
     RightHand *Item
     LeftHand  *Item
     Pants     *Item
-}
-
-//! Creature Stats Constructor
-/*
- * @param    int       current hit points
- * @param    int       maximum hit points
- * @param    int       attack
- * @param    int       defence
- *
- * @return   stats*    pointer to a newly allocated Stats object.
- */
-func newStats(hp, max, att, def int) *stats {
-    return &stats{hp, max, att, def}
 }
 
 //! Creature Equipment Constructor
@@ -123,7 +105,10 @@ func NewCreature(name string,
                      ch,
                      area,
                      inventory,
-                     newStats(hp, max, att, def),
+                     hp,
+                     max,
+                     att,
+                     def,
                      nil}
 }
 
@@ -162,7 +147,10 @@ func NewCreatureWithEquipment(name string,
                      ch,
                      area,
                      inventory,
-                     newStats(hp, max, att, def),
+                     hp,
+                     max,
+                     att,
+                     def,
                      newEquipment(nil, nil, nil, nil, nil, nil)}
 }
 
