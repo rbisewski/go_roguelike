@@ -38,6 +38,12 @@ type Creature struct {
     Att   int
     Def   int
 
+    // The number of steps required to heal by 1 point of health.
+    Healrate uint
+
+    // The number of steps currently walked by the creature in question.
+    Healcounter uint
+
     // Pointer to the creature equipment locations.
     *equipment
 }
@@ -72,16 +78,18 @@ func newEquipment(head, neck, torso, righthand, lefthand,
 
 //! Creature w/o Equipment Constructor
 /*
- * @param     string    creature name
- * @param     string    creature species (i.e type)
- * @param     int       y-value
- * @param     int       x-value
- * @param     rune      ASCII character graphic
- * @param     Area*     pointer to an Area object
- * @param     int       current hit points
- * @param     int       maximum hit points
- * @param     int       attack
- * @param     int       defence
+ * @param     string       creature name
+ * @param     string       creature species (i.e type)
+ * @param     int          y-value
+ * @param     int          x-value
+ * @param     rune         ASCII character graphic
+ * @param     Area*        pointer to an Area object
+ * @param     int          current hit points
+ * @param     int          maximum hit points
+ * @param     int          attack
+ * @param     int          defence
+ * @param     uint         heal rate
+ * @param     uint         heal counter
  *
  * @return    Creature*    pointer to a Creature w/ Stats
  */
@@ -95,7 +103,9 @@ func NewCreature(name string,
                  hp int,
                  max int,
                  att int,
-                 def int) *Creature {
+                 def int,
+                 hr uint,
+                 hc uint) *Creature {
 
     // Assign memory for a creature object and return the address.
     return &Creature{name,
@@ -109,21 +119,25 @@ func NewCreature(name string,
                      max,
                      att,
                      def,
+                     hr,
+                     hc,
                      nil}
 }
 
 //! Creature w/ Equipment Constructor
 /*
- * @param     string    creature name
- * @param     string    creature species (i.e type)
- * @param     int       y-value
- * @param     int       x-value
- * @param     rune      ASCII character graphic
- * @param     Area*     pointer to an Area object
- * @param     int       current hit points
- * @param     int       maximum hit points
- * @param     int       attack
- * @param     int       defence
+ * @param     string       creature name
+ * @param     string       creature species (i.e type)
+ * @param     int          y-value
+ * @param     int          x-value
+ * @param     rune         ASCII character graphic
+ * @param     Area*        pointer to an Area object
+ * @param     int          current hit points
+ * @param     int          maximum hit points
+ * @param     int          attack
+ * @param     int          defence
+ * @param     uint         heal rate
+ * @param     uint         heal counter
  *
  * @return    Creature*    pointer to a Creature w/ Stats
  */
@@ -137,7 +151,9 @@ func NewCreatureWithEquipment(name string,
                  hp int,
                  max int,
                  att int,
-                 def int) *Creature {
+                 def int,
+                 hr uint,
+                 hc uint) *Creature {
 
     // Assign memory for a creature object and return the address.
     return &Creature{name,
@@ -151,6 +167,8 @@ func NewCreatureWithEquipment(name string,
                      max,
                      att,
                      def,
+                     hr,
+                     hc,
                      newEquipment(nil, nil, nil, nil, nil, nil)}
 }
 
@@ -197,6 +215,10 @@ func (m *Creature) Move(y, x int) {
         // Leave the function here.
         return
     }
+
+    //
+    // TODO: consider adding logic here to handle the healing rate / counter
+    //
 
     // If the player attempts to move to a blocking tile, and it is a wall,
     // go ahead and print a short message and then leave function.
