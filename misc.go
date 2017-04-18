@@ -1,7 +1,7 @@
 /*
  * File: misc.go
  *
- * Description: Various functions that don't fit elsewhere.
+ * Description: Simple utility functions for the program.
  */
 
 package main
