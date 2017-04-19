@@ -216,9 +216,22 @@ func (m *Creature) Move(y, x int) {
         return
     }
 
-    //
-    // TODO: consider adding logic here to handle the healing rate / counter
-    //
+    // Increment the monster's healing counter.
+    m.Healcounter++
+
+    // If the heal counter has surpassed the healing rate value, then...
+    if m.Healcounter >= m.Healrate {
+
+        // Set the counter back to zero
+        m.Healcounter = 0
+    }
+
+    // If the healing counter is zero and creature is not fully healed...
+    if m.Healcounter == 0 && m.MaxHp > m.Hp {
+
+        // Increase the current hitpoints of the creature by 1
+        m.Hp++
+    }
 
     // If the player attempts to move to a blocking tile, and it is a wall,
     // go ahead and print a short message and then leave function.
