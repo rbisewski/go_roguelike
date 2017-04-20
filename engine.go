@@ -479,9 +479,48 @@ func Confirm(msg string) bool {
     return false
 }
 
+//! Display the items currently present on the ground.
+/*
+ * @param     Game*    pointer to the current game object
+ *
+ * @return    none
+ */
+func DrawGroundItemsUI(g *Game) {
+
+    // Input validation
+    if g == nil || g.Player == nil {
+        return
+    }
+
+    // TODO: implement the below pseudo-code
+
+    // Obtain the (x,y) coord of where the player character is currently
+    // standing.
+
+    // Grab the list of items from the Area te player is currently in and
+    // see if they are present in the same coord.
+
+    // Draw a ncurses UI here, see DrawInventoryUI for more details
+
+        // If there are no items on the ground, display a small message
+        // stating that there are no items here.
+
+        // If there are less than 7 items, display the complete list of
+        // items present in this location.
+
+        // If there are 7 or more items, create a pagination to allow the
+        // end-user to cycle thru all of the items on the ground
+
+    // Leave this function, since this needs to redraw the UI if the player
+    // picks up all of the items on the ground, etc.
+    return
+}
+
 //! Display the equipment the character currently is wearing and what items
 //! they are holding.
 /*
+ * @param     Game*    pointer to the current game object
+ *
  * @return    none
  */
 func DrawInventoryUI(g *Game) {

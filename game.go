@@ -411,6 +411,10 @@ func (g *Game) Input() {
         g.Player.Move(0, 1)
         g.process_ai()
 
+    // g --> Open / close the grab-item-from-ground interface.
+    case "67":
+        DrawGroundItemsUI(g)
+
     // i --> Open / close the inventory of the player character.
     case "69":
 
