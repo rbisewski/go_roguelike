@@ -29,6 +29,9 @@ type Game struct {
 
     // Whether or not the player inventory is open.
     InventoryState bool
+
+    // Whether or not the ground items UI is open.
+    GroundItemsUIState bool
 }
 
 //! Function to initialize the game.
@@ -348,6 +351,14 @@ func (g *Game) Input() {
         return
     }
 
+    // If the ground items UI is open, and the key being pressed
+    // is not "g" then do nothing.
+    if g.GroundItemsUIState && key_as_string != "67" {
+        DrawGroundItemsUI(g)
+        return
+    }
+
+
     // For a given key...
     switch key_as_string {
 
@@ -413,7 +424,18 @@ func (g *Game) Input() {
 
     // g --> Open / close the grab-item-from-ground interface.
     case "67":
-        DrawGroundItemsUI(g)
+
+        // If the ground items UI screen is not yet open.
+        if !g.GroundItemsUIState {
+
+            // Enable the inventory state and draw the UI
+            g.GroundItemsUIState = false
+            DrawGroundItemsUI(g)
+            return
+        }
+
+        // Otherwise the ground items UI is open, so flip the state.
+        g.GroundItemsUIState = false
 
     // i --> Open / close the inventory of the player character.
     case "69":
