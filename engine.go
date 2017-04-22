@@ -492,13 +492,26 @@ func DrawGroundItemsUI(g *Game) {
         return
     }
 
-    // TODO: implement the below pseudo-code
+    // Variable declaration
+    var itemsAtCurrentCoord = make([]*Item,0)
 
     // Obtain the (x,y) coord of where the player character is currently
     // standing.
+    loc_x := g.Player.X
+    loc_y := g.Player.X
 
     // Grab the list of items from the Area te player is currently in and
     // see if they are present in the same coord.
+    for _, itm := range g.Area.Items {
+
+        // If the item is at Player (x,y) position, add it to the list of
+        // items present on the ground; i.e. itemsAtCurrentCoord
+        if loc_x == itm.X && loc_y == itm.Y {
+            itemsAtCurrentCoord = append(itemsAtCurrentCoord, itm)
+        }
+    }
+
+    // TODO: implement the below pseudo-code
 
     // Draw a ncurses UI here, see DrawInventoryUI for more details
 
