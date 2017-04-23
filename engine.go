@@ -494,6 +494,11 @@ func DrawGroundItemsUI(g *Game) {
 
     // Variable declaration
     var itemsAtCurrentCoord = make([]*Item,0)
+    var GuiHeight    = 0
+    var GuiWidth     = 30
+    var GuiTopBottom = "+"
+    var GuiLeftRight = "|"
+    var GuiLines     = make([]string,0)
 
     // Obtain the (x,y) coord of where the player character is currently
     // standing.
@@ -511,9 +516,29 @@ func DrawGroundItemsUI(g *Game) {
         }
     }
 
-    // TODO: implement the below pseudo-code
+    // Assemble the various parts of the GUI.
+    for i := 0; i < GuiWidth; i++ {
+        GuiTopBottom += "-"
+        GuiLeftRight += " "
+    }
+    GuiTopBottom += "+"
+    GuiLeftRight += "|"
 
-    // Draw a ncurses UI here, see DrawInventoryUI for more details
+    // Assemble the top element of the inventory screen that displays the
+    // words "Items on the Ground" surrounded by '-' characters.
+    GuiLines = append(GuiLines, GuiTopBottom)
+    GuiLines = append(GuiLines, GuiLeftRight)
+    GuiLines = append(GuiLines,
+      "| " + AlignAndSpaceString("Items on the Ground", "centre", 9) + " |")
+    GuiLines = append(GuiLines, GuiLeftRight)
+    GuiLines = append(GuiLines, GuiTopBottom)
+    GuiLines = append(GuiLines, GuiLeftRight)
+
+    // Generate a ncurses UI here based on the number of items on the
+    // ground.
+    //
+    // TODO: implement the below pseudo-code
+    //
 
         // If there are no items on the ground, display a small message
         // stating that there are no items here.
@@ -523,6 +548,37 @@ func DrawGroundItemsUI(g *Game) {
 
         // If there are 7 or more items, create a pagination to allow the
         // end-user to cycle thru all of the items on the ground
+
+    // Assemble the bottom portion of the ground items UI.
+    GuiLines = append(GuiLines, GuiLeftRight)
+    GuiLines = append(GuiLines, GuiTopBottom)
+
+    // Get the current number of lines and store it as the height of the UI.
+    GuiHeight = len(GuiLines)
+
+    // Using the calculated height, go ahead and determine the upper bounds
+    // of the ground items interface, as it relates to the currently drawn
+    // ncurses window.
+    offset := int(GuiHeight / 2)
+
+    // Safety check, this shouldn't happen but to safe-guard console offsets,
+    // if the calculated height is less than one or the offset is zero, tell
+    // the developer what happened and leave this function.
+    if GuiHeight < 1 || offset == 0 {
+        DebugLog(&G,"DrawGroundItemsUI() --> improper height and offset, " +
+                    "terminating function")
+        return
+    }
+
+    // Write the ground item UI to the screen.
+    for _, line := range GuiLines {
+
+        // Write the given line to the console output.
+        Write((ScreenHeight/2)-offset, ScreenWidth/2, line)
+
+        // Decrement the offset.
+        offset--
+    }
 
     // Leave this function, since this needs to redraw the UI if the player
     // picks up all of the items on the ground, etc.

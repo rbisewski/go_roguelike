@@ -353,6 +353,9 @@ func (g *Game) Input() {
 
     // If the ground items UI is open, and the key being pressed
     // is not "g" then do nothing.
+    //
+    // TODO: fix this, currently does not work
+    //
     if g.GroundItemsUIState && key_as_string != "67" {
         DrawGroundItemsUI(g)
         return
