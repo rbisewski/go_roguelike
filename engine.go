@@ -12,6 +12,7 @@ import (
     "math/rand"
     "os"
     "time"
+    "strconv"
 )
 
 // Structure to hold the part of the window where in-game messages are shown.
@@ -536,18 +537,40 @@ func DrawGroundItemsUI(g *Game) {
 
     // Generate a ncurses UI here based on the number of items on the
     // ground.
-    //
-    // TODO: implement the below pseudo-code
-    //
+    for i, itm := range itemsAtCurrentCoord {
 
-        // If there are no items on the ground, display a small message
-        // stating that there are no items here.
-
-        // If there are less than 7 items, display the complete list of
-        // items present in this location.
+        // Append the item with spacing
+        GuiLines = append(GuiLines, GuiLeftRight)
+        GuiLines = append(GuiLines,
+          "| " + AlignAndSpaceString(strconv.Itoa(i) + ") " +
+          itm.name, "centre", 9) + " |")
+        GuiLines = append(GuiLines, GuiLeftRight)
 
         // If there are 7 or more items, create a pagination to allow the
         // end-user to cycle thru all of the items on the ground
+        if i >= 7 {
+
+            //
+            // TODO: implement the below pseudo-code
+            //
+
+            // determine the page number and total pages
+
+            // append it to the bottom of the page
+
+            // end the loop since this will only render 7
+            break
+        }
+    }
+
+    // If there are no items on the ground, display a small message
+    // stating that there are no items here.
+    if len(itemsAtCurrentCoord) < 1 {
+        GuiLines = append(GuiLines, GuiLeftRight)
+        GuiLines = append(GuiLines,
+          "| " + AlignAndSpaceString("No items are here.", "centre", 10) + " |")
+        GuiLines = append(GuiLines, GuiLeftRight)
+    }
 
     // Assemble the bottom portion of the ground items UI.
     GuiLines = append(GuiLines, GuiLeftRight)
