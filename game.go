@@ -353,14 +353,10 @@ func (g *Game) Input() {
 
     // If the ground items UI is open, and the key being pressed
     // is not "g" then do nothing.
-    //
-    // TODO: fix this, currently does not work
-    //
     if g.GroundItemsUIState && key_as_string != "67" {
         DrawGroundItemsUI(g)
         return
     }
-
 
     // For a given key...
     switch key_as_string {
@@ -432,7 +428,7 @@ func (g *Game) Input() {
         if !g.GroundItemsUIState {
 
             // Enable the inventory state and draw the UI
-            g.GroundItemsUIState = false
+            g.GroundItemsUIState = true
             DrawGroundItemsUI(g)
             return
         }
