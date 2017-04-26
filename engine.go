@@ -504,7 +504,7 @@ func DrawGroundItemsUI(g *Game) {
     // Obtain the (x,y) coord of where the player character is currently
     // standing.
     loc_x := g.Player.X
-    loc_y := g.Player.X
+    loc_y := g.Player.Y
 
     // Grab the list of items from the Area te player is currently in and
     // see if they are present in the same coord.
