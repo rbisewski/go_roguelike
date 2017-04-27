@@ -542,8 +542,8 @@ func DrawGroundItemsUI(g *Game) {
         // Append the item with spacing
         GuiLines = append(GuiLines, GuiLeftRight)
         GuiLines = append(GuiLines,
-          "| " + AlignAndSpaceString(strconv.Itoa(i) + ") " +
-          itm.name, "centre", 9) + " |")
+          "| " + AlignAndSpaceString(strconv.Itoa(i+1) + ") " +
+          itm.name, "right", GuiWidth-2) + " |")
         GuiLines = append(GuiLines, GuiLeftRight)
 
         // If there are 7 or more items, create a pagination to allow the
