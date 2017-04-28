@@ -551,12 +551,20 @@ func DrawGroundItemsUI(g *Game) {
         if i >= 7 {
 
             //
-            // TODO: implement the below pseudo-code
+            // TODO: implement the below pseudo-code, for right now just
+            //       break from the loop until this is done
             //
+            break
 
             // determine the page number and total pages
+            numOfPages := int(len(itemsAtCurrentCoord) / 7)
 
             // append it to the bottom of the page
+            GuiLines = append(GuiLines, GuiLeftRight)
+            GuiLines = append(GuiLines,
+              "| " + AlignAndSpaceString(strconv.Itoa(numOfPages),
+              "right", GuiWidth-2) + " |")
+            GuiLines = append(GuiLines, GuiLeftRight)
 
             // end the loop since this will only render 7
             break
