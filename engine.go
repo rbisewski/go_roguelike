@@ -535,6 +535,10 @@ func DrawGroundItemsUI(g *Game) {
     GuiLines = append(GuiLines, GuiTopBottom)
     GuiLines = append(GuiLines, GuiLeftRight)
 
+    // Variable to store the current page.
+    currentPage := 1
+    numOfPages  := int(len(itemsAtCurrentCoord) / 7)
+
     // Generate a ncurses UI here based on the number of items on the
     // ground.
     for i, itm := range itemsAtCurrentCoord {
@@ -556,17 +560,14 @@ func DrawGroundItemsUI(g *Game) {
             //
             break
 
-            // determine the page number and total pages
-            currentPage := 0
-            numOfPages := int(len(itemsAtCurrentCoord) / 7)
+            // assemble the text for the 'Page x of y' label
+            pageLabel := "Page " + strconv.Itoa(currentPage) + " of " +
+              strconv.Itoa(numOfPages)
 
             // append it to the bottom of the page
             GuiLines = append(GuiLines, GuiLeftRight)
             GuiLines = append(GuiLines,
-              "| " + AlignAndSpaceString(strconv.Itoa(currentPage),
-              "right", GuiWidth-2) + " |")
-            GuiLines = append(GuiLines,
-              "| " + AlignAndSpaceString(strconv.Itoa(numOfPages),
+              "| Page " + AlignAndSpaceString(pageLabel,
               "right", GuiWidth-2) + " |")
             GuiLines = append(GuiLines, GuiLeftRight)
 
