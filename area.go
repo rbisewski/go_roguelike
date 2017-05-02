@@ -6,9 +6,11 @@
 
 package main
 
-import "fmt"
-import "math/rand"
-import "strconv"
+import (
+    "fmt"
+    "math/rand"
+    "strconv"
+)
 
 // Structure to hold the points of the form (x,y)
 type Coords struct {
