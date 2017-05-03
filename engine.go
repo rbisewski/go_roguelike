@@ -480,6 +480,42 @@ func Confirm(msg string) bool {
     return false
 }
 
+//! Pickup an item from the list of ground items.
+/*
+ * @param     Game*    pointer to the current game object
+ * @param     string   the given key that was pressed
+ *
+ * @return    none
+ */
+func PickupGroundItem(g *Game, keyPressed string) {
+
+    // TODO: implement the below pseudo code
+
+    // Do a switch to check if a key between 1-7 was pressed.
+    /*
+    switch key_as_string {
+
+    // Number 1
+    case "31":
+
+    // Number 2
+    case "32":
+
+    // Number 3
+    case "33":
+
+    // Number 4
+    case "34":
+
+    // Number 5
+    case "35":
+
+    // Number 6
+    case "36":
+    }
+    */
+}
+
 //! Display the items currently present on the ground.
 /*
  * @param     Game*    pointer to the current game object

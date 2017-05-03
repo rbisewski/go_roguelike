@@ -354,6 +354,12 @@ func (g *Game) Input() {
     // If the ground items UI is open, and the key being pressed
     // is not "g" then do nothing.
     if g.GroundItemsUIState && key_as_string != "67" {
+
+        // Do a check to see if a player presses the key 1-7 then attempt
+        // to add that item to the player's inventory.
+        PickupGroundItem(g, key_as_string)
+
+        // Finally draw the UI.
         DrawGroundItemsUI(g)
         return
     }
