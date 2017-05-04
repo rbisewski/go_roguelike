@@ -32,6 +32,7 @@ type Game struct {
 
     // Whether or not the ground items UI is open.
     GroundItemsUIState bool
+    GroundItems []*Item
 }
 
 //! Function to initialize the game.
@@ -59,6 +60,10 @@ func (g *Game) Init() {
 
     // Initially the player does not have the inventory open
     g.InventoryState = false
+
+    // Initially the player is not picking up items from thr ground.
+    g.GroundItemsUIState = false
+    g.GroundItems = make([]*Item, 0)
 
     // Generate an area map
     g.Area, y, x = NewArea(240, 250)
@@ -355,12 +360,15 @@ func (g *Game) Input() {
     // is not "g" then do nothing.
     if g.GroundItemsUIState && key_as_string != "67" {
 
+        // Draw the UI and populate the global list of ground items.
+        DrawGroundItemsUI(g)
+
         // Do a check to see if a player presses the key 1-7 then attempt
         // to add that item to the player's inventory.
         PickupGroundItem(g, key_as_string)
 
-        // Finally draw the UI.
-        DrawGroundItemsUI(g)
+        // Leave here since this needs to continue showing the ground
+        // items UI to the player.
         return
     }
 
