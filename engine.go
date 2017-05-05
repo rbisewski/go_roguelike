@@ -485,19 +485,24 @@ func Confirm(msg string) bool {
  * @param     Game*    pointer to the current game object
  * @param     string   the given key that was pressed
  *
- * @return    none
+ * @return    error    error message, if any
  */
-func PickupGroundItem(g *Game, keyPressed string) {
+func PickupGroundItem(g *Game, keyPressed string) error {
+
+    // input validation
+    if g == nil || len(keyPressed) != 2 {
+        return fmt.Errorf("PickupGroundItem() --> invalid input")
+    }
 
     // Variable to hold the given item the character attempted to pickup.
-    //var givenItem Item
+    var givenItem *Item = nil
 
     // Determine the current number of items on the ground.
     numOfItems := len(g.GroundItems)
 
     // If there is less than 1 item, go back.
     if numOfItems < 1 {
-        return
+        return nil
     }
 
     // Do a switch to check if a key between 1-6 was pressed, and
@@ -509,67 +514,78 @@ func PickupGroundItem(g *Game, keyPressed string) {
 
         // Safety check, ensure there is at least 1 item.
         if numOfItems < 1 {
-            return
+            return nil
         }
 
-        // TODO: add code to grab the 1st item.
+        // Grab the 1st item.
+        givenItem = g.GroundItems[0]
 
     // Number 2
     case "32":
 
         // Safety check, ensure there is at least 2 items.
         if numOfItems < 2 {
-            return
+            return nil
         }
 
-        // TODO: add code to grab the 2nd item.
+        // Add code to grab the 2nd item.
+        givenItem = g.GroundItems[1]
 
     // Number 3
     case "33":
 
         // Safety check, ensure there is at least 3 items.
         if numOfItems < 3 {
-            return
+            return nil
         }
 
-        // TODO: add code to grab the 3rd item.
+        // Add code to grab the 3rd item.
+        givenItem = g.GroundItems[2]
 
     // Number 4
     case "34":
 
         // Safety check, ensure there is at least 4 items.
         if numOfItems < 4 {
-            return
+            return nil
         }
 
-        // TODO: add code to grab the 4th item.
+        // Add code to grab the 4th item.
+        givenItem = g.GroundItems[3]
 
     // Number 5
     case "35":
 
         // Safety check, ensure there is at least 5 items.
         if numOfItems < 5 {
-            return
+            return nil
         }
 
-        // TODO: add code to grab the 5th item.
+        // Add code to grab the 5th item.
+        givenItem = g.GroundItems[4]
 
     // Number 6
     case "36":
 
         // Safety check, ensure there is at least 6 items.
         if numOfItems < 6 {
-            return
+            return nil
         }
 
-        // TODO: add code to grab the 6th item.
+        // Add code to grab the 6th item.
+        givenItem = g.GroundItems[5]
     }
 
-    // TODO: implement the below pseudo code.
-
     // Safety check, ensure that the item isn't something unusual or nil.
+    if givenItem == nil {
+        return fmt.Errorf("PickupGroundItem() --> improperly formed item")
+    }
 
     // Attempt to add that item to the player's inventory.
+    // TODO: add code here
+
+    // everything was fine, so return nil
+    return nil
 }
 
 //! Display the items currently present on the ground.

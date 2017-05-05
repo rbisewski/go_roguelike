@@ -365,7 +365,12 @@ func (g *Game) Input() {
 
         // Do a check to see if a player presses the key 1-7 then attempt
         // to add that item to the player's inventory.
-        PickupGroundItem(g, key_as_string)
+        err := PickupGroundItem(g, key_as_string)
+
+        // If there was an error, print it out.
+        if err != nil {
+            fmt.Printf(err.Error())
+        }
 
         // Leave here since this needs to continue showing the ground
         // items UI to the player.
