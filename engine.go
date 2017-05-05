@@ -490,7 +490,7 @@ func Confirm(msg string) bool {
 func PickupGroundItem(g *Game, keyPressed string) {
 
     // Variable to hold the given item the character attempted to pickup.
-    var givenItem Item
+    //var givenItem Item
 
     // Determine the current number of items on the ground.
     numOfItems := len(g.GroundItems)
