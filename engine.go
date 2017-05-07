@@ -490,7 +490,7 @@ func Confirm(msg string) bool {
 func PickupGroundItem(g *Game, keyPressed string) error {
 
     // input validation
-    if g == nil || len(keyPressed) != 2 {
+    if g == nil || len(keyPressed) < 1 {
         return fmt.Errorf("PickupGroundItem() --> invalid input")
     }
 
@@ -581,8 +581,22 @@ func PickupGroundItem(g *Game, keyPressed string) error {
         return fmt.Errorf("PickupGroundItem() --> improperly formed item")
     }
 
+    // Set the current area of that item to nil.
+    givenItem.area = nil
+
     // Attempt to add that item to the player's inventory.
-    // TODO: add code here
+    g.Player.inventory = append(g.Player.inventory, givenItem)
+
+    // Delete the item from the current area.
+    for index, item := range g.Area.Items {
+
+        // if the item matches, remove it
+        if item == givenItem {
+            g.Area.Items = append(g.Area.Items[:index],
+              g.Area.Items[:index+1]...)
+            break
+        }
+    }
 
     // everything was fine, so return nil
     return nil
