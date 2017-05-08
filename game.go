@@ -370,7 +370,11 @@ func (g *Game) Input() {
         // If there was an error, print it out.
         if err != nil {
             fmt.Printf(err.Error())
+            return
         }
+
+        // Draw the UI and populate the global list of ground items.
+        DrawGroundItemsUI(g)
 
         // Leave here since this needs to continue showing the ground
         // items UI to the player.

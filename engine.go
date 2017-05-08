@@ -497,11 +497,8 @@ func PickupGroundItem(g *Game, keyPressed string) error {
     // Variable to hold the given item the character attempted to pickup.
     var givenItem *Item = nil
 
-    // Determine the current number of items on the ground.
-    numOfItems := len(g.GroundItems)
-
     // If there is less than 1 item, go back.
-    if numOfItems < 1 {
+    if len(g.GroundItems) < 1 {
         return nil
     }
 
@@ -513,7 +510,7 @@ func PickupGroundItem(g *Game, keyPressed string) error {
     case "31":
 
         // Safety check, ensure there is at least 1 item.
-        if numOfItems < 1 {
+        if len(g.GroundItems) < 1 {
             return nil
         }
 
@@ -524,7 +521,7 @@ func PickupGroundItem(g *Game, keyPressed string) error {
     case "32":
 
         // Safety check, ensure there is at least 2 items.
-        if numOfItems < 2 {
+        if len(g.GroundItems) < 2 {
             return nil
         }
 
@@ -535,7 +532,7 @@ func PickupGroundItem(g *Game, keyPressed string) error {
     case "33":
 
         // Safety check, ensure there is at least 3 items.
-        if numOfItems < 3 {
+        if len(g.GroundItems) < 3 {
             return nil
         }
 
@@ -546,7 +543,7 @@ func PickupGroundItem(g *Game, keyPressed string) error {
     case "34":
 
         // Safety check, ensure there is at least 4 items.
-        if numOfItems < 4 {
+        if len(g.GroundItems) < 4 {
             return nil
         }
 
@@ -557,7 +554,7 @@ func PickupGroundItem(g *Game, keyPressed string) error {
     case "35":
 
         // Safety check, ensure there is at least 5 items.
-        if numOfItems < 5 {
+        if len(g.GroundItems) < 5 {
             return nil
         }
 
@@ -568,7 +565,7 @@ func PickupGroundItem(g *Game, keyPressed string) error {
     case "36":
 
         // Safety check, ensure there is at least 6 items.
-        if numOfItems < 6 {
+        if len(g.GroundItems) < 6 {
             return nil
         }
 
@@ -576,10 +573,9 @@ func PickupGroundItem(g *Game, keyPressed string) error {
         givenItem = g.GroundItems[5]
     }
 
-    // Safety check, ensure that the item isn't something unusual or nil.
+    // If the item is nil, then skip this step.
     if givenItem == nil {
-        return fmt.Errorf("PickupGroundItem() --> improperly formed item #%d",
-          numOfItems)
+        return nil
     }
 
     // Set the current area of that item to nil.
@@ -593,8 +589,14 @@ func PickupGroundItem(g *Game, keyPressed string) error {
 
         // if the item matches, remove it
         if item == givenItem {
-            g.Area.Items = append(g.Area.Items[:index],
-              g.Area.Items[:index+1]...)
+
+            // Slick trick --> remove an element from an array while
+            // preserving order.
+            copy(g.Area.Items[index:], g.Area.Items[index+1:])
+            g.Area.Items[len(g.Area.Items)-1] = nil
+            g.Area.Items = g.Area.Items[:len(g.Area.Items)-1]
+
+            // Leave as this is now complete...
             break
         }
     }
@@ -617,7 +619,6 @@ func DrawGroundItemsUI(g *Game) {
     }
 
     // Variable declaration
-    var itemsAtCurrentCoord = make([]*Item,0)
     var GuiHeight    = 0
     var GuiWidth     = 30
     var GuiTopBottom = "+"
@@ -629,6 +630,9 @@ func DrawGroundItemsUI(g *Game) {
     loc_x := g.Player.X
     loc_y := g.Player.Y
 
+    // Remake the ground items array.
+    g.GroundItems = make([]*Item,0)
+
     // Grab the list of items from the Area te player is currently in and
     // see if they are present in the same coord.
     for _, itm := range g.Area.Items {
@@ -636,15 +640,9 @@ func DrawGroundItemsUI(g *Game) {
         // If the item is at Player (x,y) position, add it to the list of
         // items present on the ground; i.e. itemsAtCurrentCoord
         if loc_x == itm.X && loc_y == itm.Y {
-            itemsAtCurrentCoord = append(itemsAtCurrentCoord, itm)
+            g.GroundItems = append(g.GroundItems, itm)
         }
     }
-
-    // Attach it to the global list of ground items.
-    //
-    // TODO: put this code further down, since ideally only want the first
-    //       6 items of so.
-    g.GroundItems = itemsAtCurrentCoord
 
     // Assemble the various parts of the GUI.
     for i := 0; i < GuiWidth; i++ {
@@ -666,11 +664,11 @@ func DrawGroundItemsUI(g *Game) {
 
     // Variable to store the current page.
     currentPage := 1
-    numOfPages  := int(len(itemsAtCurrentCoord) / 7)
+    numOfPages  := int(len(g.GroundItems) / 7)
 
     // Generate a ncurses UI here based on the number of items on the
     // ground.
-    for i, itm := range itemsAtCurrentCoord {
+    for i, itm := range g.GroundItems {
 
         // Append the item with spacing
         GuiLines = append(GuiLines, GuiLeftRight)
@@ -707,7 +705,7 @@ func DrawGroundItemsUI(g *Game) {
 
     // If there are no items on the ground, display a small message
     // stating that there are no items here.
-    if len(itemsAtCurrentCoord) < 1 {
+    if len(g.GroundItems) < 1 {
         GuiLines = append(GuiLines, GuiLeftRight)
         GuiLines = append(GuiLines,
           "| " + AlignAndSpaceString("No items are here.", "centre", 10) + " |")
