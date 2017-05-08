@@ -578,7 +578,8 @@ func PickupGroundItem(g *Game, keyPressed string) error {
 
     // Safety check, ensure that the item isn't something unusual or nil.
     if givenItem == nil {
-        return fmt.Errorf("PickupGroundItem() --> improperly formed item")
+        return fmt.Errorf("PickupGroundItem() --> improperly formed item #%d",
+          numOfItems)
     }
 
     // Set the current area of that item to nil.
