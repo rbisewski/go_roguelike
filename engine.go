@@ -663,12 +663,21 @@ func DrawGroundItemsUI(g *Game) {
     GuiLines = append(GuiLines, GuiLeftRight)
 
     // Variable to store the current page.
-    currentPage := 1
-    numOfPages  := int(len(g.GroundItems) / 7)
+    currentPage        := 1
+    numOfPages         := int(len(g.GroundItems) / 7)
+    itemPrintedCounter := 0
 
     // Generate a ncurses UI here based on the number of items on the
-    // ground.
+    // ground; display the items of the relevant inventory page.
+    //
+    // TODO: add logic to increment the current page
+    //
     for i, itm := range g.GroundItems {
+
+        // Skip elements of a forward or backward page.
+        if i < ((currentPage-1) * 7) {
+            continue
+        }
 
         // Append the item with spacing
         GuiLines = append(GuiLines, GuiLeftRight)
@@ -677,15 +686,12 @@ func DrawGroundItemsUI(g *Game) {
           itm.name, "right", GuiWidth-2) + " |")
         GuiLines = append(GuiLines, GuiLeftRight)
 
+        // Increment the current number of items printed
+        itemPrintedCounter++
+
         // If there are 7 or more items, create a pagination to allow the
         // end-user to cycle thru all of the items on the ground
-        if i >= 7 {
-
-            //
-            // TODO: implement the below pseudo-code, for right now just
-            //       break from the loop until this is done
-            //
-            break
+        if itemPrintedCounter >= 7 && numOfPages > 1 {
 
             // assemble the text for the 'Page x of y' label
             pageLabel := "Page " + strconv.Itoa(currentPage) + " of " +
@@ -694,8 +700,8 @@ func DrawGroundItemsUI(g *Game) {
             // append it to the bottom of the page
             GuiLines = append(GuiLines, GuiLeftRight)
             GuiLines = append(GuiLines,
-              "| Page " + AlignAndSpaceString(pageLabel,
-              "right", GuiWidth-2) + " |")
+              "| " + AlignAndSpaceString(pageLabel, "right",
+              GuiWidth-2) + " |")
             GuiLines = append(GuiLines, GuiLeftRight)
 
             // end the loop since this will only render 7
