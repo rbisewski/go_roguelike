@@ -27,11 +27,7 @@ type Game struct {
     // Pointer to area array.
     Area   *Area
 
-    // Whether or not the player inventory is open.
-    InventoryState bool
-
-    // Whether or not the ground items UI is open.
-    GroundItemsUIState bool
+    // List of items on the ground at a give coord
     GroundItems []*Item
 }
 
@@ -58,11 +54,7 @@ func (g *Game) Init() {
     // Set the game state.
     g.state = "menu"
 
-    // Initially the player does not have the inventory open
-    g.InventoryState = false
-
     // Initially the player is not picking up items from thr ground.
-    g.GroundItemsUIState = false
     g.GroundItems = make([]*Item, 0)
 
     // Generate an area map
@@ -351,14 +343,14 @@ func (g *Game) Input() {
 
     // If the player character inventory is open, and the key being pressed
     // is not "i" then do nothing.
-    if g.InventoryState && key_as_string != "69" {
+    if g.state == "inventory" && key_as_string != "69" {
         DrawInventoryUI(g)
         return
     }
 
     // If the ground items UI is open, and the key being pressed
     // is not "g" then do nothing.
-    if g.GroundItemsUIState && key_as_string != "67" {
+    if g.state == "ground_items" && key_as_string != "67" {
 
         // Draw the UI and populate the global list of ground items.
         DrawGroundItemsUI(g)
@@ -448,31 +440,31 @@ func (g *Game) Input() {
     case "67":
 
         // If the ground items UI screen is not yet open.
-        if !g.GroundItemsUIState {
+        if g.state != "ground_items" {
 
             // Enable the inventory state and draw the UI
-            g.GroundItemsUIState = true
+            g.state = "ground_items"
             DrawGroundItemsUI(g)
             return
         }
 
         // Otherwise the ground items UI is open, so flip the state.
-        g.GroundItemsUIState = false
+        g.state = "playing"
 
     // i --> Open / close the inventory of the player character.
     case "69":
 
         // If the inventory is not yet open.
-        if !g.InventoryState {
+        if g.state != "inventory" {
 
             // Enable the inventory state and draw the UI
-            g.InventoryState = true
+            g.state = "inventory"
             DrawInventoryUI(g)
             return
         }
 
         // Otherwise the inventory is open, so flip the state.
-        g.InventoryState = false
+        g.state = "playing"
 
     // S --> Save game
     case "53":
