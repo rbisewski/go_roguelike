@@ -3,9 +3,8 @@
 go-roguelike is a plain ol' roguelike game implemented in golang. It
 resembles other roguelikes, such as nethack.
 
-The code itself is based off of code found from other online sources and
-uses the gocurses library in order to interface with the ever-popular
-ncurses library. 
+This project uses the ncurses library via Cgo wrapper, but the majority of
+the of the code is in golang.
 
 Perhaps one day it will be completed, but for now it is still missing
 key features like inventory or proper monster generation or multiple
