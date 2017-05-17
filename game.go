@@ -341,19 +341,33 @@ func (g *Game) Input() {
     // Convert the key pressed to a hex string value.
     key_as_string := fmt.Sprintf("%x", key)
 
+    // If the player presses the ESC key...
+    //
+    // TODO: adjust this so it re-draws the map as well
+    //
+    if (g.state == "inventory" || g.state == "ground_items") &&
+      key_as_string == "1b" {
+
+        // Set the state back to playing.
+        g.state = "playing"
+
     // If the player character inventory is open, and the key being pressed
     // is not "i" then do nothing.
-    if g.state == "inventory" && key_as_string != "69" {
-        DrawInventoryUI(g)
+    } else if g.state == "inventory" && (key_as_string != "69" ||
+      key_as_string == "c484" || key_as_string == "c485") {
+
+        // Draw and populate the inventory ncurses UI.
+        DrawInventoryUI(g, key_as_string)
         return
-    }
 
     // If the ground items UI is open, and the key being pressed
     // is not "g" then do nothing.
-    if g.state == "ground_items" && key_as_string != "67" {
+    } else if g.state == "ground_items" && (key_as_string != "67" ||
+      key_as_string == "c484" ||
+      key_as_string == "c485") {
 
         // Draw the UI and populate the global list of ground items.
-        DrawGroundItemsUI(g)
+        DrawGroundItemsUI(g, key_as_string)
 
         // Do a check to see if a player presses the key 1-7 then attempt
         // to add that item to the player's inventory.
@@ -366,7 +380,7 @@ func (g *Game) Input() {
         }
 
         // Draw the UI and populate the global list of ground items.
-        DrawGroundItemsUI(g)
+        DrawGroundItemsUI(g, key_as_string)
 
         // Leave here since this needs to continue showing the ground
         // items UI to the player.
@@ -444,7 +458,7 @@ func (g *Game) Input() {
 
             // Enable the inventory state and draw the UI
             g.state = "ground_items"
-            DrawGroundItemsUI(g)
+            DrawGroundItemsUI(g, key_as_string)
             return
         }
 
@@ -459,7 +473,7 @@ func (g *Game) Input() {
 
             // Enable the inventory state and draw the UI
             g.state = "inventory"
-            DrawInventoryUI(g)
+            DrawInventoryUI(g, key_as_string)
             return
         }
 

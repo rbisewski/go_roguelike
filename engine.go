@@ -608,13 +608,14 @@ func PickupGroundItem(g *Game, keyPressed string) error {
 //! Display the items currently present on the ground.
 /*
  * @param     Game*    pointer to the current game object
+ * @param     string   key pressed, as a string
  *
  * @return    none
  */
-func DrawGroundItemsUI(g *Game) {
+func DrawGroundItemsUI(g *Game, key string) {
 
     // Input validation
-    if g == nil || g.Player == nil {
+    if g == nil || g.Player == nil || len(key) < 1 {
         return
     }
 
@@ -758,13 +759,14 @@ func DrawGroundItemsUI(g *Game) {
 //! they are holding.
 /*
  * @param     Game*    pointer to the current game object
+ * @param     string   key pressed, as a string
  *
  * @return    none
  */
-func DrawInventoryUI(g *Game) {
+func DrawInventoryUI(g *Game, key string) {
 
     // Input validation
-    if g == nil || g.Player == nil {
+    if g == nil || g.Player == nil || len(key) < 1 {
         return
     }
 
