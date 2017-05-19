@@ -342,9 +342,6 @@ func (g *Game) Input() {
     key_as_string := fmt.Sprintf("%x", key)
 
     // If the player presses the ESC key...
-    //
-    // TODO: adjust this so it re-draws the map as well
-    //
     if (g.state == "inventory" || g.state == "ground_items") &&
       key_as_string == "1b" {
 
@@ -354,7 +351,7 @@ func (g *Game) Input() {
 
     // If the player character inventory is open, and the key being pressed
     // is not "i" then do nothing.
-    } else if g.state == "inventory" && (key_as_string != "69" ||
+    } else if g.state == "inventory" && (key_as_string != "1b" ||
       key_as_string == "c484" || key_as_string == "c485") {
 
         // Draw and populate the inventory ncurses UI.

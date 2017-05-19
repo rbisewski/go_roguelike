@@ -16,6 +16,7 @@ package gocurses
 // void wrapper_wclrtoeol(WINDOW* win) { wclrtoeol(win); }
 // void wrapper_wattrset(WINDOW* win, int attr) { wattrset(win, attr); }
 // int wrapper_color_pair(int i) { return COLOR_PAIR(i); }
+// int wrapper_set_escdelay(int i) { return set_escdelay(i); }
 //
 import "C"
 import "unsafe"
@@ -33,6 +34,8 @@ var Stdscr *Window = &Window{cwin: C.stdscr}
 // This function should be called before using the package.
 func Initscr() *Window {
     Stdscr.cwin = C.initscr()
+    // set the ESCDELAY to 1 millisecond
+    C.wrapper_set_escdelay(1)
     return Stdscr
 }
 
