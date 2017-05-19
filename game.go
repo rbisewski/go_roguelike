@@ -350,6 +350,7 @@ func (g *Game) Input() {
 
         // Set the state back to playing.
         g.state = "playing"
+        return
 
     // If the player character inventory is open, and the key being pressed
     // is not "i" then do nothing.
@@ -363,8 +364,7 @@ func (g *Game) Input() {
     // If the ground items UI is open, and the key being pressed
     // is not "g" then do nothing.
     } else if g.state == "ground_items" && (key_as_string != "67" ||
-      key_as_string == "c484" ||
-      key_as_string == "c485") {
+      key_as_string == "c484" || key_as_string == "c485") {
 
         // Draw the UI and populate the global list of ground items.
         DrawGroundItemsUI(g, key_as_string)
