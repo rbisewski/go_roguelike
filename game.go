@@ -351,7 +351,7 @@ func (g *Game) Input() {
 
     // If the player character inventory is open, and the key being pressed
     // is not "i" then do nothing.
-    } else if g.state == "inventory" && (key_as_string != "1b" ||
+    } else if g.state == "inventory" && (key_as_string != "69" ||
       key_as_string == "c484" || key_as_string == "c485") {
 
         // Draw and populate the inventory ncurses UI.
