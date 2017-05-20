@@ -341,7 +341,8 @@ func (g *Game) Input() {
     // Convert the key pressed to a hex string value.
     key_as_string := fmt.Sprintf("%x", key)
 
-    // If the player presses the ESC key...
+    // If the player presses the ESC key in the inventory or ground items
+    // screen, then switch back to playing mode.
     if (g.state == "inventory" || g.state == "ground_items") &&
       key_as_string == "1b" {
 
@@ -349,10 +350,28 @@ func (g *Game) Input() {
         g.state = "playing"
         return
 
+    // TODO: make this work so that the player can switch between screens.
+    /*
+    // Inventory screen is open and the player presses the left arrow.
+    } else if g.state == "inventory" && key_as_string == "c484" {
+        // TODO: insert code here
+
+    // Inventory screen is open and the player presses the right arrow.
+    } else if g.state == "inventory" && key_as_string == "c485" {
+        // TODO: insert code here
+
+    // Ground items screen is open and the player presses the left arrow.
+    } else if g.state == "ground_items" && key_as_string == "c484" {
+        // TODO: insert code here
+
+    // Ground items screen is open and the player presses the right arrow.
+    } else if g.state == "ground_items" && key_as_string == "c485" {
+        // TODO: insert code here
+    */
+
     // If the player character inventory is open, and the key being pressed
     // is not "i" then do nothing.
-    } else if g.state == "inventory" && (key_as_string != "69" ||
-      key_as_string == "c484" || key_as_string == "c485") {
+    } else if g.state == "inventory" && key_as_string != "69" {
 
         // Draw and populate the inventory ncurses UI.
         DrawInventoryUI(g, key_as_string)
@@ -360,8 +379,7 @@ func (g *Game) Input() {
 
     // If the ground items UI is open, and the key being pressed
     // is not "g" then do nothing.
-    } else if g.state == "ground_items" && (key_as_string != "67" ||
-      key_as_string == "c484" || key_as_string == "c485") {
+    } else if g.state == "ground_items" && key_as_string != "67" {
 
         // Draw the UI and populate the global list of ground items.
         DrawGroundItemsUI(g, key_as_string)
