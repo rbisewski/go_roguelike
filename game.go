@@ -351,7 +351,6 @@ func (g *Game) Input() {
         return
 
     // TODO: make this work so that the player can switch between screens.
-    /*
     // Inventory screen is open and the player presses the left arrow.
     } else if g.state == "inventory" && key_as_string == "c484" {
         // TODO: insert code here
@@ -367,7 +366,6 @@ func (g *Game) Input() {
     // Ground items screen is open and the player presses the right arrow.
     } else if g.state == "ground_items" && key_as_string == "c485" {
         // TODO: insert code here
-    */
 
     // If the player character inventory is open, and the key being pressed
     // is not "i" then do nothing.
