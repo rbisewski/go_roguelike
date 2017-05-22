@@ -38,6 +38,16 @@ type Creature struct {
     Att   int
     Def   int
 
+    //
+    // TODO: implement these four primary attributes into the game logic;
+    //       also at some point a character stats roll screen needs to be
+    //       implemented
+    //
+    //Strength uint
+    //Intelligence uint
+    //Agility uint
+    //Wisdom uint
+
     // The number of steps required to heal by 1 point of health.
     Healrate uint
 
