@@ -24,6 +24,12 @@ type CreatureTypeInfo struct {
     Att   int
     Def   int
 
+    // Four primary creature attributes
+    Strength uint
+    Intelligence uint
+    Agility uint
+    Wisdom uint
+
     // The number of steps required to heal by 1 point of health.
     Healrate uint
 
@@ -45,32 +51,38 @@ func GenCreatureTypes(ct map[string]CreatureTypeInfo) bool {
     //
     // Dog
     //
-    ct["dog"] = CreatureTypeInfo{"dog", "canine", 'd', 20, 20, 5, 0, 20, 0}
+    ct["dog"] = CreatureTypeInfo{"dog", "canine", 'd', 20, 20, 5, 0, 20, 10,
+      10, 10, 10, 0}
 
     //
     // Wolf
     //
-    ct["wolf"] = CreatureTypeInfo{"wolf", "canine", 'w', 25, 25, 7, 0, 20, 0}
+    ct["wolf"] = CreatureTypeInfo{"wolf", "canine", 'w', 25, 25, 7, 0, 20,
+      10, 10, 10, 10, 0}
 
     //
     // Snake
     //
-    ct["snake"] = CreatureTypeInfo{"snake", "reptile", 's', 18, 18, 10, 1, 20, 0}
+    ct["snake"] = CreatureTypeInfo{"snake", "reptile", 's', 18, 18, 10, 1,
+      20, 10, 10, 10, 10, 0}
 
     //
     // Snake
     //
-    ct["spider"] = CreatureTypeInfo{"spider", "arthropod", 'x', 8, 8, 2, 2, 20, 0}
+    ct["spider"] = CreatureTypeInfo{"spider", "arthropod", 'x', 8, 8, 2, 2,
+      20, 10, 10, 10, 10, 0}
 
     //
     // Goblin
     //
-    ct["goblin"] = CreatureTypeInfo{"goblin", "humanoid", 'g', 22, 22, 4, 2, 20, 0}
+    ct["goblin"] = CreatureTypeInfo{"goblin", "humanoid", 'g', 22, 22, 4,
+      2, 20, 10, 10, 10, 10, 0}
 
     //
     // Orc
     //
-    ct["orc"] = CreatureTypeInfo{"orc", "humanoid", 'o', 40, 40, 12, 5, 20, 0}
+    ct["orc"] = CreatureTypeInfo{"orc", "humanoid", 'o', 40, 40, 12, 5, 20,
+      10, 10, 10, 10, 0}
 
     // Set the populated flag to true.
     return true

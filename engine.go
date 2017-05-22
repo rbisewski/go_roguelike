@@ -417,6 +417,17 @@ func (p *Creature) UpdateStats() {
     //
     StatsWindow.Mvaddstr(3, 0, fmt.Sprintf("HP: %d / %d    ", p.Hp, p.MaxHp))
 
+    // Print out the four primary attributes; strength, intelligence,
+    // agility, and wisdom.
+    StatsWindow.Mvaddstr(5, 0, fmt.Sprintf("Strength:     %d ",
+      p.Strength))
+    StatsWindow.Mvaddstr(6, 0, fmt.Sprintf("Intelligence: %d ",
+      p.Intelligence))
+    StatsWindow.Mvaddstr(7, 0, fmt.Sprintf("Agility:      %d ",
+      p.Agility))
+    StatsWindow.Mvaddstr(8, 0, fmt.Sprintf("Wisdom:       %d ",
+      p.Wisdom))
+
     // Refresh the screen.
     StatsWindow.NoutRefresh()
 }

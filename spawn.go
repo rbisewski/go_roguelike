@@ -49,21 +49,27 @@ func spawnCreatureToArray(name string, x int, y int, a *Area) bool {
 
     // Grab the creature's name, species, rune-graphic, health, max-health,
     // attack, and defence attributes from the global creature type map.
-    SpawnedCreatureName        := GlobalCreatureTypeInfoMap[name].Name
-    SpawnedCreatureSpecies     := GlobalCreatureTypeInfoMap[name].Species
-    SpawnedCreatureGfx         := GlobalCreatureTypeInfoMap[name].Ch
-    SpawnedCreatureHp          := GlobalCreatureTypeInfoMap[name].Hp
-    SpawnedCreatureMaxHp       := GlobalCreatureTypeInfoMap[name].MaxHp
-    SpawnedCreatureAttack      := GlobalCreatureTypeInfoMap[name].Att
-    SpawnedCreatureDefence     := GlobalCreatureTypeInfoMap[name].Def
-    SpawnedCreatureHealrate    := GlobalCreatureTypeInfoMap[name].Healrate
-    SpawnedCreatureHealcounter := GlobalCreatureTypeInfoMap[name].Healcounter
+    SpawnedCreatureName         := GlobalCreatureTypeInfoMap[name].Name
+    SpawnedCreatureSpecies      := GlobalCreatureTypeInfoMap[name].Species
+    SpawnedCreatureGfx          := GlobalCreatureTypeInfoMap[name].Ch
+    SpawnedCreatureHp           := GlobalCreatureTypeInfoMap[name].Hp
+    SpawnedCreatureMaxHp        := GlobalCreatureTypeInfoMap[name].MaxHp
+    SpawnedCreatureAttack       := GlobalCreatureTypeInfoMap[name].Att
+    SpawnedCreatureDefence      := GlobalCreatureTypeInfoMap[name].Def
+    SpawnedCreatureStrength     := GlobalCreatureTypeInfoMap[name].Strength
+    SpawnedCreatureIntelligence := GlobalCreatureTypeInfoMap[name].Intelligence
+    SpawnedCreatureAgility      := GlobalCreatureTypeInfoMap[name].Agility
+    SpawnedCreatureWisdom       := GlobalCreatureTypeInfoMap[name].Wisdom
+    SpawnedCreatureHealrate     := GlobalCreatureTypeInfoMap[name].Healrate
+    SpawnedCreatureHealcounter  := GlobalCreatureTypeInfoMap[name].Healcounter
 
     // Append it to the array.
     a.Creatures = append(a.Creatures, NewCreature(SpawnedCreatureName,
       SpawnedCreatureSpecies, y, x, SpawnedCreatureGfx, a, nil,
       SpawnedCreatureHp, SpawnedCreatureMaxHp, SpawnedCreatureAttack,
-      SpawnedCreatureDefence, SpawnedCreatureHealrate,
+      SpawnedCreatureDefence, SpawnedCreatureStrength,
+      SpawnedCreatureIntelligence, SpawnedCreatureAgility,
+      SpawnedCreatureWisdom, SpawnedCreatureHealrate,
       SpawnedCreatureHealcounter))
 
     // With the monster successfully added, consider this complete.

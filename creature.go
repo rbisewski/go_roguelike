@@ -38,15 +38,11 @@ type Creature struct {
     Att   int
     Def   int
 
-    //
-    // TODO: implement these four primary attributes into the game logic;
-    //       also at some point a character stats roll screen needs to be
-    //       implemented
-    //
-    //Strength uint
-    //Intelligence uint
-    //Agility uint
-    //Wisdom uint
+    // Four primary creature attributes
+    Strength uint
+    Intelligence uint
+    Agility uint
+    Wisdom uint
 
     // The number of steps required to heal by 1 point of health.
     Healrate uint
@@ -114,6 +110,10 @@ func NewCreature(name string,
                  max int,
                  att int,
                  def int,
+                 stre uint,
+                 intel uint,
+                 agl uint,
+                 wis uint,
                  hr uint,
                  hc uint) *Creature {
 
@@ -129,6 +129,10 @@ func NewCreature(name string,
                      max,
                      att,
                      def,
+                     stre,
+                     intel,
+                     agl,
+                     wis,
                      hr,
                      hc,
                      nil}
@@ -162,6 +166,10 @@ func NewCreatureWithEquipment(name string,
                  max int,
                  att int,
                  def int,
+                 stre uint,
+                 intel uint,
+                 agl uint,
+                 wis uint,
                  hr uint,
                  hc uint) *Creature {
 
@@ -177,6 +185,10 @@ func NewCreatureWithEquipment(name string,
                      max,
                      att,
                      def,
+                     stre,
+                     intel,
+                     agl,
+                     wis,
                      hr,
                      hc,
                      newEquipment(nil, nil, nil, nil, nil, nil)}
