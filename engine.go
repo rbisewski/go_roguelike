@@ -772,6 +772,35 @@ func DrawGroundItemsUI(g *Game, key string) {
     return
 }
 
+//! Display the inventory the character currently has in their backpack.
+/*
+ * @param     Game*    pointer to the current game object
+ * @param     string   key pressed, as a string
+ *
+ * @return    none
+ *
+ * TODO: complete this function
+ */
+func DrawInventoryUI(g *Game, key string) {
+
+    // Input validation
+    if g == nil || g.Player == nil || len(key) < 1 {
+        return
+    }
+
+    // Variable declaration.
+    /*
+    var GuiHeight    = 0
+    var GuiWidth     = 30
+    var GuiTopBottom = "+"
+    var GuiLeftRight = "|"
+    var GuiLines     = make([]string,0)
+    var offset       = 0
+    */
+
+    // everything worked, so return
+}
+
 //! Display the equipment the character currently is wearing and what items
 //! they are holding.
 /*
@@ -780,7 +809,7 @@ func DrawGroundItemsUI(g *Game, key string) {
  *
  * @return    none
  */
-func DrawInventoryUI(g *Game, key string) {
+func DrawEquipmentUI(g *Game, key string) {
 
     // Input validation
     if g == nil || g.Player == nil || len(key) < 1 {

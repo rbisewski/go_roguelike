@@ -343,22 +343,22 @@ func (g *Game) Input() {
 
     // If the player presses the ESC key in the inventory or ground items
     // screen, then switch back to playing mode.
-    if (g.state == "inventory" || g.state == "ground_items") &&
-      key_as_string == "1b" {
+    if (g.state == "equipment" || g.state == "inventory" ||
+      g.state == "ground_items") && key_as_string == "1b" {
 
         // Set the state back to playing.
         g.state = "playing"
         return
 
     // Inventory screen is open and the player presses the left arrow.
-    } else if g.state == "inventory" && key_as_string == "c484" {
+    } else if g.state == "equipment" && key_as_string == "c484" {
 
         // Draw and populate the inventory ncurses UI.
-        DrawInventoryUI(g, key_as_string)
+        DrawEquipmentUI(g, key_as_string)
         return
 
     // Inventory screen is open and the player presses the right arrow.
-    } else if g.state == "inventory" && key_as_string == "c485" {
+    } else if g.state == "equipment" && key_as_string == "c485" {
 
         // Draw the UI and populate the global list of ground items.
         g.state = "ground_items"
@@ -372,8 +372,8 @@ func (g *Game) Input() {
     } else if g.state == "ground_items" && key_as_string == "c484" {
 
         // Draw and populate the inventory ncurses UI.
-        g.state = "inventory"
-        DrawInventoryUI(g, key_as_string)
+        g.state = "equipment"
+        DrawEquipmentUI(g, key_as_string)
         return
 
     // Ground items screen is open and the player presses the right arrow.
@@ -387,11 +387,11 @@ func (g *Game) Input() {
         return
 
     // If the player character inventory is open, and the key being pressed
-    // is not "i" then do nothing.
-    } else if g.state == "inventory" && key_as_string != "69" {
+    // is not "e" then do nothing.
+    } else if g.state == "equipment" && key_as_string != "65" {
 
         // Draw and populate the inventory ncurses UI.
-        DrawInventoryUI(g, key_as_string)
+        DrawEquipmentUI(g, key_as_string)
         return
 
     // If the ground items UI is open, and the key being pressed
@@ -482,6 +482,21 @@ func (g *Game) Input() {
         g.Player.Move(0, 1)
         g.process_ai()
 
+    // e --> Open / close the equipment screen.
+    case "65":
+
+        // If the equipment screen is not yet open.
+        if g.state != "equipment" {
+
+            // Enable the equipment state and draw the UI
+            g.state = "equipment"
+            DrawEquipmentUI(g, key_as_string)
+            return
+        }
+
+        // Otherwise the equipment screen is open, so flip the state.
+        g.state = "playing"
+
     // g --> Open / close the grab-item-from-ground interface.
     case "67":
 
@@ -499,6 +514,9 @@ func (g *Game) Input() {
 
     // i --> Open / close the inventory of the player character.
     case "69":
+
+        // TODO: finish this and remove the below break statement
+        break;
 
         // If the inventory is not yet open.
         if g.state != "inventory" {
