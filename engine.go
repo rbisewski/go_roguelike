@@ -410,22 +410,28 @@ func (p *Creature) UpdateStats() {
     // Print out the name of the player character.
     StatsWindow.Mvaddstr(1, 0, fmt.Sprintf("%s", p.name))
 
+    // Print out the class of the character.
+    //
+    // TODO: add other classes to the game
+    //
+    StatsWindow.Mvaddstr(3, 0, fmt.Sprintf("%s", "Warrior"))
+
     // Format and write the HP row in the Stats viewscreen.
     //
     // NOTE: several whitespaces were added here to ensure ncurses properly
     //       wipes away and remaining ASCII data from long hitpoints, etc
     //
-    StatsWindow.Mvaddstr(3, 0, fmt.Sprintf("HP: %d / %d    ", p.Hp, p.MaxHp))
+    StatsWindow.Mvaddstr(5, 0, fmt.Sprintf("HP: %d / %d    ", p.Hp, p.MaxHp))
 
     // Print out the four primary attributes; strength, intelligence,
     // agility, and wisdom.
-    StatsWindow.Mvaddstr(5, 0, fmt.Sprintf("Strength:     %d ",
+    StatsWindow.Mvaddstr(7, 0, fmt.Sprintf("Strength:     %d ",
       p.Strength))
-    StatsWindow.Mvaddstr(6, 0, fmt.Sprintf("Intelligence: %d ",
+    StatsWindow.Mvaddstr(8, 0, fmt.Sprintf("Intelligence: %d ",
       p.Intelligence))
-    StatsWindow.Mvaddstr(7, 0, fmt.Sprintf("Agility:      %d ",
+    StatsWindow.Mvaddstr(9, 0, fmt.Sprintf("Agility:      %d ",
       p.Agility))
-    StatsWindow.Mvaddstr(8, 0, fmt.Sprintf("Wisdom:       %d ",
+    StatsWindow.Mvaddstr(10, 0, fmt.Sprintf("Wisdom:       %d ",
       p.Wisdom))
 
     // Refresh the screen.
