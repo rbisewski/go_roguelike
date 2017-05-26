@@ -736,17 +736,23 @@ func DrawGroundItemsUI(g *Game, key string) {
         GuiLines = append(GuiLines, GuiLeftRight)
     }
 
+    // Get the current number of lines and store it as the height of the UI.
+    GuiHeight = len(GuiLines)
+
+    // While the UI height is less than 17, keep appending |_| lines.
+    for GuiHeight != 17 {
+        GuiLines  = append(GuiLines, GuiLeftRight)
+        GuiHeight = len(GuiLines)
+    }
+
     // Assemble the bottom portion of the ground items UI.
     GuiLines = append(GuiLines, GuiLeftRight)
     GuiLines = append(GuiLines, GuiTopBottom)
 
-    // Get the current number of lines and store it as the height of the UI.
-    GuiHeight = len(GuiLines)
-
     // Using the calculated height, go ahead and determine the upper bounds
     // of the ground items interface, as it relates to the currently drawn
     // ncurses window.
-    offset := int(GuiHeight / 2)
+    offset := int(GuiHeight / 2) + 1
 
     // Safety check, this shouldn't happen but to safe-guard console offsets,
     // if the calculated height is less than one or the offset is zero, tell
