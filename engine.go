@@ -784,8 +784,6 @@ func DrawGroundItemsUI(g *Game, key string) {
  * @param     string   key pressed, as a string
  *
  * @return    none
- *
- * TODO: complete this function
  */
 func DrawInventoryUI(g *Game, key string) {
 
@@ -794,17 +792,146 @@ func DrawInventoryUI(g *Game, key string) {
         return
     }
 
-    // Variable declaration.
-    /*
+    // Variable declaration
     var GuiHeight    = 0
     var GuiWidth     = 30
     var GuiTopBottom = "+"
     var GuiLeftRight = "|"
     var GuiLines     = make([]string,0)
-    var offset       = 0
-    */
 
-    // everything worked, so return
+    // Obtain the (x,y) coord of where the player character is currently
+    // standing.
+    loc_x := g.Player.X
+    loc_y := g.Player.Y
+
+    // Remake the ground items array.
+    g.GroundItems = make([]*Item,0)
+
+    // Grab the list of items from the Area te player is currently in and
+    // see if they are present in the same coord. This will be useful for
+    // when the player wants to drop an item.
+    for _, itm := range g.Area.Items {
+
+        // If the item is at Player (x,y) position, add it to the list of
+        // items present on the ground; i.e. itemsAtCurrentCoord
+        if loc_x == itm.X && loc_y == itm.Y {
+            g.GroundItems = append(g.GroundItems, itm)
+        }
+    }
+
+    // Assemble the various parts of the GUI.
+    for i := 0; i < GuiWidth; i++ {
+        GuiTopBottom += "-"
+        GuiLeftRight += " "
+    }
+    GuiTopBottom += "+"
+    GuiLeftRight += "|"
+
+    // Assemble the inventory screen header.
+    GuiLines = append(GuiLines, GuiTopBottom)
+    GuiLines = append(GuiLines, GuiLeftRight)
+    GuiLines = append(GuiLines,
+      "| " + AlignAndSpaceString("Inventory", "centre", 19) + " |")
+    GuiLines = append(GuiLines, GuiLeftRight)
+    GuiLines = append(GuiLines, GuiTopBottom)
+    GuiLines = append(GuiLines, GuiLeftRight)
+
+    // Variable to store the current page.
+    currentPage        := 1
+    numOfPages         := int(len(g.Player.inventory) / 7)
+    itemPrintedCounter := 0
+
+    // Generate a ncurses UI here based on the number of items on the
+    // ground; display the items of the relevant inventory page.
+    //
+    // TODO: add logic to increment the current page
+    //
+    for i, itm := range g.Player.inventory {
+
+        // Skip elements of a forward or backward page.
+        if i < ((currentPage-1) * 7) {
+            continue
+        }
+
+        // Append the item with spacing
+        GuiLines = append(GuiLines, GuiLeftRight)
+        GuiLines = append(GuiLines,
+          "| " + AlignAndSpaceString(strconv.Itoa(i+1) + ") " +
+          itm.name, "right", GuiWidth-2) + " |")
+        GuiLines = append(GuiLines, GuiLeftRight)
+
+        // Increment the current number of items printed
+        itemPrintedCounter++
+
+        // If there are 7 or more items, create a pagination to allow the
+        // end-user to cycle thru all of the items on the ground
+        if itemPrintedCounter >= 7 && numOfPages > 1 {
+
+            // assemble the text for the 'Page x of y' label
+            pageLabel := "Page " + strconv.Itoa(currentPage) + " of " +
+              strconv.Itoa(numOfPages)
+
+            // append it to the bottom of the page
+            GuiLines = append(GuiLines, GuiLeftRight)
+            GuiLines = append(GuiLines,
+              "| " + AlignAndSpaceString(pageLabel, "right",
+              GuiWidth-2) + " |")
+            GuiLines = append(GuiLines, GuiLeftRight)
+
+            // end the loop since this will only render 7
+            break
+        }
+    }
+
+    // If the player is currently holding no items, go ahead and mention
+    // that the backpack of the player is empty.
+    if len(g.Player.inventory) < 1 {
+        GuiLines = append(GuiLines, GuiLeftRight)
+        GuiLines = append(GuiLines,
+          "| " + AlignAndSpaceString("Backpack is empty.", "centre", 10) + " |")
+        GuiLines = append(GuiLines, GuiLeftRight)
+    }
+
+    // Get the current number of lines and store it as the height of the UI.
+    GuiHeight = len(GuiLines)
+
+    // While the UI height is less than 17, keep appending |_| lines.
+    for GuiHeight != 17 {
+        GuiLines  = append(GuiLines, GuiLeftRight)
+        GuiHeight = len(GuiLines)
+    }
+
+    // Assemble the bottom portion of the ground items UI.
+    GuiLines = append(GuiLines, GuiLeftRight)
+    GuiLines = append(GuiLines, GuiTopBottom)
+
+    // Using the calculated height, go ahead and determine the upper bounds
+    // of the ground items interface, as it relates to the currently drawn
+    // ncurses window.
+    offset := int(GuiHeight / 2) + 1
+
+    // Safety check, this shouldn't happen but to safe-guard console offsets,
+    // if the calculated height is less than one or the offset is zero, tell
+    // the developer what happened and leave this function.
+    if GuiHeight < 1 || offset == 0 {
+        DebugLog(&G,"DrawInventoryUI() --> improper height and offset, " +
+                    "terminating function")
+        return
+    }
+
+    // Write the ground item UI to the screen.
+    for _, line := range GuiLines {
+
+        // Write the given line to the console output.
+        Write((ScreenHeight/2)-offset, ScreenWidth/2, line)
+
+        // Decrement the offset.
+        offset--
+    }
+
+    // Leave this function, since this needs to redraw the UI if the player
+    // picks up or drops items, etc.
+    return
 }
 
 //! Display the equipment the character currently is wearing and what items
