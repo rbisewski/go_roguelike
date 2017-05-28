@@ -678,11 +678,10 @@ func DrawGroundItemsUI(g *Game, key string) {
       "| " + AlignAndSpaceString("Items on the Ground", "centre", 9) + " |")
     GuiLines = append(GuiLines, GuiLeftRight)
     GuiLines = append(GuiLines, GuiTopBottom)
-    GuiLines = append(GuiLines, GuiLeftRight)
 
     // Variable to store the current page.
     currentPage        := 1
-    numOfPages         := int(len(g.GroundItems) / 7)
+    numOfPages         := int(len(g.GroundItems) / 6)
     itemPrintedCounter := 0
 
     // Generate a ncurses UI here based on the number of items on the
@@ -693,7 +692,7 @@ func DrawGroundItemsUI(g *Game, key string) {
     for i, itm := range g.GroundItems {
 
         // Skip elements of a forward or backward page.
-        if i < ((currentPage-1) * 7) {
+        if i < ((currentPage-1) * 6) {
             continue
         }
 
@@ -702,14 +701,13 @@ func DrawGroundItemsUI(g *Game, key string) {
         GuiLines = append(GuiLines,
           "| " + AlignAndSpaceString(strconv.Itoa(i+1) + ") " +
           itm.name, "right", GuiWidth-2) + " |")
-        GuiLines = append(GuiLines, GuiLeftRight)
 
         // Increment the current number of items printed
         itemPrintedCounter++
 
-        // If there are 7 or more items, create a pagination to allow the
+        // If there are 6 or more items, create a pagination to allow the
         // end-user to cycle thru all of the items on the ground
-        if itemPrintedCounter >= 7 && numOfPages > 1 {
+        if itemPrintedCounter >= 6 && numOfPages > 1 {
 
             // assemble the text for the 'Page x of y' label
             pageLabel := "Page " + strconv.Itoa(currentPage) + " of " +
@@ -722,7 +720,7 @@ func DrawGroundItemsUI(g *Game, key string) {
               GuiWidth-2) + " |")
             GuiLines = append(GuiLines, GuiLeftRight)
 
-            // end the loop since this will only render 7
+            // end the loop since this will only render 6
             break
         }
     }
@@ -834,11 +832,10 @@ func DrawInventoryUI(g *Game, key string) {
       "| " + AlignAndSpaceString("Inventory", "centre", 19) + " |")
     GuiLines = append(GuiLines, GuiLeftRight)
     GuiLines = append(GuiLines, GuiTopBottom)
-    GuiLines = append(GuiLines, GuiLeftRight)
 
     // Variable to store the current page.
     currentPage        := 1
-    numOfPages         := int(len(g.Player.inventory) / 7)
+    numOfPages         := int(len(g.Player.inventory) / 6)
     itemPrintedCounter := 0
 
     // Generate a ncurses UI here based on the number of items on the
@@ -849,7 +846,7 @@ func DrawInventoryUI(g *Game, key string) {
     for i, itm := range g.Player.inventory {
 
         // Skip elements of a forward or backward page.
-        if i < ((currentPage-1) * 7) {
+        if i < ((currentPage-1) * 6) {
             continue
         }
 
@@ -858,14 +855,13 @@ func DrawInventoryUI(g *Game, key string) {
         GuiLines = append(GuiLines,
           "| " + AlignAndSpaceString(strconv.Itoa(i+1) + ") " +
           itm.name, "right", GuiWidth-2) + " |")
-        GuiLines = append(GuiLines, GuiLeftRight)
 
         // Increment the current number of items printed
         itemPrintedCounter++
 
-        // If there are 7 or more items, create a pagination to allow the
+        // If there are 6 or more items, create a pagination to allow the
         // end-user to cycle thru all of the items on the ground
-        if itemPrintedCounter >= 7 && numOfPages > 1 {
+        if itemPrintedCounter >= 6 && numOfPages > 1 {
 
             // assemble the text for the 'Page x of y' label
             pageLabel := "Page " + strconv.Itoa(currentPage) + " of " +
@@ -896,7 +892,7 @@ func DrawInventoryUI(g *Game, key string) {
     GuiHeight = len(GuiLines)
 
     // While the UI height is less than 17, keep appending |_| lines.
-    for GuiHeight != 17 {
+    for GuiHeight < 17 {
         GuiLines  = append(GuiLines, GuiLeftRight)
         GuiHeight = len(GuiLines)
     }
