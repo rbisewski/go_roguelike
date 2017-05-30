@@ -56,6 +56,7 @@ func spawnCreatureToArray(name string, x int, y int, a *Area) bool {
     SpawnedCreatureMaxHp        := GlobalCreatureTypeInfoMap[name].MaxHp
     SpawnedCreatureAttack       := GlobalCreatureTypeInfoMap[name].Att
     SpawnedCreatureDefence      := GlobalCreatureTypeInfoMap[name].Def
+    SpawnedCreatureClass        := GlobalCreatureTypeInfoMap[name].Class
     SpawnedCreatureStrength     := GlobalCreatureTypeInfoMap[name].Strength
     SpawnedCreatureIntelligence := GlobalCreatureTypeInfoMap[name].Intelligence
     SpawnedCreatureAgility      := GlobalCreatureTypeInfoMap[name].Agility
@@ -67,9 +68,9 @@ func spawnCreatureToArray(name string, x int, y int, a *Area) bool {
     a.Creatures = append(a.Creatures, NewCreature(SpawnedCreatureName,
       SpawnedCreatureSpecies, y, x, SpawnedCreatureGfx, a, nil,
       SpawnedCreatureHp, SpawnedCreatureMaxHp, SpawnedCreatureAttack,
-      SpawnedCreatureDefence, SpawnedCreatureStrength,
-      SpawnedCreatureIntelligence, SpawnedCreatureAgility,
-      SpawnedCreatureWisdom, SpawnedCreatureHealrate,
+      SpawnedCreatureDefence, SpawnedCreatureClass,
+      SpawnedCreatureStrength, SpawnedCreatureIntelligence,
+      SpawnedCreatureAgility, SpawnedCreatureWisdom, SpawnedCreatureHealrate,
       SpawnedCreatureHealcounter))
 
     // With the monster successfully added, consider this complete.

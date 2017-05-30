@@ -28,6 +28,12 @@ var GlobalItemTypeInfoMap = make(map[string]types.ItemTypeInfo)
 // Global variable to check if the item types has already been populated.
 var GlobalItemTypeInfoMapIsPopulated = false
 
+// Global variable to hold all of the class types.
+var GlobalClassTypeInfoMap = make(map[string]types.ClassTypeInfo)
+
+// Global variable to check if the class types has already been populated.
+var GlobalClassTypeInfoMapIsPopulated = false
+
 //
 // Main
 //
@@ -42,6 +48,9 @@ func main() {
 
     // Populate the various item types into the game.
     GlobalItemTypeInfoMapIsPopulated = types.GenItemTypes(GlobalItemTypeInfoMap)
+
+    // Populate the various class types into the game.
+    GlobalClassTypeInfoMapIsPopulated = types.GenClassTypes(GlobalClassTypeInfoMap)
 
     // The default state shall be to set the menu.
     G.state = "menu"

@@ -8,7 +8,11 @@
 
 package main
 
-import "fmt"
+import (
+    "fmt"
+    "./types"
+)
+
 
 // Structure to hold characters / monsters
 type Creature struct {
@@ -37,6 +41,9 @@ type Creature struct {
     MaxHp int
     Att   int
     Def   int
+
+    // creature class
+    class *types.ClassTypeInfo
 
     // Four primary creature attributes
     Strength uint
@@ -110,6 +117,7 @@ func NewCreature(name string,
                  max int,
                  att int,
                  def int,
+                 class *types.ClassTypeInfo,
                  stre uint,
                  intel uint,
                  agl uint,
@@ -129,6 +137,7 @@ func NewCreature(name string,
                      max,
                      att,
                      def,
+                     class,
                      stre,
                      intel,
                      agl,
@@ -166,6 +175,7 @@ func NewCreatureWithEquipment(name string,
                  max int,
                  att int,
                  def int,
+                 class *types.ClassTypeInfo,
                  stre uint,
                  intel uint,
                  agl uint,
@@ -185,6 +195,7 @@ func NewCreatureWithEquipment(name string,
                      max,
                      att,
                      def,
+                     class,
                      stre,
                      intel,
                      agl,

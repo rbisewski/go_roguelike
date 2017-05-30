@@ -65,9 +65,16 @@ func (g *Game) Init() {
         PlayerName = "Anonymous"
     }
 
+    // Determine the class of the player
+    //
+    // TODO: add a character class selection screeen
+    //
+    playerClass := GlobalClassTypeInfoMap["warrior"]
+
     // The player-character will be represented by an @ symbol.
     g.Player = NewCreatureWithEquipment(PlayerName, "player", y, x, '@',
-      g.Area, make([]*Item,0), 30, 30, 10, 5, 10, 10, 10, 10, 10, 0)
+      g.Area, make([]*Item,0), 30, 30, 10, 5,
+      &playerClass, 10, 10, 10, 10, 10, 0)
 
     // Attach the player-character creature to the map.
     g.Area.Creatures = append(g.Area.Creatures, g.Player)
