@@ -175,6 +175,48 @@ func (g *Game) Menu() GameState {
             Clear()
         }
 
+        // Endless loop that is designed to allow the player character to enter
+        // the class of their character by typing via the keyboard.
+        //
+        // TODO: enable this once it works
+        //
+        /*
+        classCounter := 0;
+        for true {
+
+            // Tell the end user the name of their character.
+            Write(Percent(25, ConsoleHeight), ConsoleWidth/2,
+              "The name of your character is:")
+
+            // Write the current PlayerName to the below console, which is
+            // in location 'ConsoleHeight+2' so that it appears two lines below.
+            Write(Percent(25, ConsoleHeight)+2, ConsoleWidth/2,
+              PlayerName)
+
+            // Tell the end user to select the class of their character.
+            Write(Percent(25, ConsoleHeight)+4, ConsoleWidth/2,
+              "Now select a class:")
+
+            // Print out the various classes to the screen.
+            for _, givenClass := range GlobalClassTypeInfoMap {
+                Write(Percent(25, ConsoleHeight)+6+classCounter,
+                    ConsoleWidth/2, givenClass.Name)
+                classCounter++;
+            }
+
+            // Grab the current keyboard input.
+            key = GetInput()
+
+            // If the end user pressed the Q key, attempt to exit the game.
+            if key == "Q" || key == "q" {
+                return "quit"
+            }
+
+            // Reset back to zero
+            classCounter = 0;
+        }
+        */
+
         // Wipe away the old screen, in the event that some part of the previous
         // enter your character name interface happens to remain.
         Clear()
