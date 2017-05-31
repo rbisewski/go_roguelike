@@ -12,9 +12,10 @@ import "./types"
 
 // Global variable declaration.
 var G              Game
-var DeveloperMode  bool   = false
-var PlayerName     string = ""
-var MenuErrorMsg   string = ""
+var DeveloperMode  bool                 = false
+var PlayerName     string               = ""
+var PlayerClass    *types.ClassTypeInfo = nil
+var MenuErrorMsg   string               = ""
 
 // Global variable to hold all of the creature types.
 var GlobalCreatureTypeInfoMap = make(map[string]types.CreatureTypeInfo)

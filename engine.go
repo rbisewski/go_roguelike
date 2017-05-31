@@ -411,9 +411,6 @@ func (p *Creature) UpdateStats() {
     StatsWindow.Mvaddstr(1, 0, fmt.Sprintf("%s", p.name))
 
     // Print out the class of the character.
-    //
-    // TODO: add other classes to the game
-    //
     StatsWindow.Mvaddstr(3, 0, fmt.Sprintf("%s", p.class.Name))
 
     // Format and write the HP row in the Stats viewscreen.

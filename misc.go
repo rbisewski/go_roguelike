@@ -153,6 +153,102 @@ func Round(x float64) int {
     return int(rounder / pow)
 }
 
+//! Evaluates if a given ASCII character is a number (0-9)
+/*
+ * @param    string    Keyboard ASCII character input.
+ *
+ * @return   bool      whether or not the character is a numeric
+ */
+func IsNumeric(character string) bool {
+
+    // Input validation, make sure this actually was given a valid string
+    // ASCII character of length 1.
+    if len(character) != 1 {
+        return false
+    }
+
+    // Convert the key pressed to a hex string value.
+    char_as_hex := fmt.Sprintf("%x", character)
+
+    // Sanity check, make sure this actually was able to return non-blank.
+    if len(char_as_hex) < 1 {
+        return false
+    }
+
+    // Attempt to convert the hexadecimal value to an uint16 decimal.
+    char_as_int, err := strconv.ParseUint(char_as_hex, 16, 16)
+
+    // Safety check, if an error occurred, this probably isn't a number,
+    // so go ahead and return false.
+    if err != nil {
+        return false
+    }
+
+    // Determine if the character given is 0-9
+    //
+    // 0 -> 0x30 -> 48
+    // 9 -> 0x39 -> 57
+    //
+    if (char_as_int > 47 && char_as_int < 58) {
+        return true
+    }
+
+    // Otherwise some other sort of character was present here, so then
+    // return false here as a default.
+    return false
+}
+
+//! Converts a given keyboard response to
+/*
+ * @param    string    Keyboard ASCII character input.
+ *
+ * @return   bool      whether or not the character is a numeric
+ */
+func ConvertKeyToNumeric(character string) (uint64, error) {
+
+    // Input validation, make sure this actually was given a valid string
+    // ASCII character of length 1.
+    if len(character) != 1 {
+        return 0, fmt.Errorf("ConvertKeyToNumeric() --> invalid input")
+    }
+
+    // Variable declaration
+    var num uint64 = 0
+
+    // Convert the key pressed to a hex string value.
+    char_as_hex := fmt.Sprintf("%x", character)
+
+    // Sanity check, make sure this actually was able to return non-blank.
+    if len(char_as_hex) < 1 {
+        return 0, fmt.Errorf("ConvertKeyToNumeric() --> improper hexidecimal")
+    }
+
+    // Attempt to convert the hexadecimal value to an uint16 decimal.
+    char_as_int, err := strconv.ParseUint(char_as_hex, 16, 16)
+
+    // Safety check, if an error occurred, this probably isn't a number,
+    // so go ahead and return false.
+    if err != nil {
+        return 0, err
+    }
+
+    // Determine if the character given is 0-9
+    //
+    // 0 -> 0x30 -> 48
+    // 9 -> 0x39 -> 57
+    //
+    if (char_as_int < 48 || char_as_int > 57) {
+        return 0, fmt.Errorf("ConvertKeyToNumeric() --> non-ASCII value")
+    }
+
+    // Convert the value into a plain ol' unsigned int.
+    num = char_as_int - 48
+
+    // Otherwise some other sort of character was present here, so then
+    // return false here as a default.
+    return num, nil
+}
+
 //! Evaluates if a given ASCII character is alphabetical (a-zA-Z).
 /*
  * @param    string    Keyboard ASCII character input.

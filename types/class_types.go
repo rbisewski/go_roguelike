@@ -45,29 +45,29 @@ func GenClassTypes(clstype map[string]ClassTypeInfo) bool {
     }
 
     //
+    // Unknown
+    //
+    clstype["0"] = ClassTypeInfo{"Unknown", "unknown", "unknown"}
+
+    //
     // Warrior
     //
-    clstype["warrior"] = ClassTypeInfo{"Warrior", "warrior", "strength"}
+    clstype["1"] = ClassTypeInfo{"Warrior", "warrior", "strength"}
 
     //
     // Wizard
     //
-    clstype["wizard"] = ClassTypeInfo{"Wizard", "wizard", "intelligence"}
+    clstype["2"] = ClassTypeInfo{"Wizard", "wizard", "intelligence"}
 
     //
     // Thief
     //
-    clstype["thief"] = ClassTypeInfo{"Thief", "thief", "agility"}
+    clstype["3"] = ClassTypeInfo{"Thief", "thief", "agility"}
 
     //
     // Cleric
     //
-    clstype["cleric"] = ClassTypeInfo{"Cleric", "cleric", "wisdom"}
-
-    //
-    // Unknown
-    //
-    clstype["unknown"] = ClassTypeInfo{"Unknown", "unknown", "unknown"}
+    clstype["4"] = ClassTypeInfo{"Cleric", "cleric", "wisdom"}
 
     // All of the classes have been populated successfully, so return true.
     return true

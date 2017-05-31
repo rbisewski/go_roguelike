@@ -7,6 +7,7 @@ package main
 
 import (
     "fmt"
+    "strconv"
 )
 
 // Attributes for the `Game` structure.
@@ -65,16 +66,16 @@ func (g *Game) Init() {
         PlayerName = "Anonymous"
     }
 
-    // Determine the class of the player
-    //
-    // TODO: add a character class selection screeen
-    //
-    playerClass := GlobalClassTypeInfoMap["warrior"]
+    // Safety check, if the player class is blank, default to warrior.
+    if (PlayerClass == nil) {
+        defaultClass := GlobalClassTypeInfoMap["1"]
+        PlayerClass = &defaultClass
+    }
 
     // The player-character will be represented by an @ symbol.
     g.Player = NewCreatureWithEquipment(PlayerName, "player", y, x, '@',
-      g.Area, make([]*Item,0), 30, 30, 10, 5,
-      &playerClass, 10, 10, 10, 10, 10, 0)
+      g.Area, make([]*Item,0), 30, 30, 10, 5, PlayerClass, 10, 10, 10,
+      10, 10, 0)
 
     // Attach the player-character creature to the map.
     g.Area.Creatures = append(g.Area.Creatures, g.Player)
@@ -177,16 +178,12 @@ func (g *Game) Menu() GameState {
 
         // Endless loop that is designed to allow the player character to enter
         // the class of their character by typing via the keyboard.
-        //
-        // TODO: enable this once it works
-        //
-        /*
-        classCounter := 0;
+        classCounter := 1
         for true {
 
             // Tell the end user the name of their character.
             Write(Percent(25, ConsoleHeight), ConsoleWidth/2,
-              "The name of your character is:")
+              "The name of your character is:     ")
 
             // Write the current PlayerName to the below console, which is
             // in location 'ConsoleHeight+2' so that it appears two lines below.
@@ -194,28 +191,75 @@ func (g *Game) Menu() GameState {
               PlayerName)
 
             // Tell the end user to select the class of their character.
-            Write(Percent(25, ConsoleHeight)+4, ConsoleWidth/2,
+            Write(Percent(25, ConsoleHeight)+5, ConsoleWidth/2,
               "Now select a class:")
 
             // Print out the various classes to the screen.
-            for _, givenClass := range GlobalClassTypeInfoMap {
+            for range GlobalClassTypeInfoMap {
+
+                // Obtain the given class
+                strref := strconv.Itoa(classCounter)
+                givenClass := GlobalClassTypeInfoMap[strref]
+
+                // If unknown, move to the next element.
+                if givenClass.Name == "Unknown" || len(givenClass.Name) < 1 {
+                    continue
+                }
+
+                // Print out the given class options.
                 Write(Percent(25, ConsoleHeight)+6+classCounter,
-                    ConsoleWidth/2, givenClass.Name)
+                  ConsoleWidth/2, strref + ") " + givenClass.Name + "   ")
+
+                // Increment the class counter
                 classCounter++;
+            }
+
+            // if the player selected a class, print it out so that there
+            // is feedback for the player to see
+            if PlayerClass != nil {
+
+                // Print out the given class options.
+                Write(Percent(25, ConsoleHeight)+8+classCounter,
+                  ConsoleWidth/2, "You have selected... " +
+                  PlayerClass.Name + "     ")
             }
 
             // Grab the current keyboard input.
             key = GetInput()
 
-            // If the end user pressed the Q key, attempt to exit the game.
-            if key == "Q" || key == "q" {
-                return "quit"
+            // If a number has been pressed...
+            if IsNumeric(key) {
+
+                // convert the keystroke to an uint64 representation of the
+                // original hexidecimal typed by the keyboard
+                num, err := ConvertKeyToNumeric(key)
+
+                // if an error occurs, assume a value of 1 here...
+                if err != nil {
+                    num = 1
+                }
+
+                // Convert the uint64 value to a string
+                n := strconv.FormatUint(num, 10)
+
+                // attempt to grab the selected class using the above
+                selectedClass := GlobalClassTypeInfoMap[n]
+                PlayerClass    = &selectedClass
             }
 
-            // Reset back to zero
-            classCounter = 0;
+            // If the enter key was pressed and the character class has
+            // been selected by the player.
+            if WasEnterPressed(key) && PlayerClass != nil {
+                break
+            }
+
+            // Reset back to one
+            classCounter = 1;
+
+            // Wipe away the old screen, so that it can be reprinted during
+            // the next cycle.
+            Clear()
         }
-        */
 
         // Wipe away the old screen, in the event that some part of the previous
         // enter your character name interface happens to remain.
