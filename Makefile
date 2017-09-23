@@ -15,7 +15,7 @@ endif
 .PHONY: all clean build install uninstall
 
 
-all: build
+all: clean build
 
 build:
 	@echo 'Building go_roguelike...'
