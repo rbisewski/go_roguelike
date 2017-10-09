@@ -46,6 +46,27 @@ intended.
 
     ./go_roguelike
 
+# Additional Notes
+
+Certain newer versions of ncurses tend to enforce a stricter definition
+of exactly what a terminal is, and what behaviour to try to emulate.
+
+Mostly this applies to low-level Linux distros like Arch that default
+to `xterm` or `term-256color` for the TERM environment variable, whether
+or not the terminal is able to behave in that manner.
+
+In the case of the xfce4-terminal or gnome-terminal, consider setting the
+following to achieve best results:
+
+`export TERM=gnome-256color`
+
+Users of konsole terminal can try the following:
+
+`export TERM=konsole-256color`
+
+In the case of other terminals, consider consulting the man page of your
+terminal for further information.
+
 # Authors
 
 This software utilizes bits of code from a golang wrapper for the ncurses
