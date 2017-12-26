@@ -3,6 +3,7 @@
  *
  * Description: Handles the game and its relevant data.
  */
+
 package main
 
 import (
@@ -10,10 +11,10 @@ import (
 	"strconv"
 )
 
-// Attributes for the `Game` structure.
+// GameState ... Attributes for the `Game` structure.
 type GameState string
 
-// Structure used hold the game object.
+// Game ... Structure used hold the game object.
 type Game struct {
 
 	// Determines whether or not to display debug messages.
@@ -32,7 +33,7 @@ type Game struct {
 	GroundItems []*Item
 }
 
-//! Function to initialize the game.
+// Init ... Function to initialize the game.
 /*
  * @param     Game*    pointer to a game object
  *
@@ -84,7 +85,7 @@ func (g *Game) Init() {
 	g.Area.populateAreaWithCreatures()
 }
 
-//! Determines whether or not
+// Menuing ... Determines if in-menu.
 /*
  * @param      Gamestate    current state of the game.
  *
@@ -94,7 +95,7 @@ func (s GameState) Menuing() bool {
 	return s == "menu"
 }
 
-//! Write out the in-game menu.
+// Menu ... Write out the in-game menu.
 /*
  * @param     *Game       pointer to an instance of this game
  *
@@ -315,7 +316,7 @@ func (g *Game) Menu() GameState {
 	return "menu"
 }
 
-//! Handle the event of a PC death (by monsters or the like).
+// Death ... handle the event of a PC death (by monsters or the like).
 /*
  * @param      Game    current game instance
  *
@@ -341,7 +342,7 @@ func (g *Game) Death() {
 	g.state = "quit"
 }
 
-//! Determine if the current game is in a state of quitting.
+// Quiting ... determine if the current game is in a state of quitting.
 /*
  * @param    GameState    current GameState
  *
@@ -351,7 +352,7 @@ func (s GameState) Quiting() bool {
 	return s == "quit"
 }
 
-//! Generate the game screen output.
+// Output ... generate the game screen output.
 /*
  * @param    Game*    pointer to the current game instance
  *
@@ -417,7 +418,7 @@ func (g *Game) Output() {
 	g.Player.UpdateStats()
 }
 
-//! Keyboard input parser.
+// Input ... Keyboard input parser.
 /*
  * @param     Game*   pointer to the current game instance
  *
@@ -432,65 +433,65 @@ func (g *Game) Input() {
 	DebugLog(g, fmt.Sprintf("Key pressed --> %x", key))
 
 	// Convert the key pressed to a hex string value.
-	key_as_string := fmt.Sprintf("%x", key)
+	keyAsString := fmt.Sprintf("%x", key)
 
 	// If the player presses the ESC key in the inventory or ground items
 	// screen, then switch back to playing mode.
 	if (g.state == "equipment" || g.state == "inventory" ||
-		g.state == "ground_items") && key_as_string == "1b" {
+		g.state == "ground_items") && keyAsString == "1b" {
 
 		// Set the state back to playing.
 		g.state = "playing"
 		return
 
 		// Equipment screen is open and the player presses the left arrow.
-	} else if g.state == "equipment" && key_as_string == "c484" {
+	} else if g.state == "equipment" && keyAsString == "c484" {
 
 		// Draw and populate the inventory ncurses UI.
 		g.state = "equipment"
-		DrawEquipmentUI(g, key_as_string)
+		DrawEquipmentUI(g, keyAsString)
 		return
 
 		// Equipment screen is open and the player presses the left arrow.
-	} else if g.state == "equipment" && key_as_string == "c485" {
+	} else if g.state == "equipment" && keyAsString == "c485" {
 
 		// Draw and populate the inventory ncurses UI.
 		g.state = "inventory"
-		DrawInventoryUI(g, key_as_string)
+		DrawInventoryUI(g, keyAsString)
 		return
 
 		// Inventory screen is open and the player presses the left arrow.
-	} else if g.state == "inventory" && key_as_string == "c484" {
+	} else if g.state == "inventory" && keyAsString == "c484" {
 
 		// Draw and populate the inventory ncurses UI.
 		g.state = "equipment"
-		DrawEquipmentUI(g, key_as_string)
+		DrawEquipmentUI(g, keyAsString)
 		return
 
 		// Inventory screen is open and the player presses the right arrow.
-	} else if g.state == "inventory" && key_as_string == "c485" {
+	} else if g.state == "inventory" && keyAsString == "c485" {
 
 		// Draw the UI and populate the global list of ground items.
 		g.state = "ground_items"
-		DrawGroundItemsUI(g, key_as_string)
+		DrawGroundItemsUI(g, keyAsString)
 
 		// Leave here since this needs to continue showing the ground
 		// items UI to the player.
 		return
 
 		// Ground items screen is open and the player presses the left arrow.
-	} else if g.state == "ground_items" && key_as_string == "c484" {
+	} else if g.state == "ground_items" && keyAsString == "c484" {
 
 		// Draw and populate the inventory ncurses UI.
 		g.state = "inventory"
-		DrawInventoryUI(g, key_as_string)
+		DrawInventoryUI(g, keyAsString)
 		return
 
 		// Ground items screen is open and the player presses the right arrow.
-	} else if g.state == "ground_items" && key_as_string == "c485" {
+	} else if g.state == "ground_items" && keyAsString == "c485" {
 
 		// Draw the UI and populate the global list of ground items.
-		DrawGroundItemsUI(g, key_as_string)
+		DrawGroundItemsUI(g, keyAsString)
 
 		// Leave here since this needs to continue showing the ground
 		// items UI to the player.
@@ -498,30 +499,30 @@ func (g *Game) Input() {
 
 		// If the player character inventory is open, and the key being pressed
 		// is not "e" then do nothing.
-	} else if g.state == "equipment" && key_as_string != "65" {
+	} else if g.state == "equipment" && keyAsString != "65" {
 
 		// Draw and populate the inventory ncurses UI.
-		DrawEquipmentUI(g, key_as_string)
+		DrawEquipmentUI(g, keyAsString)
 		return
 
 		// If the player character inventory is open, and the key being pressed
 		// is not "i" then do nothing.
-	} else if g.state == "inventory" && key_as_string != "69" {
+	} else if g.state == "inventory" && keyAsString != "69" {
 
 		// Draw and populate the inventory ncurses UI.
-		DrawInventoryUI(g, key_as_string)
+		DrawInventoryUI(g, keyAsString)
 		return
 
 		// If the ground items UI is open, and the key being pressed
 		// is not "g" then do nothing.
-	} else if g.state == "ground_items" && key_as_string != "67" {
+	} else if g.state == "ground_items" && keyAsString != "67" {
 
 		// Draw the UI and populate the global list of ground items.
-		DrawGroundItemsUI(g, key_as_string)
+		DrawGroundItemsUI(g, keyAsString)
 
 		// Do a check to see if a player presses the key 1-7 then attempt
 		// to add that item to the player's inventory.
-		err := PickupGroundItem(g, key_as_string)
+		err := PickupGroundItem(g, keyAsString)
 
 		// If there was an error, print it out.
 		if err != nil {
@@ -530,7 +531,7 @@ func (g *Game) Input() {
 		}
 
 		// Draw the UI and populate the global list of ground items.
-		DrawGroundItemsUI(g, key_as_string)
+		DrawGroundItemsUI(g, keyAsString)
 
 		// Leave here since this needs to continue showing the ground
 		// items UI to the player.
@@ -538,7 +539,7 @@ func (g *Game) Input() {
 	}
 
 	// For a given key...
-	switch key_as_string {
+	switch keyAsString {
 
 	// Numpad 8 --> Move player north
 	case "38":
@@ -608,7 +609,7 @@ func (g *Game) Input() {
 
 			// Enable the equipment state and draw the UI
 			g.state = "equipment"
-			DrawEquipmentUI(g, key_as_string)
+			DrawEquipmentUI(g, keyAsString)
 			return
 		}
 
@@ -623,7 +624,7 @@ func (g *Game) Input() {
 
 			// Enable the inventory state and draw the UI
 			g.state = "ground_items"
-			DrawGroundItemsUI(g, key_as_string)
+			DrawGroundItemsUI(g, keyAsString)
 			return
 		}
 
@@ -638,7 +639,7 @@ func (g *Game) Input() {
 
 			// Enable the inventory state and draw the UI
 			g.state = "inventory"
-			DrawInventoryUI(g, key_as_string)
+			DrawInventoryUI(g, keyAsString)
 			return
 		}
 
