@@ -10,29 +10,45 @@ package main
 // for the purpose of spawning creatures later on.
 import "./types"
 
+//
 // Global variable declaration.
-var G Game
-var DeveloperMode bool = false
-var PlayerName string = ""
-var PlayerClass *types.ClassTypeInfo = nil
-var MenuErrorMsg string = ""
+//
 
-// Global variable to hold all of the creature types.
+// G ... global game object
+var G Game
+
+// DeveloperMode ... global debug mode
+var DeveloperMode = false
+
+// PlayerName ... global var for the player name
+var PlayerName string
+
+// PlayerClass ... global var for the player class
+var PlayerClass *types.ClassTypeInfo
+
+// MenuErrorMsg ... global error message via menu
+var MenuErrorMsg string
+
+// GlobalCreatureTypeInfoMap ... Global variable to hold all of the creature
+// types.
 var GlobalCreatureTypeInfoMap = make(map[string]types.CreatureTypeInfo)
 
-// Global variable to check if the creature types has already been populated.
+// GlobalCreatureTypeInfoMapIsPopulated ... Global variable to check if the
+// creature types has already been populated.
 var GlobalCreatureTypeInfoMapIsPopulated = false
 
-// Global variable to hold all of the item types.
+// GlobalItemTypeInfoMap ... global variable to hold all of the item types.
 var GlobalItemTypeInfoMap = make(map[string]types.ItemTypeInfo)
 
-// Global variable to check if the item types has already been populated.
+// GlobalItemTypeInfoMapIsPopulated ... Global variable to check if the item
+// types has already been populated.
 var GlobalItemTypeInfoMapIsPopulated = false
 
-// Global variable to hold all of the class types.
+// GlobalClassTypeInfoMap ... global variable to hold all of the class types.
 var GlobalClassTypeInfoMap = make(map[string]types.ClassTypeInfo)
 
-// Global variable to check if the class types has already been populated.
+// GlobalClassTypeInfoMapIsPopulated ... Global variable to check if the
+// class types has already been populated.
 var GlobalClassTypeInfoMapIsPopulated = false
 
 //
