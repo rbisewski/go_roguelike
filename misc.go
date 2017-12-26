@@ -13,7 +13,7 @@ import (
 	"strconv"
 )
 
-//! Randomly returns "true" or "false"
+// TossCoin ... Randomly returns "true" or "false"
 /*
  * @returns    bool    whether the coin was heads (true) or tails (false)
  */
@@ -21,7 +21,7 @@ func TossCoin() bool {
 	return rand.Intn(100) > 50
 }
 
-//! Randomly returns "true" or "false"
+// getRandomNumBetweenZeroAndMax ... Randomly returns "true" or "false"
 /*
  * @returns    bool    whether the coin was heads (true) or tails (false)
  */
@@ -38,7 +38,7 @@ func getRandomNumBetweenZeroAndMax(maximum int) int {
 	return rand.Intn(maximum)
 }
 
-//! Get the minimum of a list of int values (i.e. the lowest value)
+// Min ... Get the minimum of a list of int values (i.e. the lowest value)
 /*
  * @param    int    a given integer value
  * @param    ...
@@ -64,7 +64,7 @@ func Min(a ...int) int {
 	return min
 }
 
-//! Get the max of a list of int values (i.e. the lowest value)
+// Max ... Get the max of a list of int values (i.e. the lowest value)
 /*
  * @param    int    a given integer value
  * @param    ...
@@ -89,7 +89,7 @@ func Max(a ...int) int {
 	return max
 }
 
-//! Return the x-percentage of a given value.
+// Percent ... Return the x-percentage of a given value.
 /*
  *  @param    int   current
  *  @param    int   total
@@ -100,7 +100,7 @@ func Percent(percent, of int) int {
 	return of * percent / 100
 }
 
-//! Round a given value or float to an integer.
+// Round a given value or float to an integer.
 /*
  * @param   float64    given value to round
  *
@@ -130,7 +130,7 @@ func Round(x float64) int {
 	x = .5
 	if frac < 0.0 {
 		x = -.5
-		intermed -= 1
+		intermed--
 	}
 
 	// Fraction 0.5 or more? Ceiling then.
@@ -153,7 +153,7 @@ func Round(x float64) int {
 	return int(rounder / pow)
 }
 
-//! Evaluates if a given ASCII character is a number (0-9)
+// IsNumeric ... Evaluates if a given ASCII character is a number (0-9)
 /*
  * @param    string    Keyboard ASCII character input.
  *
@@ -168,15 +168,15 @@ func IsNumeric(character string) bool {
 	}
 
 	// Convert the key pressed to a hex string value.
-	char_as_hex := fmt.Sprintf("%x", character)
+	charAsHex := fmt.Sprintf("%x", character)
 
 	// Sanity check, make sure this actually was able to return non-blank.
-	if len(char_as_hex) < 1 {
+	if len(charAsHex) < 1 {
 		return false
 	}
 
 	// Attempt to convert the hexadecimal value to an uint16 decimal.
-	char_as_int, err := strconv.ParseUint(char_as_hex, 16, 16)
+	charAsInt, err := strconv.ParseUint(charAsHex, 16, 16)
 
 	// Safety check, if an error occurred, this probably isn't a number,
 	// so go ahead and return false.
@@ -189,7 +189,7 @@ func IsNumeric(character string) bool {
 	// 0 -> 0x30 -> 48
 	// 9 -> 0x39 -> 57
 	//
-	if char_as_int > 47 && char_as_int < 58 {
+	if charAsInt > 47 && charAsInt < 58 {
 		return true
 	}
 
@@ -198,11 +198,12 @@ func IsNumeric(character string) bool {
 	return false
 }
 
-//! Converts a given keyboard response to
+// ConvertKeyToNumeric ... converts a keyboard number key to integer value
 /*
  * @param    string    Keyboard ASCII character input.
  *
- * @return   bool      whether or not the character is a numeric
+ * @return   uint64    integer output
+ * @return   error     error message, if any
  */
 func ConvertKeyToNumeric(character string) (uint64, error) {
 
@@ -213,18 +214,18 @@ func ConvertKeyToNumeric(character string) (uint64, error) {
 	}
 
 	// Variable declaration
-	var num uint64 = 0
+	var num uint64
 
 	// Convert the key pressed to a hex string value.
-	char_as_hex := fmt.Sprintf("%x", character)
+	charAsHex := fmt.Sprintf("%x", character)
 
 	// Sanity check, make sure this actually was able to return non-blank.
-	if len(char_as_hex) < 1 {
+	if len(charAsHex) < 1 {
 		return 0, fmt.Errorf("ConvertKeyToNumeric() --> improper hexidecimal")
 	}
 
 	// Attempt to convert the hexadecimal value to an uint16 decimal.
-	char_as_int, err := strconv.ParseUint(char_as_hex, 16, 16)
+	charAsInt, err := strconv.ParseUint(charAsHex, 16, 16)
 
 	// Safety check, if an error occurred, this probably isn't a number,
 	// so go ahead and return false.
@@ -237,19 +238,19 @@ func ConvertKeyToNumeric(character string) (uint64, error) {
 	// 0 -> 0x30 -> 48
 	// 9 -> 0x39 -> 57
 	//
-	if char_as_int < 48 || char_as_int > 57 {
+	if charAsInt < 48 || charAsInt > 57 {
 		return 0, fmt.Errorf("ConvertKeyToNumeric() --> non-ASCII value")
 	}
 
 	// Convert the value into a plain ol' unsigned int.
-	num = char_as_int - 48
+	num = charAsInt - 48
 
 	// Otherwise some other sort of character was present here, so then
 	// return false here as a default.
 	return num, nil
 }
 
-//! Evaluates if a given ASCII character is alphabetical (a-zA-Z).
+// IsAlphaCharacter ... evaluates if ASCII char is alphabetical (a-zA-Z)
 /*
  * @param    string    Keyboard ASCII character input.
  *
@@ -264,15 +265,15 @@ func IsAlphaCharacter(character string) bool {
 	}
 
 	// Convert the key pressed to a hex string value.
-	char_as_hex := fmt.Sprintf("%x", character)
+	charAsHex := fmt.Sprintf("%x", character)
 
 	// Sanity check, make sure this actually was able to return non-blank.
-	if len(char_as_hex) < 1 {
+	if len(charAsHex) < 1 {
 		return false
 	}
 
 	// Attempt to convert the hexadecimal value to an uint16 decimal.
-	char_as_int, err := strconv.ParseUint(char_as_hex, 16, 16)
+	charAsInt, err := strconv.ParseUint(charAsHex, 16, 16)
 
 	// Safety check, if an error occurred, this probably isn't alphabetical,
 	// so go ahead and return false.
@@ -287,7 +288,7 @@ func IsAlphaCharacter(character string) bool {
 	// a -> 0x61 -> 97
 	// z -> 0x7a -> 122
 	//
-	if (char_as_int > 64 && char_as_int < 91) || (char_as_int > 96 && char_as_int < 123) {
+	if (charAsInt > 64 && charAsInt < 91) || (charAsInt > 96 && charAsInt < 123) {
 		return true
 	}
 
@@ -296,7 +297,7 @@ func IsAlphaCharacter(character string) bool {
 	return false
 }
 
-//! Evaluates if a given ASCII character is equivalent to delete or backspace
+// IsDeleteOrBackspace ... check if key is ASCII backspace or delete char
 /*
  * @param    string    Keyboard ASCII character input.
  *
@@ -311,15 +312,15 @@ func IsDeleteOrBackspace(character string) bool {
 	}
 
 	// Convert the key pressed to a hex string value.
-	char_as_hex := fmt.Sprintf("%x", character)
+	charAsHex := fmt.Sprintf("%x", character)
 
 	// Sanity check, make sure this actually was able to return non-blank.
-	if len(char_as_hex) < 1 {
+	if len(charAsHex) < 1 {
 		return false
 	}
 
 	// Determine if the character given is the "Backspace" or "Delete" key.
-	if char_as_hex == "7f" || char_as_hex == "c58a" {
+	if charAsHex == "7f" || charAsHex == "c58a" {
 		return true
 	}
 
@@ -328,7 +329,7 @@ func IsDeleteOrBackspace(character string) bool {
 	return false
 }
 
-//! Evaluates if a given ASCII character is equivalent to the enter key.
+// WasEnterPressed ... check if the enter key was pressed.
 /*
  * @param    string    Keyboard ASCII character input.
  *
@@ -343,15 +344,15 @@ func WasEnterPressed(character string) bool {
 	}
 
 	// Convert the key pressed to a hex string value.
-	char_as_hex := fmt.Sprintf("%x", character)
+	charAsHex := fmt.Sprintf("%x", character)
 
 	// Sanity check, make sure this actually was able to return non-blank.
-	if len(char_as_hex) < 1 {
+	if len(charAsHex) < 1 {
 		return false
 	}
 
 	// Determine if the character given is the "Enter" key.
-	if char_as_hex == "0a" {
+	if charAsHex == "0a" {
 		return true
 	}
 
@@ -360,7 +361,7 @@ func WasEnterPressed(character string) bool {
 	return false
 }
 
-//! Take a given string, align it, and add spaces.
+// AlignAndSpaceString ... align and space a given string
 /*
  * @return    none
  */
