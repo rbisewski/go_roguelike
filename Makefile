@@ -27,7 +27,7 @@ clean:
 
 install: build
 	@echo installing executable file to /usr/bin/go_roguelike
-	@sudo cp trackpadctl /usr/bin/go_roguelike
+	@sudo cp go_roguelike /usr/bin/go_roguelike
 
 uninstall: clean
 	@echo removing executable file from /usr/bin/go_roguelike
