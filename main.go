@@ -13,43 +13,40 @@ import "./types"
 //
 // Global variable declaration.
 //
+var (
+	G Game
 
-// G ... global game object
-var G Game
+	PlayerName  string
+	PlayerClass *types.ClassTypeInfo
 
-// DeveloperMode ... global debug mode
-var DeveloperMode = false
+	// DeveloperMode ... global debug mode
+	DeveloperMode = false
 
-// PlayerName ... global var for the player name
-var PlayerName string
+	// MenuErrorMsg ... global error message via menu
+	MenuErrorMsg string
 
-// PlayerClass ... global var for the player class
-var PlayerClass *types.ClassTypeInfo
+	// GlobalCreatureTypeInfoMap ... Global variable to hold all of the creature
+	// types.
+	GlobalCreatureTypeInfoMap = make(map[string]types.CreatureTypeInfo)
 
-// MenuErrorMsg ... global error message via menu
-var MenuErrorMsg string
+	// GlobalCreatureTypeInfoMapIsPopulated ... Global variable to check if the
+	// creature types has already been populated.
+	GlobalCreatureTypeInfoMapIsPopulated = false
 
-// GlobalCreatureTypeInfoMap ... Global variable to hold all of the creature
-// types.
-var GlobalCreatureTypeInfoMap = make(map[string]types.CreatureTypeInfo)
+	// GlobalItemTypeInfoMap ... global variable to hold all of the item types.
+	GlobalItemTypeInfoMap = make(map[string]types.ItemTypeInfo)
 
-// GlobalCreatureTypeInfoMapIsPopulated ... Global variable to check if the
-// creature types has already been populated.
-var GlobalCreatureTypeInfoMapIsPopulated = false
+	// GlobalItemTypeInfoMapIsPopulated ... Global variable to check if the item
+	// types has already been populated.
+	GlobalItemTypeInfoMapIsPopulated = false
 
-// GlobalItemTypeInfoMap ... global variable to hold all of the item types.
-var GlobalItemTypeInfoMap = make(map[string]types.ItemTypeInfo)
+	// GlobalClassTypeInfoMap ... global variable to hold all of the class types.
+	GlobalClassTypeInfoMap = make(map[string]types.ClassTypeInfo)
 
-// GlobalItemTypeInfoMapIsPopulated ... Global variable to check if the item
-// types has already been populated.
-var GlobalItemTypeInfoMapIsPopulated = false
-
-// GlobalClassTypeInfoMap ... global variable to hold all of the class types.
-var GlobalClassTypeInfoMap = make(map[string]types.ClassTypeInfo)
-
-// GlobalClassTypeInfoMapIsPopulated ... Global variable to check if the
-// class types has already been populated.
-var GlobalClassTypeInfoMapIsPopulated = false
+	// GlobalClassTypeInfoMapIsPopulated ... Global variable to check if the
+	// class types has already been populated.
+	GlobalClassTypeInfoMapIsPopulated = false
+)
 
 //
 // Main
