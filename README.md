@@ -34,17 +34,25 @@ free to shoot me an email if you discover bugs on other platforms.
 
 Enter the following command to build the executable (if necessary as root):
 
-    go build
-
-Afterwards run the binary from the commandline, as you would any typical
-golang program.
+```
+make
+```
 
 # Running go-roguelike
 
 Simply run the compiled file from the commandline and it should work as
 intended.
 
-    ./go_roguelike
+```
+./go_roguelike
+```
+
+To get the current version of the binary, use the `version` flag as per
+the below command:
+
+```
+./go_roguelike -version
+```
 
 # Additional Notes
 
