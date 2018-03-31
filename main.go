@@ -8,12 +8,22 @@ package main
 
 // Import the types since the game needs to populate the creature type
 // for the purpose of spawning creatures later on.
-import "./types"
+import (
+	"flag"
+	"fmt"
+	"os"
+
+	"./types"
+)
 
 //
 // Global variable declaration.
 //
 var (
+	// Whether or not to print the current version of the program
+	printVersion = false
+	Version      = "0.0"
+
 	G Game
 
 	PlayerName  string
@@ -48,10 +58,26 @@ var (
 	GlobalClassTypeInfoMapIsPopulated = false
 )
 
+func init() {
+
+	// Version mode flag
+	flag.BoolVar(&printVersion, "version", false,
+		"Print the current version of this program and exit.")
+}
+
 //
 // Main
 //
 func main() {
+
+	flag.Parse()
+
+	// if requested, go ahead and print the version; afterwards exit the
+	// program, since this is all done
+	if printVersion {
+		fmt.Println("go-roguelike v" + Version)
+		os.Exit(0)
+	}
 
 	// Let's get (gocurses) started!
 	Init()
