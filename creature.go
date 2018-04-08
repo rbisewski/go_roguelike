@@ -9,8 +9,10 @@
 package main
 
 import (
-	"./types"
 	"fmt"
+	"strconv"
+
+	"./types"
 )
 
 // Creature ... structure to hold characters / monsters
@@ -478,7 +480,8 @@ func (m *Creature) die() {
 		if monster == nil {
 
 			// Otherwise tell the developer something odd was appended here.
-			DebugLog(&G, fmt.Sprintf("die() --> nil mob at index [%i]", i))
+			numStr := strconv.Itoa(i)
+			DebugLog(&G, "die() --> nil mob at index ["+numStr+"]")
 
 			// Move on to the next monster.
 			continue
@@ -520,7 +523,8 @@ func (m *Creature) die() {
 		if item == nil {
 
 			// Otherwise tell the developer something odd was appended here.
-			DebugLog(&G, fmt.Sprintf("die() --> nil item at index [%i]", i))
+			numStr := strconv.Itoa(i)
+			DebugLog(&G, "die() --> nil item at index ["+numStr+"]")
 
 			// Move on to the next item.
 			continue
