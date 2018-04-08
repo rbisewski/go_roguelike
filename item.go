@@ -159,9 +159,9 @@ func (itm *Item) adjustDurability(amount int) {
 		itm.durabilityCurrent = itm.durabilityMaximum
 
 		// If debug mode, tell the developer what just happened.
-		DebugLog(&G, fmt.Sprintf("adjustDurability() --> item [%s] has "+
+		DebugLog(&G, "adjustDurability() --> item ["+itm.name+"] has "+
 			"exceeded max durability, and so has "+
-			"been capped"))
+			"been capped")
 	}
 
 	// If the item is less than zero, then consider it to be broken, in
