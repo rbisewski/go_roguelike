@@ -371,8 +371,8 @@ func (g *Game) Output() {
 		if item == nil {
 
 			// Otherwise tell the developer something odd was appended here.
-			DebugLog(g, fmt.Sprintf("Output() --> invalid item at index [%i]",
-				index))
+			numStr := strconv.Itoa(index)
+			DebugLog(g, "Output() --> invalid item at index ["+numStr+"]")
 
 			// Move on to the next item.
 			continue
@@ -400,8 +400,8 @@ func (g *Game) Output() {
 		if m == nil {
 
 			// Otherwise tell the developer something odd was appended here.
-			DebugLog(g, fmt.Sprintf("Output() --> null monster at index [%i]",
-				index))
+			numStr := strconv.Itoa(index)
+			DebugLog(g, "Output() --> null monster at index ["+numStr+"]")
 
 			// Move on to the next monster.
 			continue
