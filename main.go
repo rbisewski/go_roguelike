@@ -13,7 +13,7 @@ import (
 	"fmt"
 	"os"
 
-	"./types"
+	"github.com/rbisewski/go_roguelike/types"
 )
 
 //
