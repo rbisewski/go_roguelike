@@ -12,7 +12,7 @@ import (
 	"fmt"
 	"strconv"
 
-	"./types"
+	"github.com/rbisewski/go_roguelike/types"
 )
 
 // Creature ... structure to hold characters / monsters
