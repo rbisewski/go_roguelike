@@ -77,18 +77,8 @@ terminal for further information.
 
 # Authors
 
-This software utilizes bits of code from a golang wrapper for the ncurses
-library. For more information, consider contacting the original author:
-
-* GitHub Repo -> https://github.com/tncardoso/gocurses  
-
-The odd piece of code was gleamed from the golang code of this developer,
-so naturally a tip-of-the-hat is in order:
-
-* GitHub Repo -> https://github.com/GGalizzi 
-
-The vast majority was created by Robert Bisewski at Ibis Cybernetics. For
-more information, contact:
+This project was created by Robert Bisewski at Ibis Cybernetics. For more
+information, contact:
 
 * Website -> www.ibiscybernetics.com
 
