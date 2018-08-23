@@ -14,7 +14,7 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/rbisewski/go_roguelike/gocurses"
+	"github.com/rbisewski/gocurses"
 )
 
 // log ... Holds the part of the window where in-game messages are shown.
