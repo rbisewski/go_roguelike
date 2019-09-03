@@ -19,60 +19,60 @@ import "fmt"
  */
 func spawnCreatureToArray(name string, x int, y int, a *Area) bool {
 
-    // Input validation, make sure this got a valid string, coords, and area.
-    if len(name) < 1 || x < 0 || y < 0 || a == nil {
-        DebugLog(&G, fmt.Sprintf("spawnCreatureToArray() --> invalid input"))
-        return false
-    }
+	// Input validation, make sure this got a valid string, coords, and area.
+	if len(name) < 1 || x < 0 || y < 0 || a == nil {
+		DebugLog(&G, fmt.Sprintf("spawnCreatureToArray() --> invalid input"))
+		return false
+	}
 
-    // Safety check, if the creature type info has not yet been populated,
-    // then leave this function.
-    if !GlobalCreatureTypeInfoMapIsPopulated {
-        return false
-    }
+	// Safety check, if the creature type info has not yet been populated,
+	// then leave this function.
+	if !GlobalCreatureTypeInfoMapIsPopulated {
+		return false
+	}
 
-    // Further safety check, make sure that creature actually exists as a
-    // valid type in the global creature type array.
-    _, IsCreatureTypeDefined := GlobalCreatureTypeInfoMap[name]
+	// Further safety check, make sure that creature actually exists as a
+	// valid type in the global creature type array.
+	_, IsCreatureTypeDefined := GlobalCreatureTypeInfoMap[name]
 
-    // If the given creature name is not present, leave and return false.
-    if !IsCreatureTypeDefined {
+	// If the given creature name is not present, leave and return false.
+	if !IsCreatureTypeDefined {
 
-        // When debug mode is enabled, also log a message about the improper
-        // creature name string given.
-        DebugLog(&G, fmt.Sprintf("spawnCreatureToArray() --> improper " +
-          "monster string given: %s", name))
+		// When debug mode is enabled, also log a message about the improper
+		// creature name string given.
+		DebugLog(&G, fmt.Sprintf("spawnCreatureToArray() --> improper "+
+			"monster string given: %s", name))
 
-        // Send back a false since the creature was *not* spawned.
-        return false
-    }
+		// Send back a false since the creature was *not* spawned.
+		return false
+	}
 
-    // Grab the creature's name, species, rune-graphic, health, max-health,
-    // attack, and defence attributes from the global creature type map.
-    SpawnedCreatureName         := GlobalCreatureTypeInfoMap[name].Name
-    SpawnedCreatureSpecies      := GlobalCreatureTypeInfoMap[name].Species
-    SpawnedCreatureGfx          := GlobalCreatureTypeInfoMap[name].Ch
-    SpawnedCreatureHp           := GlobalCreatureTypeInfoMap[name].Hp
-    SpawnedCreatureMaxHp        := GlobalCreatureTypeInfoMap[name].MaxHp
-    SpawnedCreatureAttack       := GlobalCreatureTypeInfoMap[name].Att
-    SpawnedCreatureDefence      := GlobalCreatureTypeInfoMap[name].Def
-    SpawnedCreatureClass        := GlobalCreatureTypeInfoMap[name].Class
-    SpawnedCreatureStrength     := GlobalCreatureTypeInfoMap[name].Strength
-    SpawnedCreatureIntelligence := GlobalCreatureTypeInfoMap[name].Intelligence
-    SpawnedCreatureAgility      := GlobalCreatureTypeInfoMap[name].Agility
-    SpawnedCreatureWisdom       := GlobalCreatureTypeInfoMap[name].Wisdom
-    SpawnedCreatureHealrate     := GlobalCreatureTypeInfoMap[name].Healrate
-    SpawnedCreatureHealcounter  := GlobalCreatureTypeInfoMap[name].Healcounter
+	// Grab the creature's name, species, rune-graphic, health, max-health,
+	// attack, and defence attributes from the global creature type map.
+	SpawnedCreatureName := GlobalCreatureTypeInfoMap[name].Name
+	SpawnedCreatureSpecies := GlobalCreatureTypeInfoMap[name].Species
+	SpawnedCreatureGfx := GlobalCreatureTypeInfoMap[name].Ch
+	SpawnedCreatureHp := GlobalCreatureTypeInfoMap[name].Hp
+	SpawnedCreatureMaxHp := GlobalCreatureTypeInfoMap[name].MaxHp
+	SpawnedCreatureAttack := GlobalCreatureTypeInfoMap[name].Att
+	SpawnedCreatureDefence := GlobalCreatureTypeInfoMap[name].Def
+	SpawnedCreatureClass := GlobalCreatureTypeInfoMap[name].Class
+	SpawnedCreatureStrength := GlobalCreatureTypeInfoMap[name].Strength
+	SpawnedCreatureIntelligence := GlobalCreatureTypeInfoMap[name].Intelligence
+	SpawnedCreatureAgility := GlobalCreatureTypeInfoMap[name].Agility
+	SpawnedCreatureWisdom := GlobalCreatureTypeInfoMap[name].Wisdom
+	SpawnedCreatureHealrate := GlobalCreatureTypeInfoMap[name].Healrate
+	SpawnedCreatureHealcounter := GlobalCreatureTypeInfoMap[name].Healcounter
 
-    // Append it to the array.
-    a.Creatures = append(a.Creatures, NewCreature(SpawnedCreatureName,
-      SpawnedCreatureSpecies, y, x, SpawnedCreatureGfx, a, nil,
-      SpawnedCreatureHp, SpawnedCreatureMaxHp, SpawnedCreatureAttack,
-      SpawnedCreatureDefence, SpawnedCreatureClass,
-      SpawnedCreatureStrength, SpawnedCreatureIntelligence,
-      SpawnedCreatureAgility, SpawnedCreatureWisdom, SpawnedCreatureHealrate,
-      SpawnedCreatureHealcounter))
+	// Append it to the array.
+	a.Creatures = append(a.Creatures, NewCreature(SpawnedCreatureName,
+		SpawnedCreatureSpecies, y, x, SpawnedCreatureGfx, a, nil,
+		SpawnedCreatureHp, SpawnedCreatureMaxHp, SpawnedCreatureAttack,
+		SpawnedCreatureDefence, SpawnedCreatureClass,
+		SpawnedCreatureStrength, SpawnedCreatureIntelligence,
+		SpawnedCreatureAgility, SpawnedCreatureWisdom, SpawnedCreatureHealrate,
+		SpawnedCreatureHealcounter))
 
-    // With the monster successfully added, consider this complete.
-    return true
+	// With the monster successfully added, consider this complete.
+	return true
 }
