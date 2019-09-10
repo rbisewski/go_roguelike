@@ -151,8 +151,8 @@ func (g *Game) Menu() GameState {
 			key = GetInput()
 
 			if WasEnterPressed(key) && len(PlayerName) > 0 {
-                                // if Enter was pressed and name is at least 1
-                                // then assume end-user is done typing their name
+				// if Enter was pressed and name is at least 1
+				// then assume end-user is done typing their name
 				break
 
 			} else if IsAlphaCharacter(key) && len(PlayerName) < 13 {

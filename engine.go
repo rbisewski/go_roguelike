@@ -362,7 +362,7 @@ func (l *log) log(s string) {
 		l.dline++
 	}
 
-        // the log stores 99 lines, if it reaches 100, reset back to zero
+	// the log stores 99 lines, if it reaches 100, reset back to zero
 	if l.line >= 100 {
 		l.line = 0
 		l.dline = 0
@@ -1055,7 +1055,7 @@ func (g *Game) LoadGame(filename string) bool {
 	file, err := os.OpenFile(filename, os.O_RDONLY, 0600)
 	if err != nil {
 		fmt.Println(err.Error())
-                os.Exit(1)
+		os.Exit(1)
 	}
 
 	// If closing the file causes unforeseen consequences, go ahead and

@@ -80,7 +80,7 @@ func main() {
 	Init()
 	defer End()
 
-        // setup creature types, item types, and player class types
+	// setup creature types, item types, and player class types
 	GlobalCreatureTypeInfoMapIsPopulated = types.GenCreatureTypes(GlobalCreatureTypeInfoMap)
 	GlobalItemTypeInfoMapIsPopulated = types.GenItemTypes(GlobalItemTypeInfoMap)
 	GlobalClassTypeInfoMapIsPopulated = types.GenClassTypes(GlobalClassTypeInfoMap)
@@ -89,7 +89,7 @@ func main() {
 
 	G.DebugMode = DeveloperMode
 
-        // infinite loop which is present as long as the game is running
+	// infinite loop which is present as long as the game is running
 	for !G.state.Quiting() {
 
 		// In the menu?
@@ -98,7 +98,7 @@ func main() {
 			continue
 		}
 
-                // handlers for screen output and keyboard input
+		// handlers for screen output and keyboard input
 		G.Output()
 		G.Input()
 	}
