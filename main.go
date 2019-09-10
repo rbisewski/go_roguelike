@@ -80,19 +80,14 @@ func main() {
 	Init()
 	defer End()
 
-	// Populate the various creature types into the game.
+        // setup creature types, item types, and player class types
 	GlobalCreatureTypeInfoMapIsPopulated = types.GenCreatureTypes(GlobalCreatureTypeInfoMap)
-
-	// Populate the various item types into the game.
 	GlobalItemTypeInfoMapIsPopulated = types.GenItemTypes(GlobalItemTypeInfoMap)
-
-	// Populate the various class types into the game.
 	GlobalClassTypeInfoMapIsPopulated = types.GenClassTypes(GlobalClassTypeInfoMap)
 
-	// The default state shall be to set the menu.
 	G.state = "menu"
 
-	G.DebugMode = false
+	G.DebugMode = DeveloperMode
 
         // infinite loop which is present as long as the game is running
 	for !G.state.Quiting() {

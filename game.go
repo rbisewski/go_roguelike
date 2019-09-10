@@ -206,10 +206,12 @@ func (g *Game) Menu() GameState {
 			// is feedback for the player to see
 			if PlayerClass != nil {
 
-				// Print out the given class options.
 				Write(Percent(25, ConsoleHeight)+8+classCounter,
 					ConsoleWidth/2, "You have selected... "+
 						PlayerClass.Name+"     ")
+
+				Write(Percent(25, ConsoleHeight)+10+classCounter,
+					ConsoleWidth/2, "Press [Enter] to begin the game.")
 			}
 
 			// Grab the current keyboard input.

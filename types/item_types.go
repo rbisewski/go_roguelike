@@ -48,7 +48,6 @@ type ItemTypeInfo struct {
  */
 func GenItemTypes(itype map[string]ItemTypeInfo) bool {
 
-	// Input validation
 	if itype == nil {
 		return false
 	}
@@ -101,6 +100,5 @@ func GenItemTypes(itype map[string]ItemTypeInfo) bool {
 	itype["greaves"] = ItemTypeInfo{"Greaves", "pants", '%', true, false,
 		15, 15, 20, 10, 20000, 0, 2}
 
-	// All of the items have been populates successfully, so return true.
 	return true
 }

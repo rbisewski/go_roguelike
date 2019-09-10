@@ -30,15 +30,13 @@ I tend to write software on the x86-64 and arm7 architectures, so feel
 free to shoot me an email if you discover bugs on other platforms.
 
 
-# Installation
+# Running go-roguelike
 
-Enter the following command to build the executable (if necessary as root):
+Enter the following command to build the executable:
 
 ```
 make
 ```
-
-# Running go-roguelike
 
 Simply run the compiled file from the commandline and it should work as
 intended.
@@ -82,4 +80,4 @@ information, contact:
 
 * Website -> www.ibiscybernetics.com
 
-* Email -> contact@ibiscybernetics.com
+* Email -> rbisewski@ibiscybernetics.com

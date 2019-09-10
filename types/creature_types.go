@@ -46,7 +46,6 @@ type CreatureTypeInfo struct {
  */
 func GenCreatureTypes(ct map[string]CreatureTypeInfo) bool {
 
-	// Input validation
 	if ct == nil {
 		return false
 	}
@@ -87,6 +86,5 @@ func GenCreatureTypes(ct map[string]CreatureTypeInfo) bool {
 	ct["orc"] = CreatureTypeInfo{"orc", "humanoid", 'o', 40, 40, 12, 5, nil,
 		20, 10, 10, 10, 10, 0}
 
-	// Set the populated flag to true.
 	return true
 }
