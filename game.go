@@ -41,7 +41,6 @@ type Game struct {
  */
 func (g *Game) Init() {
 
-	// Variable declaration
 	var y int
 	var x int
 
@@ -141,7 +140,6 @@ func (g *Game) Menu() GameState {
 		// the name of their character by typing via the keyboard.
 		for true {
 
-			// Tell the end user to enter the name of their character.
 			Write(Percent(25, ConsoleHeight), ConsoleWidth/2,
 				"Enter the name of your character:")
 
@@ -150,25 +148,17 @@ func (g *Game) Menu() GameState {
 			Write(Percent(25, ConsoleHeight)+2, ConsoleWidth/2,
 				PlayerName)
 
-			// Grab the current keyboard input.
 			key = GetInput()
 
-			// If the enter key was pressed and the character name has at least
-			// one or more characters.
 			if WasEnterPressed(key) && len(PlayerName) > 0 {
+                                // if Enter was pressed and name is at least 1
+                                // then assume end-user is done typing their name
 				break
 
-				// Else if it was a valid a-zA-Z key then...
 			} else if IsAlphaCharacter(key) && len(PlayerName) < 13 {
-
-				// ... append it to the name string.
 				PlayerName += key
 
-				// Else if it was a backspace or delete key && length of PlayerName
-				// is greater than 0 then...
 			} else if IsDeleteOrBackspace(key) && len(PlayerName) > 0 {
-
-				// ... remove the last string from PlayerName.
 				PlayerName = string(PlayerName[:len(PlayerName)-1])
 			}
 
@@ -182,7 +172,6 @@ func (g *Game) Menu() GameState {
 		classCounter := 1
 		for true {
 
-			// Tell the end user the name of their character.
 			Write(Percent(25, ConsoleHeight), ConsoleWidth/2,
 				"The name of your character is:     ")
 
@@ -191,7 +180,6 @@ func (g *Game) Menu() GameState {
 			Write(Percent(25, ConsoleHeight)+2, ConsoleWidth/2,
 				PlayerName)
 
-			// Tell the end user to select the class of their character.
 			Write(Percent(25, ConsoleHeight)+5, ConsoleWidth/2,
 				"Now select a class:")
 
@@ -211,7 +199,6 @@ func (g *Game) Menu() GameState {
 				Write(Percent(25, ConsoleHeight)+6+classCounter,
 					ConsoleWidth/2, strref+") "+givenClass.Name+"   ")
 
-				// Increment the class counter
 				classCounter++
 			}
 
@@ -234,16 +221,12 @@ func (g *Game) Menu() GameState {
 				// convert the keystroke to an uint64 representation of the
 				// original hexidecimal typed by the keyboard
 				num, err := ConvertKeyToNumeric(key)
-
-				// if an error occurs, assume a value of 1 here...
 				if err != nil {
 					num = 1
 				}
 
-				// Convert the uint64 value to a string
-				n := strconv.FormatUint(num, 10)
-
 				// attempt to grab the selected class using the above
+				n := strconv.FormatUint(num, 10)
 				selectedClass := GlobalClassTypeInfoMap[n]
 				PlayerClass = &selectedClass
 			}
@@ -302,7 +285,6 @@ func (g *Game) Menu() GameState {
 		// Wipe away the menu screen.
 		Clear()
 
-		// Set the current GameState to "playing".
 		return "playing"
 	}
 
@@ -360,21 +342,15 @@ func (s GameState) Quiting() bool {
  */
 func (g *Game) Output() {
 
-	// Draw the given area map.
 	DrawMap(g.Area)
 
 	// Cycle thru all of the item present in the current area. If an item is
 	// at the given (x,y) coords, then go ahead and draw it on the map.
 	for index, item := range g.Area.Items {
 
-		// Sanity check, make sure this actually got a valid item.
 		if item == nil {
-
-			// Otherwise tell the developer something odd was appended here.
 			numStr := strconv.Itoa(index)
-			DebugLog(g, "Output() --> invalid item at index ["+numStr+"]")
-
-			// Move on to the next item.
+			DebugLog(g, "Output() --> invalid or null item at index ["+numStr+"]")
 			continue
 		}
 
@@ -396,14 +372,9 @@ func (g *Game) Output() {
 	// Cycle thru every monster present in the given area.
 	for index, m := range g.Area.Creatures {
 
-		// Sanity check, make sure this actually got a valid monster.
 		if m == nil {
-
-			// Otherwise tell the developer something odd was appended here.
 			numStr := strconv.Itoa(index)
 			DebugLog(g, "Output() --> null monster at index ["+numStr+"]")
-
-			// Move on to the next monster.
 			continue
 		}
 
@@ -413,8 +384,6 @@ func (g *Game) Output() {
 
 	// Refresh the tile the PC is currently on.
 	RefreshPad(int(g.Player.Y), int(g.Player.X))
-
-	// Update the current PC stats.
 	g.Player.UpdateStats()
 }
 
@@ -426,10 +395,7 @@ func (g *Game) Output() {
  */
 func (g *Game) Input() {
 
-	// Grab the key command pressed.
 	key := GetInput()
-
-	// If debug enabled, show the key that was pressed.
 	DebugLog(g, fmt.Sprintf("Key pressed --> %x", key))
 
 	// Convert the key pressed to a hex string value.

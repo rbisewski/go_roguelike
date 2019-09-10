@@ -215,23 +215,13 @@ func NewCreatureWithEquipment(name string,
  */
 func (m *Creature) Move(y, x int) {
 
-	// Input validation, make sure the (x,y) coords are reasonable.
 	if x > 32767 || y > 32767 || x < -32767 || y < -32767 {
-
-		// If debug mode is on, tell the end user what happened here.
 		DebugLog(&G, "Error: Invalid (x,y) coord detected.")
-
-		// Leave the function here.
 		return
 	}
 
-	// Further input validation, make sure we actually got a creature here.
 	if m == nil {
-
-		// If debug mode is on, tell the end user what happened here.
 		DebugLog(&G, "Error: Null pointer or invalid creature detected.")
-
-		// Leave the function here.
 		return
 	}
 
@@ -240,13 +230,8 @@ func (m *Creature) Move(y, x int) {
 	// to move to.
 	tileRune, blocks, hasCreature, hasItems := m.area.GetTileInfo(m.Y+y, m.X+x)
 
-	// Sanity check, make sure this actually got a tile rune.
 	if tileRune == 0 {
-
-		// If debug mode is on, tell the end user what happened here.
 		DebugLog(&G, "Error: Null or invalid Unicode rune.")
-
-		// Leave the function here.
 		return
 	}
 
@@ -283,24 +268,18 @@ func (m *Creature) Move(y, x int) {
 	// If some other creature attempts to move, simply return here since
 	// there is no need to print a message, except in debug mode.
 	if blocks && m.species != "player" {
-
-		// If debug mode, tell the developer where the creature has moved to.
 		DebugLog(&G, fmt.Sprintf(
 			"The %s attempted to move to location (%d,%d), but it "+
 				"was blocked.",
 			m.name,
 			m.Y+y,
 			m.X+x))
-
-		// Leave the function here.
 		return
 	}
 
 	// If the tile is non-blocking, but a creature is here, go ahead and
 	// switch to combat mode via the attack() function.
 	if hasCreature != nil && m != hasCreature {
-
-		// If debug mode, tell the developer which creature is being attacked.
 		DebugLog(&G, fmt.Sprintf(
 			"The %s is attacking %s at location (%d,%d).",
 			m.name,
@@ -308,10 +287,7 @@ func (m *Creature) Move(y, x int) {
 			m.Y+y,
 			m.X+x))
 
-		// Call the attack() function.
 		m.attack(hasCreature)
-
-		// Leave the function here.
 		return
 	}
 
@@ -338,9 +314,6 @@ func (m *Creature) Move(y, x int) {
 	} else if m.species == "player" && len(hasItems) > 1 {
 		MessageLog.log("There are items here on the ground.")
 	}
-
-	// Finally, leave the function since the move is finished.
-	return
 }
 
 //! Function to handle what occurs if a monster attacks.
@@ -351,22 +324,12 @@ func (m *Creature) Move(y, x int) {
  */
 func (m *Creature) attack(defender *Creature) {
 
-	// Input validation, make sure this was given a valid `attacker`
-	// and `defender` creature.
 	if m == nil || defender == nil {
-
-		// If debug, print the message to the log about what just occurred.
 		DebugLog(&G, "attack() --> invalid creature input.")
-
-		// Leave the function.
 		return
 	}
 
-	// Variable declaration.
-	var damageDealt int
-
-	// Determine how much damage was done to the defender.
-	damageDealt = m.Att - defender.Def
+	var damageDealt int = m.Att - defender.Def
 
 	// Cap the damage dealt at zero, this is to prevent the enemies from
 	// accidently healing other creatures when they attack.
@@ -376,28 +339,21 @@ func (m *Creature) attack(defender *Creature) {
 
 	// Adjust the defender's HP based on the damage dealt.
 	defender.Hp -= damageDealt
-
-	// If the HP of the defender falls below zero, then he/she/it dies.
 	if defender.Hp <= 0 {
 		defender.die()
 	}
 
-	// If neither the defender nor the attacker is involved, there is no
-	// need to print battle messages, ergo this function is complete.
+	// If two monsters are attacking each other, there is no need to
+	// print battle messages, ergo this function is complete.
 	if defender.species != "player" && m.species != "player" {
 		return
 	}
 
-	// If the player character is being attacked.
+	// Print a message telling the end-user they have been injured
+	// during the attack.
 	if defender.species == "player" {
-
-		// Print a message telling the end-user they have been injured
-		// during the attack.
 		MessageLog.log(fmt.Sprintf("The %s injures you for %d hit points.",
 			m.name, damageDealt))
-
-		// Leave the function since this has informed the player that they
-		// were injured during the attack via the other creature.
 		return
 	}
 
@@ -439,9 +395,6 @@ func (m *Creature) attack(defender *Creature) {
 		MessageLog.log(fmt.Sprintf("The %s looks severely injured.",
 			defender.name))
 	}
-
-	// The current attack round is now complete, so leave the function.
-	return
 }
 
 //! Function to handle what occurs when a monster dies.
@@ -452,13 +405,8 @@ func (m *Creature) attack(defender *Creature) {
  */
 func (m *Creature) die() {
 
-	// Input validation, make sure this was given a valid creature.
 	if m == nil {
-
-		// If debug, print the message to the log about what just occurred.
 		DebugLog(&G, "die() --> invalid creature input.")
-
-		// Leave the function.
 		return
 	}
 
@@ -521,12 +469,8 @@ func (m *Creature) die() {
 
 		// Sanity check, make sure this actually got a valid item.
 		if item == nil {
-
-			// Otherwise tell the developer something odd was appended here.
 			numStr := strconv.Itoa(i)
 			DebugLog(&G, "die() --> nil item at index ["+numStr+"]")
-
-			// Move on to the next item.
 			continue
 		}
 
@@ -535,8 +479,6 @@ func (m *Creature) die() {
 		item.ch = '%'
 		item.X = m.X
 		item.Y = m.Y
-
-		// Then go ahead append that item to the ground.
 		m.area.Items = append(m.area.Items, item)
 	}
 }

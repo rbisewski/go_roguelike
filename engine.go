@@ -144,7 +144,6 @@ func InitColours() {
  */
 func SetPad(h, w int) bool {
 
-	// Input validation, make sure this is greater than 0.
 	if h < 1 || w < 1 {
 		DebugLog(&G, fmt.Sprintf("SetPad() --> invalid input"))
 		return false
@@ -152,19 +151,14 @@ func SetPad(h, w int) bool {
 
 	// Initialize a new game pad based on the provided height / width.
 	GamePad = gocurses.NewPad(h, w)
-
-	// Sanity check, make sure this actually contains a pointer to a
-	// valid Pad object.
 	if GamePad == nil {
 		DebugLog(&G, fmt.Sprintf("SetPad() --> invalid input"))
 		return false
 	}
 
-	// Define the global world height / width.
 	WorldHeight = h
 	WorldWidth = w
 
-	// Return true here since the game pad has been properly defined.
 	return true
 }
 
@@ -227,7 +221,6 @@ func DrawColours(y, x int, ch rune, col int) {
  */
 func DrawMap(a *Area) bool {
 
-	// Input validation, make sure this actually got an area object.
 	if a == nil {
 		DebugLog(&G, fmt.Sprintf("DrawMap() --> invalid input"))
 		return false
@@ -250,8 +243,6 @@ func DrawMap(a *Area) bool {
 			Draw(y, x, a.Tiles[x+y*a.Width].Ch)
 		}
 	}
-
-	// With all of the characters drawn, this worked as intended.
 	return true
 }
 
@@ -306,7 +297,6 @@ func Write(y int, x int, s string) {
  */
 func DebugLog(g *Game, s string) {
 
-	// If debug mode is off (i.e. false) then do nothing here.
 	if g == nil || !g.DebugMode {
 		return
 	}
@@ -329,7 +319,6 @@ func DebugLog(g *Game, s string) {
  */
 func (l *log) log(s string) {
 
-	// Input validation.
 	if len(s) < 1 {
 		return
 	}
@@ -344,23 +333,14 @@ func (l *log) log(s string) {
 	}
 
 	// If the string is greater than 60 characters, go ahead and trim it
-	// down to a maximum of 57 with an ellipse.
+	// down to a maximum of 57, then end with an ellipse.
 	if len(s) > 60 {
 
-		// Define a temp string variable.
 		tmp := ""
-
-		// Grab the first 57 characters of the string, and append them to
-		// the temp variable.
 		for i := 0; i < 57; i++ {
-
-			// Golang reads string addresses as bytes, so it needs to be
-			// recast back to a string type after grabbing the [] address.
 			tmp += string(s[i])
 		}
 
-		// Dump the concat'd string with ellipse from the tmp into the
-		// original string variable.
 		s = tmp + "..."
 	}
 
@@ -382,18 +362,13 @@ func (l *log) log(s string) {
 		l.dline++
 	}
 
-	// Checks if we need to start over on the log.
+        // the log stores 99 lines, if it reaches 100, reset back to zero
 	if l.line >= 100 {
-
-		// Reset the start and current line back to zero.
 		l.line = 0
 		l.dline = 0
-
-		// All done here.
 		return
 	}
 
-	// If everything is good then just move on to the next line.
 	l.line++
 }
 
@@ -405,11 +380,7 @@ func (l *log) log(s string) {
  */
 func (p *Creature) UpdateStats() {
 
-	// Safety check, make sure this is actually the player and that it
-	// has a name.
 	if len(p.name) < 1 || p.species != "player" {
-
-		// Since this failed due to not being the player, end this function.
 		return
 	}
 
@@ -441,16 +412,12 @@ func (p *Creature) UpdateStats() {
 	StatsWindow.NoutRefresh()
 }
 
-// GetInput ... Grab the keyboard input and pass back a string.
+// GetInput ... Grab the keyboard input and then pass back a string.
 /*
- * @return    string    Keyboard ASCII character input.
+ * @return    string    Keyboard ASCII character input (Getch() = get character)
  */
 func GetInput() string {
-
-	// Update the current environment.
 	gocurses.Doupdate()
-
-	// Dump the keyboard input to a string and then pass it back.
 	return string(gocurses.Getch())
 }
 
@@ -462,12 +429,10 @@ func GetInput() string {
  */
 func Confirm(msg string) bool {
 
-	// Input validation, make sure the string is between 1 to 30 characters.
 	if len(msg) < 1 || len(msg) > 30 {
 		return false
 	}
 
-	// Variable declaration.
 	var GuiSize = len(msg) + 2
 	var GuiTopBottom = "+"
 	var GuiLeftRight = "|"
@@ -495,8 +460,6 @@ func Confirm(msg string) bool {
 		return true
 	}
 
-	// Otherwise the end-user pressed some other key, so close the
-	// ncurses confirmation UI.
 	return false
 }
 
@@ -509,12 +472,10 @@ func Confirm(msg string) bool {
  */
 func PickupGroundItem(g *Game, keyPressed string) error {
 
-	// input validation
 	if g == nil || len(keyPressed) < 1 {
 		return fmt.Errorf("PickupGroundItem() --> invalid input")
 	}
 
-	// Variable to hold the given item the character attempted to pickup.
 	var givenItem *Item
 
 	// If there is less than 1 item, go back.
@@ -615,13 +576,10 @@ func PickupGroundItem(g *Game, keyPressed string) error {
 			copy(g.Area.Items[index:], g.Area.Items[index+1:])
 			g.Area.Items[len(g.Area.Items)-1] = nil
 			g.Area.Items = g.Area.Items[:len(g.Area.Items)-1]
-
-			// Leave as this is now complete...
 			break
 		}
 	}
 
-	// everything was fine, so return nil
 	return nil
 }
 
@@ -634,12 +592,10 @@ func PickupGroundItem(g *Game, keyPressed string) error {
  */
 func DrawGroundItemsUI(g *Game, key string) {
 
-	// Input validation
 	if g == nil || g.Player == nil || len(key) < 1 {
 		return
 	}
 
-	// Variable declaration
 	var GuiHeight = 0
 	var GuiWidth = 30
 	var GuiTopBottom = "+"
@@ -789,12 +745,10 @@ func DrawGroundItemsUI(g *Game, key string) {
  */
 func DrawInventoryUI(g *Game, key string) {
 
-	// Input validation
 	if g == nil || g.Player == nil || len(key) < 1 {
 		return
 	}
 
-	// Variable declaration
 	var GuiHeight = 0
 	var GuiWidth = 30
 	var GuiTopBottom = "+"
@@ -921,17 +875,9 @@ func DrawInventoryUI(g *Game, key string) {
 
 	// Write the ground item UI to the screen.
 	for _, line := range GuiLines {
-
-		// Write the given line to the console output.
 		Write((ScreenHeight/2)-offset, ScreenWidth/2, line)
-
-		// Decrement the offset.
 		offset--
 	}
-
-	// Leave this function, since this needs to redraw the UI if the player
-	// picks up or drops items, etc.
-	return
 }
 
 // DrawEquipmentUI ... display the equipment the character currently is
@@ -944,12 +890,10 @@ func DrawInventoryUI(g *Game, key string) {
  */
 func DrawEquipmentUI(g *Game, key string) {
 
-	// Input validation
 	if g == nil || g.Player == nil || len(key) < 1 {
 		return
 	}
 
-	// Variable declaration.
 	var GuiHeight = 0
 	var GuiWidth = 30
 	var GuiTopBottom = "+"
@@ -1063,16 +1007,9 @@ func DrawEquipmentUI(g *Game, key string) {
 
 	// Write the character equipment/inventory screen.
 	for _, line := range GuiLines {
-
-		// Write the given line to the console output.
 		Write((ScreenHeight/2)-offset, ScreenWidth/2, line)
-
-		// Decrement the offset.
 		offset--
 	}
-
-	// All done here, so then this can return.
-	return
 }
 
 // SaveGame ... Handles a "save game to disk" event.
@@ -1085,13 +1022,10 @@ func (g *Game) SaveGame() {
 
 	// Attempt to open the saved game.
 	file, err := os.OpenFile("player.sav", os.O_WRONLY|os.O_CREATE, 0600)
-
-	// Error? Print it to stdout and kill the program.
 	if err != nil {
 		panic(err)
 	}
 
-	// Take into account possible file issues via this.
 	defer func() {
 		if err := file.Close(); err != nil {
 			panic(err)
@@ -1100,11 +1034,7 @@ func (g *Game) SaveGame() {
 
 	// Attempt to prepare to encode the save game file.
 	encoder := gob.NewEncoder(file)
-
-	// Go ahead and encode now...
 	err = encoder.Encode(g)
-
-	// Error? Print it to stdout and kill the program.
 	if err != nil {
 		panic(err)
 	}
@@ -1118,29 +1048,14 @@ func (g *Game) SaveGame() {
  */
 func (g *Game) LoadGame(filename string) bool {
 
-	// Input validation, make sure the filename is valid.
-	if len(filename) < 1 {
+	if filename == "" {
 		return false
 	}
 
-	// Safety check, attempt to stat() the given filename.
-	_, err := os.Stat(filename)
-
-	// If an error occurred here, either the filename does not exist or
-	// is inaccessible, simply return false to allow the game to continue
-	// without terminating.
-	if err != nil {
-		return false
-	}
-
-	// Loading requires that this open an existing save game, so do that.
-	// Probably only a read lock is needed here, so that's all that is used.
 	file, err := os.OpenFile(filename, os.O_RDONLY, 0600)
-
-	// If an error occurs at this point, terminate the program since
-	// probably a memory or library error has occurred.
 	if err != nil {
-		panic(err)
+		fmt.Println(err.Error())
+                os.Exit(1)
 	}
 
 	// If closing the file causes unforeseen consequences, go ahead and
@@ -1151,15 +1066,10 @@ func (g *Game) LoadGame(filename string) bool {
 
 	// Prepare to decode the file in question.
 	decoder := gob.NewDecoder(file)
-
-	// Go ahead and decode the loaded file.
 	err = decoder.Decode(g)
-
-	// Error occurred during decoding? Terminate the program via panic()
 	if err != nil {
 		panic(err)
 	}
 
-	// Otherwise everything loads as intended, so return true.
 	return true
 }

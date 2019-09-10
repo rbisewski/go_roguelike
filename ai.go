@@ -19,7 +19,6 @@ import (
  */
 func (g *Game) processAI() {
 
-	// Variable declaration
 	var dy, dx int
 
 	// Cycle thru all of the creatures present in the area level.
@@ -31,19 +30,15 @@ func (g *Game) processAI() {
 		}
 
 		// Figure out the difference between the player coords and
-		// given monster.
+		// given monster; if they are zero do nothing...
 		ydist := g.Player.Y - m.Y
 		xdist := g.Player.X - m.X
-
-		// Safety check, if both the x and y distance are zero, do nothing.
 		if ydist == 0 && xdist == 0 {
 			continue
 		}
 
 		// Set the current viewing distance.
 		distance := math.Sqrt(float64(xdist*xdist + ydist*ydist))
-
-		// Safety check, if the distance is zero, do nothing.
 		if distance == 0 {
 			continue
 		}
@@ -98,11 +93,9 @@ func (g *Game) processAI() {
 			continue
 		}
 
-		// Determine the derived distances.
 		dx = Round(float64(int(xdist) / Round(distance)))
 		dy = Round(float64(int(ydist) / Round(distance)))
 
-		// If debug mode, then display this...
 		DebugLog(g, fmt.Sprintf("dx, dy, dist = %d, %d, %g->%d | xdist: %d - ydist: %d    ",
 			dx,
 			dy,

@@ -127,14 +127,12 @@ func NewItem(name string,
  */
 func (itm *Item) adjustDurability(amount int) {
 
-	// If the durability was zero, then nothing to do.
 	if amount == 0 {
 		DebugLog(&G, fmt.Sprintf("adjustDurability() --> was given amount "+
 			"of value zero, so nothing to be done..."))
 		return
 	}
 
-	// If debug, state how much the item durability currently is.
 	DebugLog(&G, fmt.Sprintf("adjustDurability() --> Item [%s] durability"+
 		"before adjustment is: %d / %d",
 		itm.name,
@@ -144,7 +142,6 @@ func (itm *Item) adjustDurability(amount int) {
 	// Adjust the current durability by the amount specified.
 	itm.durabilityCurrent += amount
 
-	// If debug, state how much the item durability has changed by.
 	DebugLog(&G, fmt.Sprintf("adjustDurability() --> item [%s] durability"+
 		"after adjustment is: %d / %d",
 		itm.name,
@@ -158,7 +155,6 @@ func (itm *Item) adjustDurability(amount int) {
 		// Cap the durability of the item.
 		itm.durabilityCurrent = itm.durabilityMaximum
 
-		// If debug mode, tell the developer what just happened.
 		DebugLog(&G, "adjustDurability() --> item ["+itm.name+"] has "+
 			"exceeded max durability, and so has "+
 			"been capped")
@@ -168,7 +164,6 @@ func (itm *Item) adjustDurability(amount int) {
 	// which event t
 	if itm.durabilityCurrent < 1 {
 
-		// If debug mode, tell the developer this is going to break the item.
 		DebugLog(&G, fmt.Sprintf("adjustDurability() --> item [%s] is "+
 			"preparing to be broken", itm.name))
 
@@ -195,7 +190,6 @@ func (itm *Item) eventBroken() {
 	// Set the isBroken flag to true.
 	itm.isBroken = true
 
-	// If debug mode, tell the developer that the item is now broken.
 	DebugLog(&G, fmt.Sprintf("eventBroken() --> item [%s] is now broken",
 		itm.name))
 }

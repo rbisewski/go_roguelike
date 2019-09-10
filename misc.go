@@ -21,20 +21,16 @@ func TossCoin() bool {
 	return rand.Intn(100) > 50
 }
 
-// getRandomNumBetweenZeroAndMax ... Randomly returns "true" or "false"
+// getRandomNumBetweenZeroAndMax ... Returns a random number between 0 and X
 /*
- * @returns    bool    whether the coin was heads (true) or tails (false)
+ * @param      int     highest possible random number
+ *
+ * @returns    int     random number between 0 and maximum
  */
 func getRandomNumBetweenZeroAndMax(maximum int) int {
-
-	// Input validation, make sure this is at least zero.
 	if maximum < 1 {
-
-		// As a default, give back a zero.
 		return 0
 	}
-
-	// Otherwise return a number between 0 and the maximum.
 	return rand.Intn(maximum)
 }
 
@@ -51,7 +47,6 @@ func Min(a ...int) int {
 	// golang integer.
 	min := int(^uint(0) >> 1)
 
-	// Cycle thru all of the given int values...
 	for _, i := range a {
 
 		// Smaller? Set the variable then.
@@ -60,7 +55,6 @@ func Min(a ...int) int {
 		}
 	}
 
-	// Finally return the minimum value
 	return min
 }
 
@@ -76,7 +70,6 @@ func Max(a ...int) int {
 	// Use bitshifting the smallest possible value for a golang int.
 	max := -(int(^uint(0)>>1) - 1)
 
-	// Cycle thru the range of integers.
 	for _, i := range a {
 
 		// Bigger? Then use that one.
@@ -85,7 +78,6 @@ func Max(a ...int) int {
 		}
 	}
 
-	// Finally return the max
 	return max
 }
 
@@ -111,7 +103,6 @@ func Round(x float64) int {
 	// Define the precise (e.g. 1 == int)
 	prec := 1
 
-	// Variable to store the rounded values.
 	var rounder float64
 
 	// Set the X^Y power based on the earlier defined precise.
@@ -136,8 +127,6 @@ func Round(x float64) int {
 	// Fraction 0.5 or more? Ceiling then.
 	if frac >= x {
 		rounder = math.Ceil(intermed)
-
-		// Else grab the floor instead since less than 0.5
 	} else {
 		rounder = math.Floor(intermed)
 	}

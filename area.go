@@ -60,13 +60,11 @@ type Area struct {
  */
 func NewArea(h, w int) (*Area, int, int) {
 
-	// Input validation.
 	if h < 1 || w < 1 {
 		DebugLog(&G, fmt.Sprintf("NewArea() --> invalid input"))
 		return nil, 0, 0
 	}
 
-	// Variable declaration
 	var ry, rx int
 	var creatures []*Creature
 	var items []*Item
@@ -74,7 +72,6 @@ func NewArea(h, w int) (*Area, int, int) {
 	// Real x,y
 	ry, rx = 0, 0
 
-	// Assign memory for the creature and item arrays.
 	creatures = make([]*Creature, 0)
 	items = make([]*Item, 0)
 
@@ -87,7 +84,6 @@ func NewArea(h, w int) (*Area, int, int) {
 	// Set the area padding
 	SetPad(h, w)
 
-	// Cycle thru all the elements of an iterator
 	for it := 0; it < nIts; it++ {
 
 		// Assign a tile to that given location
@@ -144,13 +140,10 @@ func (a *Area) GetTileInfo(y, x int) (ch rune,
 	hasCreature *Creature,
 	hasItems []*Item) {
 
-	// Input validation, make sure this actually got an address to an
-	// Area object.
 	if a == nil {
 		return ' ', false, nil, nil
 	}
 
-	// Variable declaration.
 	var c *Creature
 	var items []*Item
 	var RequestedTile = x + y*a.Width
@@ -160,7 +153,6 @@ func (a *Area) GetTileInfo(y, x int) (ch rune,
 		return ' ', false, nil, nil
 	}
 
-	// Assign a chunk of memory for the array of Item objects.
 	items = make([]*Item, 0)
 
 	// Read from the tiles array at the requested point to get the
@@ -211,7 +203,6 @@ func placeRandomTile() Tile {
 		return Tile{'#', true, true}
 	}
 
-	// Otherwise return the ground tile.
 	return Tile{'.', false, false}
 }
 
@@ -224,24 +215,20 @@ func placeRandomTile() Tile {
  */
 func selectRandomTile(h, w int) (int, int) {
 
-	// Input validation.
 	if h < 1 || w < 1 {
 		DebugLog(&G, fmt.Sprintf("selectRandomTile() --> invalid input"))
 		return 0, 0
 	}
 
-	// Randomly generate a y-value.
+	// Randomly generate a y-value and an x-value
 	y := rand.Intn(h)
-
-	// Randomly generate a x-value.
 	x := rand.Intn(w)
 
-	// Return the (x,y) coord.
 	return y, x
 }
 
-// explodeTile ... With the tile given as argument make some more of
-// those randomly around it.
+// explodeTile ... With the tile given as argument make some new tiles
+// randomly around it.
 /*
  * @param     int        y-coord
  * @param     int        x-coord
@@ -252,7 +239,6 @@ func selectRandomTile(h, w int) (int, int) {
  */
 func explodeTile(y, x, w int, t *[]Tile) {
 
-	// Input validation.
 	if t == nil {
 		DebugLog(&G, fmt.Sprintf("explodeTile() --> invalid input"))
 		return
@@ -261,7 +247,6 @@ func explodeTile(y, x, w int, t *[]Tile) {
 	// Grab the tile currently in that location.
 	originalTile := (*t)[x+y*w]
 
-	// Cycle 5 times...
 	for it := 0; it < 5; it++ {
 
 		// Randomly generate some small integers.
@@ -339,13 +324,11 @@ func firstGroundTile(t *[]Tile) (int, int) {
  */
 func floodFill(y, x int, t *[]Tile) {
 
-	// Input validation, if no pointer to the tile array is given, do nothing.
 	if t == nil {
 		DebugLog(&G, fmt.Sprintf("floodFill() --> invalid input"))
 		return
 	}
 
-	// Assign memory of size WorldHeight by WorldWidth.
 	c := make([]Coords, WorldHeight*WorldWidth)
 
 	// First element is the given coords.
@@ -388,14 +371,9 @@ func floodFill(y, x int, t *[]Tile) {
 
 			// Attach the coords.
 			appendCoords(coord.y, coord.x, &c, t)
-
-			// Then append it to the array.
 			c = append(c[:i], c[i+1:]...)
 		}
 	}
-
-	// Having completed filling the given tile array, go back.
-	return
 }
 
 //! Function to append (x,y) to a set of coords / tiles
@@ -409,20 +387,17 @@ func floodFill(y, x int, t *[]Tile) {
  */
 func appendCoords(y, x int, c *[]Coords, t *[]Tile) {
 
-	// Input validation, was this given an array of coords and tiles?
 	if c == nil || t == nil {
 		DebugLog(&G, fmt.Sprintf("appendCoords() --> invalid input"))
 		return
 	}
 
-	// Define the width
 	w := WorldWidth
 
 	// Array for each of the 3x3 chunks.
 	threeByThreeChunksY := []int{1, -1, -1, 1, 1, -1, 0, 0}
 	threeByThreeChunksX := []int{1, -1, 1, -1, 0, 0, 1, -1}
 
-	// Get the derived (x,y) value
 	for i := 0; i < 9; i++ {
 
 		// Add the relevant chunk the derived x/y values.
@@ -445,7 +420,6 @@ func appendCoords(y, x int, c *[]Coords, t *[]Tile) {
 			dy})
 	}
 
-	// Having appended the coords to the given array, go back.
 	return
 }
 
@@ -471,7 +445,6 @@ func withinBounds(y, x int) bool {
  */
 func anyAdjacentWalls(y, x, w int, t []Tile) bool {
 
-	// Input validation, make sure this was given a tile array.
 	if t == nil {
 		DebugLog(&G, fmt.Sprintf("anyAdjacentWalls() --> invalid input"))
 		return false
@@ -491,7 +464,6 @@ func anyAdjacentWalls(y, x, w int, t []Tile) bool {
 		return true
 	}
 
-	// Otherwise return false.
 	return false
 }
 
@@ -506,13 +478,11 @@ func anyAdjacentWalls(y, x, w int, t []Tile) bool {
  */
 func adjacentWalls(y, x, w int, t []Tile) int {
 
-	// Input validation, make sure this was given a tile array.
 	if t == nil {
 		DebugLog(&G, fmt.Sprintf("adjacentWalls() --> invalid input"))
 		return 0
 	}
 
-	// Variable declaration
 	counter := 0
 
 	// Nearby wall layer? Add 2 then.
@@ -520,42 +490,29 @@ func adjacentWalls(y, x, w int, t []Tile) int {
 		counter += 2
 	}
 
-	// Adjacent blocking tile, increment 1.
+	// Adjacent blocking tile in a given direction? Then increment 1...
 	if t[(x+1)+(y+1)*w].BlockMove {
 		counter++
 	}
-
-	// Adjacent blocking tile, increment 1.
 	if t[(x-1)+(y-1)*w].BlockMove {
 		counter++
 	}
-
-	// Adjacent blocking tile, increment 1.
 	if t[(x+1)+(y-1)*w].BlockMove {
 		counter++
 	}
-
-	// Adjacent blocking tile, increment 1.
 	if t[x+(y+1)*w].BlockMove {
 		counter++
 	}
-
-	// Adjacent blocking tile, increment 1.
 	if t[x+(y-1)*w].BlockMove {
 		counter++
 	}
-
-	// Adjacent blocking tile, increment 1.
 	if t[(x+1)+y*w].BlockMove {
 		counter++
 	}
-
-	// Adjacent blocking tile, increment 1.
 	if t[(x-1)+y*w].BlockMove {
 		counter++
 	}
 
-	// Finally return the entire counter.
 	return counter
 }
 
@@ -577,30 +534,21 @@ func mapBorders(y, x int) bool {
  */
 func (a *Area) populateAreaWithCreatures() bool {
 
-	// Sanity check, make sure this isn't a null pointer.
 	if a == nil {
 		DebugLog(&G, fmt.Sprintf("populateAreaWithCreatures() --> "+
 			"invalid input"))
 		return false
 	}
 
-	// Further check, make sure this area has not been previously populated.
 	if a.IsPopulatedWithCreatures {
 		DebugLog(&G, fmt.Sprintf("populateAreaWithCreatures() --> "+
 			"area already previously populated..."))
 		return false
 	}
 
-	// Define arrays to hold all the (x,y) points being used.
 	var CoordsArray = make([]Coords, 0)
-
-	// Variable to keep track of the current number.
 	var coordNum uint
-
-	// Counter.
 	var i uint
-
-	// Flag to check if a coord (x,y) pair has already been used.
 	var CoordIsAlreadyUtilized = false
 
 	// Determine the number monsters to add to the area.
@@ -736,11 +684,7 @@ func (a *Area) populateAreaWithCreatures() bool {
 			}
 
 			// Attempt to spawn a creature of that type
-			wasSuccessful := spawnCreatureToArray(chosenCreatureType,
-				dx, dy, a)
-
-			// If some error occurred, print debug info and attempt to
-			// leave the function.
+			wasSuccessful := spawnCreatureToArray(chosenCreatureType, dx, dy, a)
 			if !wasSuccessful {
 				DebugLog(&G, fmt.Sprintf("populateAreaWithCreatures() --> "+
 					"Unable to spawn chosen creature into the area!"))
@@ -748,10 +692,7 @@ func (a *Area) populateAreaWithCreatures() bool {
 			}
 		}
 
-		// Append the points to the Coord array.
 		CoordsArray = append(CoordsArray, CurrentCoordPair)
-
-		// Increment the coordNum counter.
 		coordNum++
 	}
 
@@ -759,10 +700,8 @@ func (a *Area) populateAreaWithCreatures() bool {
 	// contains various creatures / critters / monsters.
 	a.IsPopulatedWithCreatures = true
 
-	// Tell the developer this population function was successful.
 	DebugLog(&G, fmt.Sprintf("populateAreaWithCreatures() --> "+
 		"creatures populated into area successfully"))
 
-	// Since the monsters were added successfully, go ahead and return true.
 	return true
 }

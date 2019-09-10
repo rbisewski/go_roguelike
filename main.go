@@ -72,14 +72,11 @@ func main() {
 
 	flag.Parse()
 
-	// if requested, go ahead and print the version; afterwards exit the
-	// program, since this is all done
 	if printVersion {
 		fmt.Println("go-roguelike v" + Version)
 		os.Exit(0)
 	}
 
-	// Let's get (gocurses) started!
 	Init()
 	defer End()
 
@@ -95,24 +92,19 @@ func main() {
 	// The default state shall be to set the menu.
 	G.state = "menu"
 
-	// Set the debug mode flag.
 	G.DebugMode = false
 
-	// As long as we're not quting, then do this...
+        // infinite loop which is present as long as the game is running
 	for !G.state.Quiting() {
 
 		// In the menu?
 		if G.state.Menuing() {
-
-			// The state remains on menu then!
 			G.state = G.Menu()
 			continue
 		}
 
-		// Handle output.
+                // handlers for screen output and keyboard input
 		G.Output()
-
-		// Handle input.
 		G.Input()
 	}
 }
