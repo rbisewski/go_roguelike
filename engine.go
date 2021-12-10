@@ -1054,19 +1054,17 @@ func (g *Game) LoadGame(filename string) bool {
 
 	file, err := os.OpenFile(filename, os.O_RDONLY, 0600)
 	if err != nil {
-		fmt.Println(err.Error())
-		os.Exit(1)
-	}
-
-	// If closing the file causes unforeseen consequences, go ahead and
-	// terminate the program.
-	if file.Close() != nil {
-		panic(err)
+		panic(err.Error())
 	}
 
 	// Prepare to decode the file in question.
 	decoder := gob.NewDecoder(file)
 	err = decoder.Decode(g)
+	if err != nil {
+		panic(err)
+	}
+
+	err = file.Close()
 	if err != nil {
 		panic(err)
 	}

@@ -16,35 +16,41 @@ import (
 
 var (
 	printVersion = false
-	Version      = "0.0"
 
+	// Version ... stores the version of the software
+	Version = "0.0"
+
+	// G ... global game object
 	G Game
 
-	PlayerName  string
+	// PlayerName ... stores the name of the player character
+	PlayerName string
+
+	// PlayerClass ... stores the name of the player class
 	PlayerClass *types.ClassTypeInfo
 
-	// global debug mode
+	// DeveloperMode ... global debug mode
 	DeveloperMode = false
 
-	// global error message via menu
+	// MenuErrorMsg ... global error message via menu
 	MenuErrorMsg string
 
-	// map for all of the creature types
+	// GlobalCreatureTypeInfoMap ... map for all of the creature types
 	GlobalCreatureTypeInfoMap = make(map[string]types.CreatureTypeInfo)
 
-	// check if the creature types has already been populated.
+	// GlobalCreatureTypeInfoMapIsPopulated ... check if the creature types has already been populated.
 	GlobalCreatureTypeInfoMapIsPopulated = false
 
-	// map for all of the item types.
+	// GlobalItemTypeInfoMap ... map for all of the item types.
 	GlobalItemTypeInfoMap = make(map[string]types.ItemTypeInfo)
 
-	// check if the item types has already been populated.
+	// GlobalItemTypeInfoMapIsPopulated ... check if the item types has already been populated.
 	GlobalItemTypeInfoMapIsPopulated = false
 
-	// map of all of the class types.
+	// GlobalClassTypeInfoMap ... map of all of the class types.
 	GlobalClassTypeInfoMap = make(map[string]types.ClassTypeInfo)
 
-	// check if the class types has already been populated.
+	// GlobalClassTypeInfoMapIsPopulated ... check if the class types has already been populated.
 	GlobalClassTypeInfoMapIsPopulated = false
 )
 

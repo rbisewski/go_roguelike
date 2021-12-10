@@ -3,6 +3,8 @@
 go-roguelike is a plain ol' roguelike game implemented in golang. It
 resembles other roguelikes, such as nethack.
 
+![Preview](preview.gif)
+
 This project uses the ncurses library via Cgo wrapper, but the majority of
 the of the code is in golang.
 
@@ -11,7 +13,7 @@ key features like inventory or proper monster generation or multiple
 levels.
 
 
-# Requirements
+## Requirements
 
 Ideally this requires a terminal that is compatible with newer C
 libraries. Most computers should work quite well.
@@ -30,7 +32,7 @@ I tend to write software on the x86-64 and arm7 architectures, so feel
 free to shoot me an email if you discover bugs on other platforms.
 
 
-# Running go-roguelike
+## Running go-roguelike
 
 Enter the following command to build the executable:
 
@@ -45,19 +47,12 @@ intended.
 ./go_roguelike
 ```
 
-To get the current version of the binary, use the `version` flag as per
-the below command:
-
-```
-./go_roguelike -version
-```
-
-# Additional Notes
+## Additional Notes
 
 Certain newer versions of ncurses tend to enforce a stricter definition
 of exactly what a terminal is, and what behaviour to try to emulate.
 
-Mostly this applies to low-level Linux distros like Arch that default
+Mostly this applies to Linux distros like Arch that default
 to `xterm` or `term-256color` for the TERM environment variable, whether
 or not the terminal is able to behave in that manner.
 
@@ -73,11 +68,15 @@ Users of konsole terminal can try the following:
 In the case of other terminals, consider consulting the man page of your
 terminal for further information.
 
-# Authors
+## Authors
 
 This project was created by Robert Bisewski at Ibis Cybernetics. For more
 information, contact:
 
-* Website -> www.ibiscybernetics.com
+https://www.ibiscybernetics.com
 
-* Email -> rbisewski@ibiscybernetics.com
+Or send an email to:
+
+```
+rbisewski@ibiscybernetics.com
+```

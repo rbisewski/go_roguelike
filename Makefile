@@ -21,6 +21,9 @@ build:
 	@echo 'Building go_roguelike...'
 	@go build -ldflags '-s -w -X main.Version='${VERSION}
 
+lint:
+	@golint
+
 clean:
 	@echo 'Cleaning...'
 	@go clean

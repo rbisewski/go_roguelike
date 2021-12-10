@@ -85,11 +85,6 @@ func (g *Game) Init() {
 }
 
 // Menuing ... Determines if in-menu.
-/*
- * @param      Gamestate    current state of the game.
- *
- * @returns    bool         whether or not the game is still in the menu.
- */
 func (s GameState) Menuing() bool {
 	return s == "menu"
 }
@@ -102,51 +97,31 @@ func (s GameState) Menuing() bool {
  */
 func (g *Game) Menu() GameState {
 
-	// Print out the title.
-	Write(Percent(25, ConsoleHeight), ConsoleWidth/2,
-		"GoRogue - A Rogue-like written in golang.")
+	var state GameState = ""
 
-	// Print out the options, which currently are as follows:
-	//
-	// * Start a new game.
-	// * Load the last game.
-	// * Quit the current game.
-	//
-	Write(Percent(25, ConsoleHeight)+2, ConsoleWidth/2,
-		"Press 'N' to start a new game.")
-	Write(Percent(25, ConsoleHeight)+3, ConsoleWidth/2,
-		"Press 'L' to load a previous game.")
-	Write(Percent(25, ConsoleHeight)+4, ConsoleWidth/2,
-		"Press 'Q' to quit.")
+	Write(Percent(25, ConsoleHeight), ConsoleWidth/2, "GoRogue - A Rogue-like written in golang.")
+	Write(Percent(25, ConsoleHeight)+2, ConsoleWidth/2, "Press 'N' to start a new game.")
+	Write(Percent(25, ConsoleHeight)+3, ConsoleWidth/2, "Press 'L' to load a previous game.")
+	Write(Percent(25, ConsoleHeight)+4, ConsoleWidth/2, "Press 'Q' to quit.")
 
 	// Print out the most recent menu error message, if any.
-	Write(Percent(25, ConsoleHeight)+6, ConsoleWidth/2,
-		MenuErrorMsg)
+	Write(Percent(25, ConsoleHeight)+6, ConsoleWidth/2, MenuErrorMsg)
 
-	// Grab the current keyboard input.
 	key := GetInput()
-
-	// If the N key was pressed, then this needs to start a new game.
-	if key == "N" || key == "n" {
-
-		// Wipe away the current menu screen once the player has elected to start
-		// a new game.
-		Clear()
-
+	switch key {
+	case "n":
+		fallthrough
+	case "N":
 		// If any partly loaded data is present, clear it away.
+		Clear()
 		PlayerName = ""
 
 		// Endless loop that is designed to allow the player character to enter
 		// the name of their character by typing via the keyboard.
 		for true {
 
-			Write(Percent(25, ConsoleHeight), ConsoleWidth/2,
-				"Enter the name of your character:")
-
-			// Write the current PlayerName to the below console, which is
-			// in location 'ConsoleHeight+2' so that it appears two lines below.
-			Write(Percent(25, ConsoleHeight)+2, ConsoleWidth/2,
-				PlayerName)
+			Write(Percent(25, ConsoleHeight), ConsoleWidth/2, "Enter the name of your character:")
+			Write(Percent(25, ConsoleHeight)+2, ConsoleWidth/2, PlayerName)
 
 			key = GetInput()
 
@@ -172,18 +147,10 @@ func (g *Game) Menu() GameState {
 		classCounter := 1
 		for true {
 
-			Write(Percent(25, ConsoleHeight), ConsoleWidth/2,
-				"The name of your character is:     ")
+			Write(Percent(25, ConsoleHeight), ConsoleWidth/2, "The name of your character is:     ")
+			Write(Percent(25, ConsoleHeight)+2, ConsoleWidth/2, PlayerName)
+			Write(Percent(25, ConsoleHeight)+5, ConsoleWidth/2, "Now select a class:")
 
-			// Write the current PlayerName to the below console, which is
-			// in location 'ConsoleHeight+2' so that it appears two lines below.
-			Write(Percent(25, ConsoleHeight)+2, ConsoleWidth/2,
-				PlayerName)
-
-			Write(Percent(25, ConsoleHeight)+5, ConsoleWidth/2,
-				"Now select a class:")
-
-			// Print out the various classes to the screen.
 			for range GlobalClassTypeInfoMap {
 
 				// Obtain the given class
@@ -196,8 +163,7 @@ func (g *Game) Menu() GameState {
 				}
 
 				// Print out the given class options.
-				Write(Percent(25, ConsoleHeight)+6+classCounter,
-					ConsoleWidth/2, strref+") "+givenClass.Name+"   ")
+				Write(Percent(25, ConsoleHeight)+6+classCounter, ConsoleWidth/2, strref+") "+givenClass.Name+"   ")
 
 				classCounter++
 			}
@@ -205,16 +171,10 @@ func (g *Game) Menu() GameState {
 			// if the player selected a class, print it out so that there
 			// is feedback for the player to see
 			if PlayerClass != nil {
-
-				Write(Percent(25, ConsoleHeight)+8+classCounter,
-					ConsoleWidth/2, "You have selected... "+
-						PlayerClass.Name+"     ")
-
-				Write(Percent(25, ConsoleHeight)+10+classCounter,
-					ConsoleWidth/2, "Press [Enter] to begin the game.")
+				Write(Percent(25, ConsoleHeight)+8+classCounter, ConsoleWidth/2, "You have selected... "+PlayerClass.Name+"     ")
+				Write(Percent(25, ConsoleHeight)+10+classCounter, ConsoleWidth/2, "Press [Enter] to begin the game.")
 			}
 
-			// Grab the current keyboard input.
 			key = GetInput()
 
 			// If a number has been pressed...
@@ -239,43 +199,29 @@ func (g *Game) Menu() GameState {
 				break
 			}
 
-			// Reset back to one
 			classCounter = 1
-
-			// Wipe away the old screen, so that it can be reprinted during
-			// the next cycle.
 			Clear()
 		}
 
-		// Wipe away the old screen, in the event that some part of the previous
-		// enter your character name interface happens to remain.
 		Clear()
 
-		// Initialize the game.
 		g.Init()
+		state = "playing"
 
-		// Set the current GameState to "playing".
-		return "playing"
-	}
+	case "l":
+		fallthrough
+	case "L":
 
-	// Pressed the "L" key? Then attempt to load a game...
-	if key == "L" || key == "l" {
-
-		// Setup the game environment
 		g.Init()
 
 		// Attempt to load the previous game.
-		if !g.LoadGame("player.save") {
+		if !g.LoadGame("player.sav") {
 
-			// Tell the end user that the load was unsuccessful.
-			MenuErrorMsg = "No recent save game was detected. Please start " +
-				"a new game."
-
-			// Tell the developer that the load function has failed.
+			MenuErrorMsg = "No recent save game was detected. Please start a new game."
 			DebugLog(g, fmt.Sprintf("Menu() --> unable to load previous game"))
 
-			// Return back to the global game menu.
-			return "menu"
+			state = "menu"
+			break
 		}
 
 		// Give the main game pad a height and width.
@@ -286,18 +232,18 @@ func (g *Game) Menu() GameState {
 
 		// Wipe away the menu screen.
 		Clear()
+		state = "playing"
 
-		return "playing"
+	case "q":
+		fallthrough
+	case "Q":
+		state = "quit"
+
+	default:
+		state = "menu"
 	}
 
-	// If the end user pressed the Q key, attempt to exit the game.
-	if key == "Q" || key == "q" {
-		return "quit"
-	}
-
-	// Otherwise if none of the above keys were pressed, then default to
-	// remaining in the initial game menu.
-	return "menu"
+	return state
 }
 
 // Death ... handle the event of a PC death (by monsters or the like).
@@ -327,21 +273,11 @@ func (g *Game) Death() {
 }
 
 // Quiting ... determine if the current game is in a state of quitting.
-/*
- * @param    GameState    current GameState
- *
- * @return   bool         whether or not the game is quitting.
- */
 func (s GameState) Quiting() bool {
 	return s == "quit"
 }
 
 // Output ... generate the game screen output.
-/*
- * @param    Game*    pointer to the current game instance
- *
- * @return   none
- */
 func (g *Game) Output() {
 
 	DrawMap(g.Area)
